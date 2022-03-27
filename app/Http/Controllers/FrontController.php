@@ -30,16 +30,8 @@ class FrontController extends Controller
 {
     public function home()
     {
-        $about = About::find(1);
-        $banner = Banner::all();
-        $general = General::find(1);
-        $link = Link::orderBy('name','asc')->get();
-        $lpost = Post::where('status','=','PUBLISH')->orderBy('id','desc')->limit(5)->get();
-        $partner = Partner::orderBy('name','asc')->limit(8)->get();
-        $pcategories = Pcategory::all()->where('estado', 1);
-        $portfolio = Portfolio::all()->where('estado', 1);
-        $service = Service::orderBy('title','asc')->get();
-        return view ('front.home',compact('about','banner','general','link','lpost','partner','pcategories','portfolio','service'));
+
+        return view ('auth.login');
     }
 
     public function about()

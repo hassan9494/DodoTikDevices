@@ -61,6 +61,7 @@
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>{{__('message.Dashboard')}}</span></a>
         </li>
+    @can('isAdmin')
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
             <a class="nav-link" href="{{ route('admin.device_types') }}">
@@ -80,6 +81,26 @@
                 <span>{{__('message.device_setting')}}</span></a>
         </li>
 
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item active">
+            <a class="nav-link" href="{{ route('admin.devices') }}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>{{__('message.devices')}}</span></a>
+        </li>
+    @endcan
+    <!-- Nav Item - Dashboard -->
+        <li class="nav-item active">
+            <a class="nav-link" href="{{ route('admin.devices.add') }}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>{{__('message.add_devices')}}</span></a>
+        </li>
+
+        <li class="nav-item active">
+            <a class="nav-link" href="{{ route('admin.devices.get_devices') }}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>{{__('message.get_devices')}}</span></a>
+        </li>
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
@@ -93,6 +114,7 @@
                 </div>
             </div>
         </li>
+        @can('isAdmin')
         <!-- Nav Item - Utilities Collapse Menu -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
@@ -109,6 +131,7 @@
             </div>
         </li>
         <!-- Divider -->
+            @endcan
         <hr class="sidebar-divider d-none d-md-block">
         <!-- Sidebar Toggler (Sidebar) -->
         <div class="text-center d-none d-md-inline">
