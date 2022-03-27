@@ -2,7 +2,8 @@
 
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{DeviceParametersController,
+use App\Http\Controllers\{DeviceController,
+    DeviceParametersController,
     DeviceSettingController,
     DevicTypeController,
     FrontController,
@@ -33,7 +34,7 @@ Auth::routes([
     'register' => false
 ]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('can:isAdmin')->name('home');
 
 Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth'],function () {
     Route::get('migrate', [FrontController::class, 'migrate'])->middleware('can:isAdmin')->name('migrate');
@@ -87,5 +88,21 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth'],function ()
     Route::get('device_setting/show/{id}', [DeviceSettingController::class, 'show'])->middleware('can:isAdmin')->name('device_setting.show');
     Route::post('device_setting/edit/{id}', [DeviceSettingController::class, 'update'])->middleware('can:isAdmin')->name('device_setting.update');
     Route::delete('device_setting/destroy/{id}',[DeviceSettingController::class, 'destroy'])->middleware('can:isAdmin')->name('device_setting.destroy');
+
+
+    // Manage device
+    Route::get('devices/add', [DeviceController::class, 'add'])->middleware('can:isAdminOrUser')->name('devices.add');
+    Route::get('devices/get_devices', [DeviceController::class, 'get_devices'])->middleware('can:isAdminOrUser')->name('devices.get_devices');
+    Route::post('devices/add/{id}', [DeviceController::class, 'add_device'])->middleware('can:isAdminOrUser')->name('devices.add_device');
+    Route::post('devices/remove/{id}', [DeviceController::class, 'remove_device'])->middleware('can:isAdminOrUser')->name('devices.remove_device');
+
+    Route::resource('devices',DeviceController::class);
+    Route::get('devices', [DeviceController::class, 'index'])->middleware('can:isAdmin')->name('devices');
+    Route::get('devices/create', [DeviceController::class, 'create'])->middleware('can:isAdmin')->name('devices.create');
+    Route::post('devices/store', [DeviceController::class, 'store'])->middleware('can:isAdminOrUser')->name('devices.store');
+    Route::get('devices/edit/{id}', [DeviceController::class, 'edit'])->middleware('can:isAdmin')->name('devices.edit');
+    Route::get('devices/show/{id}', [DeviceController::class, 'show'])->middleware('can:isAdmin')->name('devices.show');
+    Route::post('devices/edit/{id}', [DeviceController::class, 'update'])->middleware('can:isAdmin')->name('devices.update');
+    Route::delete('devices/destroy/{id}',[DeviceController::class, 'destroy'])->middleware('can:isAdmin')->name('devices.destroy');
 
 });

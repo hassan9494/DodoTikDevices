@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>ANAPAT</title>
+  <title>Dodtik Device</title>
   <meta content="{{ $general->meta_desc }}" name="description">
   <meta content="{{ $general->keyword }}" name="keywords">
 

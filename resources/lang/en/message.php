@@ -43,7 +43,15 @@ return [
     'device_types' => 'Device Types',
     'device_parameters' => 'Device Parameters',
     'Code' => 'Code',
-    'device_setting' => 'Device Setting'
+    'device_setting' => 'Device Setting',
+    'devices' => 'Devices',
+    'device_id' => 'Device Id',
+    'parameters' => 'parameters',
+    'settings' => 'settings',
+    'add_devices' => 'Add Device',
+    'are you want to add this device to you' => 'are you want to add this device to you',
+    'get_devices' => 'Get Devices',
+    'are you want to remove this device from you' => 'are you want to remove this device from you'
 
 
 

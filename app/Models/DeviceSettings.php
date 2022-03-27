@@ -23,4 +23,9 @@ class DeviceSettings extends Model
     protected $table = 'device_settings';
 
     use SoftDeletes;
+
+    public function devices()
+    {
+        return $this->belongsToMany(Device::class);
+    }
 }
