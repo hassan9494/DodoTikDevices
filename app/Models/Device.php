@@ -16,7 +16,7 @@ class Device extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'device_id','user_id'
+        'name', 'device_id','user_id','type_id'
     ];
 
     protected $guarded=[];
@@ -24,18 +24,13 @@ class Device extends Model
 
     use SoftDeletes;
 
-    public function deviceSettings()
-    {
-        return $this->belongsToMany(DeviceSettings::class);
-    }
-
-    public function deviceParameters()
-    {
-        return $this->belongsToMany(DeviceParameters::class);
-    }
-
     public function user()
     {
         return $this->belongsTo(User::class,'user_id');
+    }
+
+    public function deviceType()
+    {
+        return $this->belongsTo(DeviceType::class,'type_id');
     }
 }

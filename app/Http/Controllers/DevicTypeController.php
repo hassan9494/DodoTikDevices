@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DeviceTypesRequest;
+use App\Models\DeviceParameters;
+use App\Models\DeviceSettings;
 use App\Models\DeviceType;
+use App\Models\DeviceTypeSetting;
 use Illuminate\Http\Request;
 
 class DevicTypeController extends Controller
@@ -26,14 +29,16 @@ class DevicTypeController extends Controller
      */
     public function create()
     {
-        return view ('admin.device_types.create');
+        $parameters = DeviceParameters::all();
+        $settings = DeviceSettings::all();
+        return view ('admin.device_types.create',compact('parameters','settings'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(DeviceTypesRequest $request)
     {
@@ -41,12 +46,53 @@ class DevicTypeController extends Controller
         $type = new DeviceType();
         $type->name = $request->name;
         if ($type->save()) {
-            return redirect()->route('admin.device_types')->with('success', 'Data added successfully');
+
+            $type->deviceSettings()->attach(request('settings'));
+            $type->deviceParameters()->attach(request('parameters'));
+            return redirect()->route('admin.device_types.add_default_values',$type->id)->with('success', 'Data added successfully');
         }else {
 
             return redirect()->route('admin.device_types.create')->with('error', 'Data failed to add');
 
         }
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $typeid
+     * @param  int  $settingid
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     */
+    public function add_default_values($typeid)
+    {
+        $type = DeviceType::findOrFail($typeid);
+//        $typeSetting = DeviceTypeSetting::where('device_settings_id',$settingid)->where('device_type_id',$typeid)->first();
+
+
+        $parameters = DeviceParameters::all();
+        $settings = DeviceSettings::all();
+        return view('admin.device_types.add_default_values',compact('type','parameters','settings'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function add_default(Request $request, $id)
+    {
+        $type = DeviceType::findOrFail($id);
+        foreach ($type->deviceSettings as $setting){
+            $typeSet = DeviceTypeSetting::where('device_settings_id',$setting->id)->where('device_type_id',$id)->first();
+            $typeSet->value = $request[$setting->name];
+            $typeSet->save();
+        }
+        return redirect()->route('admin.device_types')->with('success', 'Data updated successfully');
+
+
     }
 
     /**
@@ -69,7 +115,9 @@ class DevicTypeController extends Controller
     public function edit($id)
     {
         $type = DeviceType::findOrFail($id);
-        return view('admin.device_types.edit',compact('type'));
+        $parameters = DeviceParameters::all();
+        $settings = DeviceSettings::all();
+        return view('admin.device_types.edit',compact('type','parameters','settings'));
     }
 
     /**
@@ -84,6 +132,9 @@ class DevicTypeController extends Controller
         $type = DeviceType::findOrFail($id);
         $type->name = $request->name;
         if ( $type->save()) {
+
+            $type->deviceSettings()->sync(request('settings'));
+            $type->deviceParameters()->sync(request('parameters'));
 
             return redirect()->route('admin.device_types')->with('success', 'Data updated successfully');
 
@@ -105,6 +156,8 @@ class DevicTypeController extends Controller
         $type = DeviceType::findOrFail($id);
 
         $type->delete();
+        $type->deviceSettings()->detach();
+        $type->deviceParameters()->detach();
 
         return redirect()->route('admin.device_types')->with('success', 'Data deleted successfully');
     }

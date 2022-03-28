@@ -28,8 +28,7 @@ class DeviceRequest extends FormRequest
             'name' => 'required',
             'device_id' => 'required',
             'device_id' => Rule::unique('devices')->ignore($this->id),
-            'settings' => 'required|array',
-            'parameters' => 'required|array'
+            'type' => 'required',
         ];
     }
 }

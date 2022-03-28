@@ -65,7 +65,7 @@
     <form action="{{ route('admin.device_types.store') }}" method="POST">
         @csrf
         <div class="form-groups">
-            <div class="form-group col-md-6">
+            <div class="form-group ml-5">
                 <label for="name" class="col-sm-2 col-form-label">{{__('message.Name')}} </label>
                 <div class="col-sm-9">
                     <input type="text" name="name" placeholder="name" id="name"
@@ -73,6 +73,32 @@
                            value="{{old('name')}}">
                     <div class="invalid-feedback">
                         {{ $errors->first('name') }}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group ml-5">
+                <label for="parameters" class="col-sm-2 col-form-label">{{__('message.parameters')}}</label>
+                <div class="col-sm-9">
+                    <select name='parameters[]' class="form-control {{$errors->first('parameters') ? "is-invalid" : "" }} select2" id="parameters" multiple>
+                        @foreach ($parameters as $parameter)
+                            <option value="{{ $parameter->id }}">{{ $parameter->name }}</option>
+                        @endforeach
+                    </select>
+                    <div class="invalid-feedback">
+                        {{ $errors->first('parameters') }}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group ml-5">
+                <label for="settings" class="col-sm-2 col-form-label">{{__('message.settings')}}</label>
+                <div class="col-sm-9">
+                    <select name='settings[]' class="form-control {{$errors->first('settings') ? "is-invalid" : "" }} select2" id="settings" multiple>
+                        @foreach ($settings as $setting)
+                            <option value="{{ $setting->id }}">{{ $setting->name }}</option>
+                        @endforeach
+                    </select>
+                    <div class="invalid-feedback">
+                        {{ $errors->first('settings') }}
                     </div>
                 </div>
             </div>

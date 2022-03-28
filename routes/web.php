@@ -59,6 +59,9 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth'],function ()
      Route::delete('users/destroy/{id}',[UserController::class, 'destroy'])->middleware('can:isAdmin')->name('users.destroy');
 
     // Manage device_types
+    Route::get('device_types/add_default_values/{typeid}', [DevicTypeController::class, 'add_default_values'])->middleware('can:isAdmin')->name('device_types.add_default_values');
+    Route::post('device_types/add_default_values/{typeid}', [DevicTypeController::class, 'add_default'])->middleware('can:isAdmin')->name('device_types.add_default');
+
     Route::resource('device_types',DevicTypeController::class);
     Route::get('device_types', [DevicTypeController::class, 'index'])->middleware('can:isAdmin')->name('device_types');
     Route::get('device_types/create', [DevicTypeController::class, 'create'])->middleware('can:isAdmin')->name('device_types.create');

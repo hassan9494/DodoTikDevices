@@ -48,10 +48,13 @@ return [
     'device_id' => 'Device Id',
     'parameters' => 'parameters',
     'settings' => 'settings',
-    'add_devices' => 'Add Device',
+    'add_devices' => 'Add Device To Account',
     'are you want to add this device to you' => 'are you want to add this device to you',
     'get_devices' => 'Get Devices',
-    'are you want to remove this device from you' => 'are you want to remove this device from you'
+    'are you want to remove this device from you' => 'are you want to remove this device from you',
+    'type' => 'Type',
+    'type_settings' => 'Type Settings',
+    'type_parameters' => 'Type Parameters'
 
 
 
