@@ -20,23 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b9c3d3c-a351-4ab6-90ca-e38cb16d2c4d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DevicTypeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DevicTypeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/DeviceRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/DeviceRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/DeviceTypesRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/DeviceTypesRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Device.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Device.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/DeviceParameters.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/DeviceParameters.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/DeviceSettings.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/DeviceSettings.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/DeviceType.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/DeviceType.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/lang/en/message.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/en/message.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/device/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/device/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_types/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_types/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_types/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_types/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_types/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_types/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -260,7 +245,7 @@
       <workItem from="1647854622462" duration="7895000" />
       <workItem from="1647947558438" duration="18070000" />
       <workItem from="1648149794597" duration="2030000" />
-      <workItem from="1648363101337" duration="20257000" />
+      <workItem from="1648363101337" duration="20942000" />
     </task>
     <servers />
   </component>
