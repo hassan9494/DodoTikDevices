@@ -6,6 +6,7 @@ use App\Http\Requests\DeviceRequest;
 use App\Models\Device;
 use App\Models\DeviceParameters;
 use App\Models\DeviceSettings;
+use App\Models\DeviceType;
 use Illuminate\Http\Request;
 
 class DeviceController extends Controller
@@ -75,9 +76,8 @@ class DeviceController extends Controller
      */
     public function create()
     {
-        $parameters = DeviceParameters::all();
-        $settings = DeviceSettings::all();
-        return view ('admin.device.create',compact('parameters','settings'));
+        $types = DeviceType::all();
+        return view ('admin.device.create',compact('types'));
     }
 
     /**
@@ -92,9 +92,8 @@ class DeviceController extends Controller
         $device->name = $request->name;
         $device->device_id = $request->device_id;
         $device->user_id = 0;
-        if ($device->save()) {
-            $device->deviceSettings()->attach(request('settings'));
-            $device->deviceParameters()->attach(request('parameters'));
+        $device->type_id = $request->type;
+         if ($device->save()) {
             return redirect()->route('admin.devices')->with('success', 'Data added successfully');
         }else {
 
@@ -124,9 +123,8 @@ class DeviceController extends Controller
     public function edit($id)
     {
         $device = Device::findOrFail($id);
-        $parameters = DeviceParameters::all();
-        $settings = DeviceSettings::all();
-        return view('admin.device.edit',compact('device','settings','parameters'));
+        $types = DeviceType::all();
+        return view('admin.device.edit',compact('device','types'));
     }
 
     /**
@@ -142,9 +140,8 @@ class DeviceController extends Controller
         $device->name = $request->name;
         $device->device_id = $request->device_id;
         $device->user_id = 0;
+        $device->type_id = $request->type;
         if ( $device->save()) {
-            $device->deviceSettings()->sync(request('settings'));
-            $device->deviceParameters()->sync(request('parameters'));
             return redirect()->route('admin.devices')->with('success', 'Data added successfully');
 
         } else {
@@ -165,8 +162,6 @@ class DeviceController extends Controller
         $device = Device::findOrFail($id);
 
         $device->delete();
-        $device->deviceSettings()->detach();
-        $device->deviceParameters()->detach();
 
         return redirect()->route('admin.devices')->with('success', 'Data deleted successfully');
     }

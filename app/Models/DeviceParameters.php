@@ -26,6 +26,6 @@ class DeviceParameters extends Model
 
     public function devices()
     {
-        return $this->belongsToMany(Device::class);
+        return $this->belongsToMany(DeviceType::class);
     }
 }

@@ -21,15 +21,21 @@
   <component name="ChangeListManager">
     <list default="true" id="4b9c3d3c-a351-4ab6-90ca-e38cb16d2c4d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/FrontController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/FrontController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/HomeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DevicTypeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DevicTypeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/DeviceRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/DeviceRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/DeviceTypesRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/DeviceTypesRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Device.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Device.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/DeviceParameters.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/DeviceParameters.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/DeviceSettings.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/DeviceSettings.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/en/auth.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/en/auth.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/DeviceType.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/DeviceType.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/lang/en/message.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/en/message.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/device/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/device/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_types/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_types/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_types/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_types/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_types/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_types/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/front.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/front.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -184,21 +190,22 @@
     <property name="DefaultHtmlFileTemplate" value="XHTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/admin/device" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/admin/device_types" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="php.override.implement.member.chooser.php.doc" value="NONE" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\projects\DodotikDevice\public" />
       <recent name="D:\lastAnapat\resources" />
       <recent name="D:\lastAnapat\database\migrations" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\projects\DodotikDevice\resources\views\admin\device_types" />
       <recent name="D:\projects\DodotikDevice\resources\views\admin\device" />
       <recent name="D:\projects\DodotikDevice\resources\views\admin" />
       <recent name="D:\projects\DodotikDevice\public\admin\css" />
       <recent name="D:\projects\DodotikDevice\resources\views\layouts" />
-      <recent name="D:\projects\DodotikDevice\public\admin\img" />
     </key>
   </component>
   <component name="RunManager">
@@ -253,7 +260,7 @@
       <workItem from="1647854622462" duration="7895000" />
       <workItem from="1647947558438" duration="18070000" />
       <workItem from="1648149794597" duration="2030000" />
-      <workItem from="1648363101337" duration="8113000" />
+      <workItem from="1648363101337" duration="20257000" />
     </task>
     <servers />
   </component>
@@ -289,6 +296,10 @@
     <state x="1874" y="164" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728/1366.0.1680.1010@1366.0.1680.1010" timestamp="1648373123254" />
     <state x="1946" y="169" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728/1366.0.1920.1040@1366.0.1920.1040" timestamp="1645430948791" />
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1648151484678" />
+    <state x="463" y="118" key="FileChooserDialogImpl" timestamp="1648448254513">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1648448254513" />
     <state x="2126" y="427" key="NewPhpFileDialog" timestamp="1645429771367">
       <screen x="1366" y="0" width="1920" height="1040" />
     </state>

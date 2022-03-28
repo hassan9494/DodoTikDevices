@@ -41,6 +41,10 @@
 
                         <th>{{__('message.Name')}}</th>
 
+                        <th>{{__('message.parameters')}}</th>
+
+                        <th>{{__('message.settings')}}</th>
+
                         <th>{{__('message.Option')}}</th>
 
                     </tr>
@@ -61,6 +65,17 @@
                         <td>{{ ++$no }}</td>
                         <td>{{ $type->name }}</td>
                         <td>
+                            @foreach($type->deviceParameters as $parameter)
+                            {{ $parameter->name }}<br>
+                            @endforeach
+                        </td>
+                        <td>
+                            @foreach($type->deviceSettings as $setting)
+                                {{ $setting->name }} = {{$setting->pivot->value}}<br>
+                            @endforeach
+                        </td>
+                        <td>
+                            <a href="{{route('admin.device_types.add_default_values', [$type->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-cogs"></i> </a>
                             <a href="{{route('admin.device_types.edit', [$type->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-edit"></i> </a>
 
                             <form method="POST" action="{{route('admin.device_types.destroy', [$type->id])}}" class="d-inline" onsubmit="return confirm('{{__("message.Delete this type permanently?")}}')">

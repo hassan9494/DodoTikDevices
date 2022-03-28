@@ -72,13 +72,13 @@
         <li class="nav-item active">
             <a class="nav-link" href="{{ route('admin.device_parameters') }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>{{__('message.device_parameters')}}</span></a>
+                <span>{{__('message.type_parameters')}}</span></a>
         </li>
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
             <a class="nav-link" href="{{ route('admin.device_setting') }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>{{__('message.device_setting')}}</span></a>
+                <span>{{__('message.type_settings')}}</span></a>
         </li>
 
 
@@ -114,24 +114,24 @@
                 </div>
             </div>
         </li>
-        @can('isAdmin')
-        <!-- Nav Item - Utilities Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-               aria-expanded="true" aria-controls="collapseUtilities">
-                <i class="fas fa-fw fa-wrench"></i>
-                <span>{{__('message.Settings')}}</span>
-            </a>
-            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                 data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="{{ route('admin.about') }}">{{__('message.About')}}</a>
-                    <a class="collapse-item" href="{{ route('admin.general') }}">{{__('message.General Settings')}}</a>
-                </div>
-            </div>
-        </li>
-        <!-- Divider -->
-            @endcan
+{{--        @can('isAdmin')--}}
+{{--        <!-- Nav Item - Utilities Collapse Menu -->--}}
+{{--        <li class="nav-item">--}}
+{{--            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"--}}
+{{--               aria-expanded="true" aria-controls="collapseUtilities">--}}
+{{--                <i class="fas fa-fw fa-wrench"></i>--}}
+{{--                <span>{{__('message.Settings')}}</span>--}}
+{{--            </a>--}}
+{{--            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"--}}
+{{--                 data-parent="#accordionSidebar">--}}
+{{--                <div class="bg-white py-2 collapse-inner rounded">--}}
+{{--                    <a class="collapse-item" href="{{ route('admin.about') }}">{{__('message.About')}}</a>--}}
+{{--                    <a class="collapse-item" href="{{ route('admin.general') }}">{{__('message.General Settings')}}</a>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </li>--}}
+{{--        <!-- Divider -->--}}
+{{--            @endcan--}}
         <hr class="sidebar-divider d-none d-md-block">
         <!-- Sidebar Toggler (Sidebar) -->
         <div class="text-center d-none d-md-inline">

@@ -37,34 +37,16 @@
             </div>
         </div>
         <div class="form-group ml-5">
-            <label for="parameters" class="col-sm-4 col-form-label">{{__('message.parameters')}}</label>
+            <label for="type" class="col-sm-4 col-form-label">{{__('message.type')}}</label>
             <div class="col-sm-9">
-                <select name='parameters[]' class="form-control {{$errors->first('parameters') ? "is-invalid" : "" }} select2" id="parameters" multiple>
-                    @foreach ($device->deviceParameters as $param)
-                        <option selected value="{{ $param->id }}">{{ $param->name }}</option>
-                    @endforeach
-                    @foreach ($parameters as $parameter)
-                        <option value="{{ $parameter->id }}">{{ $parameter->name }}</option>
+                <select name='type' class="form-control {{$errors->first('type') ? "is-invalid" : "" }}" id="parameters" >
+                    <option selected disabled>chose one</option>
+                    @foreach ($types as $type)
+                        <option {{$device->type_id == $type->id ? "selected" : ""}} value="{{ $type->id }}">{{ $type->name }}</option>
                     @endforeach
                 </select>
                 <div class="invalid-feedback">
-                    {{ $errors->first('parameters') }}
-                </div>
-            </div>
-        </div>
-        <div class="form-group ml-5">
-            <label for="settings" class="col-sm-4 col-form-label">{{__('message.settings')}}</label>
-            <div class="col-sm-9">
-                <select name='settings[]' class="form-control {{$errors->first('settings') ? "is-invalid" : "" }} select2" id="settings" multiple>
-                    @foreach ($device->deviceSettings as $sett)
-                        <option selected value="{{ $sett->id }}">{{ $sett->name }}</option>
-                    @endforeach
-                    @foreach ($settings as $setting)
-                        <option value="{{ $setting->id }}">{{ $setting->name }}</option>
-                    @endforeach
-                </select>
-                <div class="invalid-feedback">
-                    {{ $errors->first('settings') }}
+                    {{ $errors->first('type') }}
                 </div>
             </div>
         </div>
