@@ -78,7 +78,7 @@
         <li class="nav-item active">
             <a class="nav-link" href="{{ route('admin.device_setting') }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>{{__('message.type_settings')}}</span></a>
+                <span>{{__('message.type_setting')}}</span></a>
         </li>
 
 

@@ -53,7 +53,7 @@ return [
     'get_devices' => 'Get Devices',
     'are you want to remove this device from you' => 'are you want to remove this device from you',
     'type' => 'Type',
-    'type_settings' => 'Type Settings',
+    'type_setting' => 'Type Settings',
     'type_parameters' => 'Type Parameters'
 
 
