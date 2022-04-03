@@ -22,8 +22,6 @@ class Device extends Model
     protected $guarded=[];
     protected $table = 'devices';
 
-    use SoftDeletes;
-
     public function user()
     {
         return $this->belongsTo(User::class,'user_id');
@@ -32,5 +30,15 @@ class Device extends Model
     public function deviceType()
     {
         return $this->belongsTo(DeviceType::class,'type_id');
+    }
+
+    public function deviceSetting()
+    {
+        return $this->hasOne(DeviceSettingPerDevice::class,'device_id');
+    }
+
+    public function deviceParameters()
+    {
+        return $this->hasMany(DeviceParametersValues::class,'device_id');
     }
 }

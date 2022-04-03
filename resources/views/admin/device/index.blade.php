@@ -43,6 +43,8 @@
 
                         <th>{{__('message.device_id')}}</th>
 
+                        <th>{{__('message.type')}}</th>
+
                         <th>{{__('message.Option')}}</th>
 
                     </tr>
@@ -64,7 +66,13 @@
                         <td>{{ $device->name }}</td>
                         <td>{{ $device->device_id }}</td>
                         <td>
+                            @if($device->deviceType != null)
+                            {{ $device->deviceType->name }}
+                            @endif
+                        </td>
+                        <td>
                             <a href="{{route('admin.devices.edit', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-edit"></i> </a>
+                            <a href="{{route('admin.devices.show', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-eye"></i> </a>
 
                             <form method="POST" action="{{route('admin.devices.destroy', [$device->id])}}" class="d-inline" onsubmit="return confirm('{{__("message.Delete this type permanently?")}}')">
 

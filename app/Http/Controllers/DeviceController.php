@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DeviceRequest;
 use App\Models\Device;
 use App\Models\DeviceParameters;
+use App\Models\DeviceSettingPerDevice;
 use App\Models\DeviceSettings;
 use App\Models\DeviceType;
+use App\Models\DeviceTypeSetting;
 use Illuminate\Http\Request;
 
 class DeviceController extends Controller
@@ -19,7 +21,7 @@ class DeviceController extends Controller
     public function index()
     {
         $devices = Device::all();
-        return view('admin.device.index',compact('devices'));
+        return view('admin.device.index', compact('devices'));
     }
 
 
@@ -27,21 +29,21 @@ class DeviceController extends Controller
     {
         $devices = Device::all();
 //        dd($devices);
-        return view('admin.device.add',compact('devices'));
+        return view('admin.device.add', compact('devices'));
     }
 
     public function get_devices()
     {
         $user = auth()->user();
 //        dd($user->id);
-        $devices = Device::where('user_id',$user->id)->get();
+        $devices = Device::where('user_id', $user->id)->get();
 //        dd($devices);
-        return view('admin.device.get_devices',compact('devices'));
+        return view('admin.device.get_devices', compact('devices'));
     }
 
     /**
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function add_device($id)
@@ -56,7 +58,7 @@ class DeviceController extends Controller
 
     /**
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function remove_device($id)
@@ -77,13 +79,13 @@ class DeviceController extends Controller
     public function create()
     {
         $types = DeviceType::all();
-        return view ('admin.device.create',compact('types'));
+        return view('admin.device.create', compact('types'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(DeviceRequest $request)
@@ -93,9 +95,9 @@ class DeviceController extends Controller
         $device->device_id = $request->device_id;
         $device->user_id = 0;
         $device->type_id = $request->type;
-         if ($device->save()) {
+        if ($device->save()) {
             return redirect()->route('admin.devices')->with('success', 'Data added successfully');
-        }else {
+        } else {
 
             return redirect()->route('admin.devices.create')->with('error', 'Data failed to add');
 
@@ -106,32 +108,88 @@ class DeviceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+        $device = Device::findOrFail($id);
+        return view('admin.device.show', compact('device'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $typeid
+     * @param int $settingid
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     */
+    public function add_device_setting_values($id)
+    {
+        $device = Device::findOrFail($id);
+        return view('admin.device.add_device_setting_values', compact('device'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function add_setting_values(Request $request, $id)
+    {
+        $device = Device::findOrFail($id);
+        $devSet = DeviceSettingPerDevice::where('device_id', $id)->first();
+        $test = [];
+        if ($devSet != null) {
+            foreach ($device->deviceType->deviceSettings as $setting) {
+                if ($request[$setting->name] != null) {
+                    $test[$setting->code] = $request[$setting->name];
+                } else {
+                    $test[$setting->code] = "0";
+                }
+
+//                dd($setting);
+            }
+        } else {
+            $devSet = new DeviceSettingPerDevice();
+            foreach ($device->deviceType->deviceSettings as $setting) {
+                if ($request[$setting->name] != null) {
+                    $test[$setting->code] = $request[$setting->name];
+                } else {
+                    $test[$setting->code] = "0";
+                }
+            }
+            $devSet->device_id = $id;
+        }
+        $devSet->settings = json_encode($test);
+        $devSet->save();
+//        dd($test);
+
+        return redirect()->route('admin.devices.show',$id)->with('success', 'Data updated successfully');
+
+
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         $device = Device::findOrFail($id);
         $types = DeviceType::all();
-        return view('admin.device.edit',compact('device','types'));
+        return view('admin.device.edit', compact('device', 'types'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(DeviceRequest $request, $id)
@@ -141,7 +199,7 @@ class DeviceController extends Controller
         $device->device_id = $request->device_id;
         $device->user_id = 0;
         $device->type_id = $request->type;
-        if ( $device->save()) {
+        if ($device->save()) {
             return redirect()->route('admin.devices')->with('success', 'Data added successfully');
 
         } else {
@@ -154,7 +212,7 @@ class DeviceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\DeviceApiController;
+use App\Http\Controllers\Auth\ApiAuthController;
+use App\Models\Device;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +17,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum','verified')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::post('register', [ApiAuthController::class, 'register']);
+Route::post('login', [ApiAuthController::class, 'login']);
+Route::post('logout', [ApiAuthController::class, 'logout'])->middleware('auth:sanctum');
+
+Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
+
+
+    Route::get('devices', [DeviceApiController::class ,'index']);
+    Route::get('show/{id}', [DeviceApiController::class ,'show']);
+    Route::post('create', [DeviceApiController::class ,'store']);
+    Route::put('update/{id}', [DeviceApiController::class ,'update']);
+    Route::delete('delete/{id}', [DeviceApiController::class ,'delete']);
+
+});
+
