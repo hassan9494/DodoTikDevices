@@ -54,7 +54,8 @@ return [
     'are you want to remove this device from you' => 'are you want to remove this device from you',
     'type' => 'Type',
     'type_setting' => 'Type Settings',
-    'type_parameters' => 'Type Parameters'
+    'type_parameters' => 'Type Parameters',
+    'Time' => 'Time of read'
 
 
 
