@@ -87,7 +87,12 @@ class DevicTypeController extends Controller
         $type = DeviceType::findOrFail($id);
         foreach ($type->deviceSettings as $setting){
             $typeSet = DeviceTypeSetting::where('device_settings_id',$setting->id)->where('device_type_id',$id)->first();
-            $typeSet->value = $request[$setting->name];
+            if ($request[$setting->name] != null){
+                $typeSet->value = $request[$setting->name];
+            }else{
+                $typeSet->value = 0;
+            }
+
             $typeSet->save();
         }
         return redirect()->route('admin.device_types')->with('success', 'Data updated successfully');
