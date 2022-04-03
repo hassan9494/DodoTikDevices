@@ -55,6 +55,49 @@
                 </div>
                 </div>
             </div>
+            <div class="col-md-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h1>{{__('message.parameters')}} : </h1>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    @foreach($device->deviceType->deviceParameters as $parameter)
+                                        <th>{{$parameter->name}}</th>
+                                    @endforeach
+                                    <th>{{__('message.Time')}}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($device->deviceParameters as $para)
+                                <tr>
+
+                                    @if($device->deviceParameters == null)
+                                        @foreach($device->deviceParameters as $parameter)
+                                            <td>{{$parameter}}</td>
+                                        @endforeach
+                                    @else
+                                        @foreach($device->deviceType->deviceParameters as $parameter)
+                                            <td>{{json_decode($para->parameters,true)[$parameter->name] }}</td>
+
+                                        @endforeach
+                                    @endif
+                                    <td>
+                                       {{$para->time_of_read}}
+
+                                    </td>
+                                </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
