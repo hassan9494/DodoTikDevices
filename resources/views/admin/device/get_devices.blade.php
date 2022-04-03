@@ -60,6 +60,7 @@
                         <td>{{ $device->name }}</td>
                         <td>{{ $device->device_id }}</td>
                         <td>
+                            <a href="{{route('admin.devices.show', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-eye"></i> </a>
                             <form method="POST" action="{{route('admin.devices.remove_device', [$device->id])}}" class="d-inline" onsubmit="return confirm('{{__("message.are you want to remove this device from you")}}')">
 
                                 @csrf
