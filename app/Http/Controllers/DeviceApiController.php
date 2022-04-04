@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Device;
 use App\Models\DeviceParametersValues;
 use Carbon\Carbon;
+use http\Env\Response;
 use Illuminate\Http\Request;
 
 class DeviceApiController extends Controller
@@ -12,7 +13,7 @@ class DeviceApiController extends Controller
     public function index()
     {
         $devices = Device::all();
-        $response = ['message' =>  'index function'];
+        $response = ['message' => 'index function'];
         return $devices;
     }
 
@@ -25,31 +26,41 @@ class DeviceApiController extends Controller
     public function store(Request $request)
     {
         $para = $request['parameters'];
-        $test = explode(',',$para);
+        $test = explode(',', $para);
 
-        $device = Device::where('device_id',$test[0])->first();
-        $type = $device->deviceType;
-        foreach ($type->deviceParameters as $key=>$parameter){
-            $parameters = new DeviceParametersValues();
-            $jsonParameters[$parameter->name] = $test[$key+1];
-            $parameters->parameters = json_encode($jsonParameters);
-            $parameters->device_id = $device->id;
-            $parameters->time_of_read = last($test);
+        $device = Device::where('device_id', $test[0])->first();
+        if ($device != null) {
+            $type = $device->deviceType;
+            foreach ($type->deviceParameters as $key => $parameter) {
+                $parameters = new DeviceParametersValues();
+                $jsonParameters[$parameter->name] = $test[$key + 1];
+                $parameters->parameters = json_encode($jsonParameters);
+                $parameters->device_id = $device->id;
+                $parameters->time_of_read = last($test);
 
+            }
+            $parameters->save();
+
+
+            $response = '';
+            if ($device->deviceSetting != null) {
+                $x = json_decode($device->deviceSetting->settings, true);
+                $x['time'] = gmdate("M d Y H:i:s");
+                foreach ($device->deviceType->deviceSettings as $setting) {
+                    $response = $response . '' . $setting->name . '=' . $x[$setting->name] . ',';
+                }
+                $response = $response . '' . 'time = ' . $x['time'];
+            } else {
+                foreach ($device->deviceType->deviceSettings as $setting) {
+                    $response = $response . '' . $setting->name . '=' . $setting->pivot->value . ',';
+                }
+                $response = $response . '' . 'time = ' . gmdate("M d Y H:i:s");
+            }
+            return response()->json($response, 201);
+        } else {
+            return response()->json('sorry device Id is not exist ', 404);
         }
-        $parameters->save();
 
-
-
-        if ($device->deviceSetting != null){
-            $x = json_decode($device->deviceSetting->settings,true) ;
-            $x['time'] = gmdate('H:i',time());
-        }else{
-
-        }
-
-
-        return response()->json($x, 201);
     }
 
     public function update(Request $request, $id)
