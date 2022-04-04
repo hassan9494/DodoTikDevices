@@ -26,14 +26,20 @@ Route::post('register', [ApiAuthController::class, 'register']);
 Route::post('login', [ApiAuthController::class, 'login']);
 Route::post('logout', [ApiAuthController::class, 'logout'])->middleware('auth:sanctum');
 
-Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
+//Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
+//
+//
+//    Route::get('devices', [DeviceApiController::class ,'index']);
+//    Route::get('show/{id}', [DeviceApiController::class ,'show']);
+//    Route::post('create', [DeviceApiController::class ,'store']);
+//    Route::put('update/{id}', [DeviceApiController::class ,'update']);
+//    Route::delete('delete/{id}', [DeviceApiController::class ,'delete']);
+//
+//});
 
-
-    Route::get('devices', [DeviceApiController::class ,'index']);
-    Route::get('show/{id}', [DeviceApiController::class ,'show']);
-    Route::post('create', [DeviceApiController::class ,'store']);
-    Route::put('update/{id}', [DeviceApiController::class ,'update']);
-    Route::delete('delete/{id}', [DeviceApiController::class ,'delete']);
-
-});
+Route::get('devices', [DeviceApiController::class ,'index']);
+Route::get('show/{id}', [DeviceApiController::class ,'show']);
+Route::post('create', [DeviceApiController::class ,'store']);
+Route::put('update/{id}', [DeviceApiController::class ,'update']);
+Route::delete('delete/{id}', [DeviceApiController::class ,'delete']);
 
