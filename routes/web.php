@@ -106,8 +106,9 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth'],function ()
     Route::get('devices/create', [DeviceController::class, 'create'])->middleware('can:isAdmin')->name('devices.create');
     Route::post('devices/store', [DeviceController::class, 'store'])->middleware('can:isAdminOrUser')->name('devices.store');
     Route::get('devices/edit/{id}', [DeviceController::class, 'edit'])->middleware('can:isAdmin')->name('devices.edit');
-    Route::get('devices/show/{id}', [DeviceController::class, 'show'])->middleware('can:isAdmin')->name('devices.show');
+    Route::get('devices/show/{id}', [DeviceController::class, 'show'])->middleware('can:isAdminOrUser')->name('devices.show');
     Route::post('devices/edit/{id}', [DeviceController::class, 'update'])->middleware('can:isAdmin')->name('devices.update');
+    Route::post('devices/update_location/{id}', [DeviceController::class, 'update_location'])->middleware('can:isAdminOrUser')->name('devices.update_location');
     Route::delete('devices/destroy/{id}',[DeviceController::class, 'destroy'])->middleware('can:isAdmin')->name('devices.destroy');
 
 });

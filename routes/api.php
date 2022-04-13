@@ -39,7 +39,7 @@ Route::post('logout', [ApiAuthController::class, 'logout'])->middleware('auth:sa
 
 Route::get('devices', [DeviceApiController::class ,'index']);
 Route::get('show/{id}', [DeviceApiController::class ,'show']);
-Route::post('create', [DeviceApiController::class ,'store']);
+Route::get('create', [DeviceApiController::class ,'store']);
 Route::put('update/{id}', [DeviceApiController::class ,'update']);
 Route::delete('delete/{id}', [DeviceApiController::class ,'delete']);
 
