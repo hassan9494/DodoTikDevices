@@ -23,11 +23,11 @@ class DeviceApiController extends Controller
         return $device;
     }
 
-    public function store(Request $request)
+    public function store( Request $request)
     {
-        $para = $request['parameters'];
-        $test = explode(',', $para);
 
+        $para = $request->getContent();
+        $test = explode(',', $para);
         $device = Device::where('device_id', $test[0])->first();
         if ($device != null) {
             $type = $device->deviceType;
@@ -42,23 +42,23 @@ class DeviceApiController extends Controller
             $parameters->save();
 
 
-            $response = '';
+            $response = '##';
             if ($device->deviceSetting != null) {
                 $x = json_decode($device->deviceSetting->settings, true);
-                $x['time'] = gmdate("M d Y H:i:s");
+                $x['time'] = gmdate("Y-m-dTH:i:s");
                 foreach ($device->deviceType->deviceSettings as $setting) {
                     $response = $response . '' . $setting->name . '=' . $x[$setting->name] . ',';
                 }
-                $response = $response . '' . 'time = ' . $x['time'];
+                $response = $response . '' . 'time=' . $x['time'];
             } else {
                 foreach ($device->deviceType->deviceSettings as $setting) {
                     $response = $response . '' . $setting->name . '=' . $setting->pivot->value . ',';
                 }
-                $response = $response . '' . 'time = ' . gmdate("M d Y H:i:s");
+                $response = $response . '' . 'time=' . gmdate("Y-m-dTH:i:s");
             }
             return response()->json($response, 201);
         } else {
-            return response()->json('sorry device Id is not exist ', 404);
+            return response()->json('device id is not exist', 404);
         }
 
     }

@@ -42,3 +42,6 @@ class Device extends Model
         return $this->hasMany(DeviceParametersValues::class,'device_id');
     }
 }
+
+
+

@@ -15,8 +15,11 @@ class GeneralController extends Controller
            }else{
             $admin = User::orderBy('id','desc')->count();
            }
-//        $x = count($activo_Curso);
-        return view ('admin.dashboard', compact('admin'));
+        $locations[0] = ['test',45,454554];
+        $locations[1] = ['test',45,454554];
+        $locations[2] = ['test',45,454554];
+        $locations[3] = ['test',45,454554];
+        return view ('admin.dashboard', compact('admin','locations'));
     }
 
     public function general(){

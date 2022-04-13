@@ -194,17 +194,43 @@ class DeviceController extends Controller
      */
     public function update(DeviceRequest $request, $id)
     {
+//        dd($request);
         $device = Device::findOrFail($id);
         $device->name = $request->name;
         $device->device_id = $request->device_id;
         $device->user_id = 0;
         $device->type_id = $request->type;
+        $device->longitude = $request->longitude;
+        $device->latitude = $request->latitude;
         if ($device->save()) {
             return redirect()->route('admin.devices')->with('success', 'Data added successfully');
 
         } else {
 
             return redirect()->route('admin.devices.edit')->with('error', 'Data failed to add');
+
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update_location(Request $request, $id)
+    {
+//        dd($request);
+        $device = Device::findOrFail($id);
+        $device->longitude = $request->longitude;
+        $device->latitude = $request->latitude;
+        if ($device->save()) {
+            return redirect()->route('admin.devices.show',$id)->with('success', 'Data updated successfully');
+
+        } else {
+
+            return redirect()->route('admin.devices.show',$id)->with('error', 'Data failed to updated');
 
         }
     }
