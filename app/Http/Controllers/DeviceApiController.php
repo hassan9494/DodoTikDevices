@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Device;
 use App\Models\DeviceParametersValues;
+use App\Models\TestApi;
 use Carbon\Carbon;
 use http\Env\Response;
 use Illuminate\Http\Request;
@@ -27,6 +28,11 @@ class DeviceApiController extends Controller
     {
 
         $para = $request->getContent();
+        $testsApi = new TestApi();
+
+        $testsApi->settings = json_encode($para);
+//        dd($testsApi->settings);
+        $testsApi->save();
         $test = explode(',', $para);
         $device = Device::where('device_id', $test[0])->first();
         if ($device != null) {
