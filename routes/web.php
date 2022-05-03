@@ -111,4 +111,6 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth'],function ()
     Route::post('devices/update_location/{id}', [DeviceController::class, 'update_location'])->middleware('can:isAdminOrUser')->name('devices.update_location');
     Route::delete('devices/destroy/{id}',[DeviceController::class, 'destroy'])->middleware('can:isAdmin')->name('devices.destroy');
 
+
+
 });
