@@ -69,6 +69,92 @@ class DeviceApiController extends Controller
 
     }
 
+    public function read( Request $request)
+    {
+
+        $para = $request->getContent();
+        if (isset(json_decode($para)->data) ){
+            $dev_id_base64= json_decode($para)->devEUI;
+            $dev_id_ascii = base64_decode($dev_id_base64);
+            $dev_id = bin2hex($dev_id_ascii);
+            $device = Device::where('device_id', $dev_id)->first();
+            if ($device != null){
+                $data_base64 = json_decode($para)->data;
+                $data_ascii = base64_decode($data_base64);
+                $data = bin2hex($data_ascii);
+                $data1 = substr($data, 10);
+                $finaldata = substr($data1, 0, -2);
+
+                $vol = substr($finaldata, 0, 4);
+                $vol_dec = hexdec( $vol );
+                $last_vol = $vol_dec / 10;
+
+                $temp = substr($finaldata, 4, 4);
+                $temp_dec = hexdec( $temp );
+                $last_temp = $temp_dec / 10;
+
+                $hum = substr($finaldata, 8, 4);
+                $hum_dec = hexdec( $hum);
+                $last_hum = $hum_dec / 10;
+
+                $gaz = substr($finaldata, 12, 8);
+                $gaz_dec = hexdec( $gaz);
+                $last_gaz = $gaz_dec / 1000;
+//                dd($last_gaz);
+                $type = $device->deviceType;
+                foreach ($type->deviceParameters as $key => $parameter) {
+                    $parameters = new DeviceParametersValues();
+                    if ($parameter->name == "Bat_v"){
+                        $jsonParameters[$parameter->name] = $last_vol;
+                    }elseif ($parameter->name == "Temperature"){
+                        $jsonParameters[$parameter->name] = $last_temp;
+                    }elseif ($parameter->name == "Humidity"){
+                        $jsonParameters[$parameter->name] = $last_hum;
+                    }elseif ($parameter->name == "Gas_Resistance"){
+                        $jsonParameters[$parameter->name] = $last_gaz;
+                    }
+
+                    $parameters->parameters = json_encode($jsonParameters);
+                    $parameters->device_id = $device->id;
+                    $parameters->time_of_read = Carbon::now();
+
+                }
+                $parameters->save();
+            }
+            if ($device != null) {
+
+
+                $response = '##';
+                if ($device->deviceSetting != null) {
+                    $x = json_decode($device->deviceSetting->settings, true);
+                    $x['time'] = gmdate("Y-m-dTH:i:s");
+                    foreach ($device->deviceType->deviceSettings as $setting) {
+                        $response = $response . '' . $setting->name . '=' . $x[$setting->name] . ',';
+                    }
+                    $response = $response . '' . 'time=' . $x['time'];
+                } else {
+                    foreach ($device->deviceType->deviceSettings as $setting) {
+                        $response = $response . '' . $setting->name . '=' . $setting->pivot->value . ',';
+                    }
+                    $response = $response . '' . 'time=' . gmdate("Y-m-dTH:i:s");
+                }
+                return response()->json($response, 201);
+            } else {
+                return response()->json('device id is not exist', 404);
+            }
+        }else{
+            return response()->json('No data was sent', 404);
+        }
+
+//        dd($device->name);
+//        dd(json_decode($para)->devEUI);
+////        $testsApi->save();
+//        $test = explode(',', $para);
+//        $device = Device::where('device_id', $test[0])->first();
+
+
+    }
+
     public function update(Request $request, $id)
     {
         $device = Device::findOrfail($id);

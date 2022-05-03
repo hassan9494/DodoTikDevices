@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EntidadesFormadoreas;
 use Illuminate\Http\Request;
-use App\Models\{About, Cursos, Formadores, General, Operadores, Page, Post, Team, User};
+use App\Models\{About, Cursos, Formadores, General, Operadores, Page, Post, Team, TestApi, User};
 
 class GeneralController extends Controller
 {
@@ -19,7 +19,8 @@ class GeneralController extends Controller
         $locations[1] = ['test',45,454554];
         $locations[2] = ['test',45,454554];
         $locations[3] = ['test',45,454554];
-        return view ('admin.dashboard', compact('admin','locations'));
+        $tests = TestApi::all();
+        return view ('admin.dashboard', compact('admin','locations','tests'));
     }
 
     public function general(){

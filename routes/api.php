@@ -39,7 +39,8 @@ Route::post('logout', [ApiAuthController::class, 'logout'])->middleware('auth:sa
 
 Route::get('devices', [DeviceApiController::class ,'index']);
 Route::get('show/{id}', [DeviceApiController::class ,'show']);
-Route::get('create', [DeviceApiController::class ,'store']);
+Route::Post('create', [DeviceApiController::class ,'store']);
+Route::Post('read', [DeviceApiController::class ,'read']);
 Route::put('update/{id}', [DeviceApiController::class ,'update']);
 Route::delete('delete/{id}', [DeviceApiController::class ,'delete']);
 

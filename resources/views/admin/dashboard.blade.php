@@ -27,9 +27,46 @@
 
 @section('content')
 
+    <div class="card-body">
 
-{{--              <div id="map"></div>--}}
-{{--              <pre id="coordinates" class="coordinates"></pre>--}}
+        <div class="table-responsive">
+
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>{{__('message.No.')}}</th>
+
+                    <th>{{__('message.settings')}}</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                @php
+
+                    $no=0;
+
+                @endphp
+
+                @foreach ($tests as $test)
+                    @if(auth()->user()->role=='Administrator')
+                        <tr>
+                            <td>{{ ++$no }}</td>
+                            <td>{{json_decode($test->settings) }}</td>
+
+                        </tr>
+                    @endif
+                @endforeach
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
 @endsection
 
 @push('scripts')
