@@ -73,6 +73,11 @@ class DeviceApiController extends Controller
     {
 
         $para = $request->getContent();
+        $testsApi = new TestApi();
+
+        $testsApi->settings = json_encode($para);
+//        dd($testsApi->settings);
+        $testsApi->save();
         if (isset(json_decode($para)->data) ){
             $dev_id_base64= json_decode($para)->devEUI;
             $dev_id_ascii = base64_decode($dev_id_base64);
@@ -81,9 +86,9 @@ class DeviceApiController extends Controller
             if ($device != null){
                 $data_base64 = json_decode($para)->data;
                 $data_ascii = base64_decode($data_base64);
-                $data = bin2hex($data_ascii);
-                $data1 = substr($data, 10);
-                $finaldata = substr($data1, 0, -2);
+                $finaldata = bin2hex($data_ascii);
+//                $data1 = substr($data, 10);
+//                $finaldata = substr($data1, 0, -2);
 
                 $vol = substr($finaldata, 0, 4);
                 $vol_dec = hexdec( $vol );

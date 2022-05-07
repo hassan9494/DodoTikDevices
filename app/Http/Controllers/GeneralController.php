@@ -19,7 +19,7 @@ class GeneralController extends Controller
         $locations[1] = ['test',45,454554];
         $locations[2] = ['test',45,454554];
         $locations[3] = ['test',45,454554];
-        $tests = TestApi::all();
+        $tests = TestApi::orderBy('id','desc')->limit(10)->get();
         return view ('admin.dashboard', compact('admin','locations','tests'));
     }
 

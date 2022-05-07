@@ -22,10 +22,10 @@
     <list default="true" id="4b9c3d3c-a351-4ab6-90ca-e38cb16d2c4d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceApiController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/GeneralController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/GeneralController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/dashboard.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/device/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -265,7 +265,9 @@
       <workItem from="1649829718665" duration="9546000" />
       <workItem from="1649844836319" duration="156000" />
       <workItem from="1649847330683" duration="938000" />
-      <workItem from="1651352271984" duration="7013000" />
+      <workItem from="1651352271984" duration="7794000" />
+      <workItem from="1651575386623" duration="5929000" />
+      <workItem from="1651911690208" duration="4413000" />
     </task>
     <servers />
   </component>
