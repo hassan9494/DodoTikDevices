@@ -9,6 +9,7 @@ use App\Models\DeviceSettingPerDevice;
 use App\Models\DeviceSettings;
 use App\Models\DeviceType;
 use App\Models\DeviceTypeSetting;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DeviceController extends Controller
@@ -114,7 +115,30 @@ class DeviceController extends Controller
     public function show($id)
     {
         $device = Device::findOrFail($id);
-        return view('admin.device.show', compact('device'));
+        $device_type = $device->deviceType;
+        $now = Carbon::now();
+//        dd($now);
+        $parameters = $device->deviceParameters;
+        $xValues = [];
+        $yValues = [];
+        $paraValues = [];
+        foreach ($parameters as $parameter) {
+            if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d){
+                array_push($xValues, date("H:i", strtotime($parameter->time_of_read)));
+            }
+
+        }
+        foreach ($device_type->deviceParameters as $tPara) {
+            foreach ($parameters as $parameter) {
+                if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0){
+                    array_push($yValues, json_decode($parameter->parameters, true)[$tPara->name]);
+                }
+
+            }
+            array_push($paraValues,$yValues);
+            $yValues = [];
+        }
+        return view('admin.device.show', compact('device', 'xValues', 'yValues','paraValues'));
     }
 
     /**
@@ -167,7 +191,7 @@ class DeviceController extends Controller
         $devSet->save();
 //        dd($test);
 
-        return redirect()->route('admin.devices.show',$id)->with('success', 'Data updated successfully');
+        return redirect()->route('admin.devices.show', $id)->with('success', 'Data updated successfully');
 
 
     }
@@ -226,11 +250,11 @@ class DeviceController extends Controller
         $device->longitude = $request->longitude;
         $device->latitude = $request->latitude;
         if ($device->save()) {
-            return redirect()->route('admin.devices.show',$id)->with('success', 'Data updated successfully');
+            return redirect()->route('admin.devices.show', $id)->with('success', 'Data updated successfully');
 
         } else {
 
-            return redirect()->route('admin.devices.show',$id)->with('error', 'Data failed to updated');
+            return redirect()->route('admin.devices.show', $id)->with('error', 'Data failed to updated');
 
         }
     }
