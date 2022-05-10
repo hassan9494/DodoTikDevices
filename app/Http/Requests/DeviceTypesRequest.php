@@ -26,7 +26,6 @@ class DeviceTypesRequest extends FormRequest
         return [
             "name" => "required",
             "parameters" => "required|array",
-            "settings" => "required|array",
         ];
     }
 }

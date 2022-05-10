@@ -45,12 +45,7 @@
                 <h1 class="text-center">{{__('message.device_id')}} : {{$device->device_id}} </h1>
                 <h1 class="text-center">{{__('message.type')}} : {{$device->deviceType->name}} </h1>
             </div>
-            <div class="col-md-1 "></div>
-            <div class="col-md-10 ">
-                <canvas id="speedChart" style="width:100%;max-width:100%;height: 500px"></canvas>
-            </div>
-            <div class="col-md-1 "></div>
-
+            <canvas id="speedChart" style="width:100%;max-width:100%;height: 375px"></canvas>
             @if(count($device->deviceType->deviceSettings) != 0)
             <div class="col-md-12">
                 <div class="card shadow mb-4">
@@ -94,7 +89,54 @@
                 </div>
             </div>
             @endif
+{{--            @foreach($device->deviceType->deviceParameters as $parameter)--}}
+{{--                <h1>{{$parameter->name}}</h1>--}}
+{{--                <canvas id="myChart_{{$parameter->name}}" style="width:100%;max-width:100%;height: 375px"></canvas>--}}
+{{--            @endforeach--}}
 
+            {{--            <div class="col-md-12">--}}
+            {{--                <div class="card shadow mb-4">--}}
+            {{--                    <div class="card-header py-3">--}}
+            {{--                        <h1>{{__('message.parameters')}} : </h1>--}}
+            {{--                    </div>--}}
+            {{--                    <div class="card-body">--}}
+
+            {{--                        <div class="table-responsive">--}}
+            {{--                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">--}}
+            {{--                                <thead>--}}
+            {{--                                <tr>--}}
+            {{--                                    @foreach($device->deviceType->deviceParameters as $parameter)--}}
+            {{--                                        <th>{{$parameter->name}}</th>--}}
+            {{--                                    @endforeach--}}
+            {{--                                    <th>{{__('message.Time')}}</th>--}}
+            {{--                                </tr>--}}
+            {{--                                </thead>--}}
+            {{--                                <tbody>--}}
+            {{--                                @foreach($device->deviceParameters as $para)--}}
+            {{--                                <tr>--}}
+
+            {{--                                    @if($device->deviceParameters == null)--}}
+            {{--                                        @foreach($device->deviceParameters as $parameter)--}}
+            {{--                                            <td>{{$parameter}}</td>--}}
+            {{--                                        @endforeach--}}
+            {{--                                    @else--}}
+            {{--                                        @foreach($device->deviceType->deviceParameters as $parameter)--}}
+            {{--                                            <td>{{json_decode($para->parameters,true)[$parameter->name] }}</td>--}}
+
+            {{--                                        @endforeach--}}
+            {{--                                    @endif--}}
+            {{--                                    <td>--}}
+            {{--                                       {{$para->time_of_read}}--}}
+
+            {{--                                    </td>--}}
+            {{--                                </tr>--}}
+            {{--                                @endforeach--}}
+            {{--                                </tbody>--}}
+            {{--                            </table>--}}
+            {{--                        </div>--}}
+            {{--                    </div>--}}
+            {{--                </div>--}}
+            {{--            </div>--}}
             <div class="col-md-12 ">
                 <div id="map"></div>
                 <pre id="coordinates" class="coordinates"></pre>
@@ -143,7 +185,7 @@
         var chartOptions = {
             elements: {
                 point: {
-                    radius: 1.5
+                    radius: 2
                 }
             },
             scales: {
@@ -168,7 +210,7 @@
                 callbacks: {
                     label: function(tooltipItems, data) {
                         var text = tooltipItems.datasetIndex === 0 ? 'g/m³' : tooltipItems.datasetIndex === 1 ? '°' : tooltipItems.datasetIndex === 2 ? 'Volt' : 'mq2'
-                        return data.datasets[tooltipItems.datasetIndex].label + " : " + tooltipItems.yLabel + ' ' + text;
+                        return tooltipItems.yLabel + ' ' + text;
                     }
                 }
             }
@@ -181,6 +223,56 @@
             options: chartOptions
         });
     </script>
+{{--    <script>--}}
+{{--        var xValues = {!! json_encode($xValues, JSON_HEX_TAG) !!};--}}
+{{--        var yValues = {!! json_encode($paraValues, JSON_HEX_TAG) !!};--}}
+{{--        @foreach($device->deviceType->deviceParameters as $key=>$parameter)--}}
+{{--        new Chart("myChart_{{$parameter->name}}", {--}}
+{{--            type: "line",--}}
+{{--            data: {--}}
+{{--                labels: xValues,--}}
+{{--                datasets: [--}}
+{{--                    {--}}
+{{--                        label: 'Dataset 1',--}}
+{{--                        fill: false,--}}
+{{--                        lineTension: 0,--}}
+{{--                        backgroundColor: "rgba(0,0,255,1.0)",--}}
+{{--                        borderColor: "rgba(0,0,255,0.1)",--}}
+{{--                        data: yValues[{{$key}}]--}}
+{{--                    },--}}
+
+{{--                ]--}}
+{{--            },--}}
+{{--            options: {--}}
+{{--                responsive : true,--}}
+{{--                legend: {display: false},--}}
+{{--                plugins: {--}}
+{{--                    legend: {--}}
+{{--                        position: 'top',--}}
+{{--                    },--}}
+{{--                    title: {--}}
+{{--                        display: true,--}}
+{{--                        text: 'Chart.js Line Chart'--}}
+{{--                    }--}}
+{{--                },--}}
+{{--                elements: {--}}
+{{--                    point: {--}}
+{{--                        radius: 0--}}
+{{--                    }--}}
+{{--                },--}}
+{{--                scales: {--}}
+{{--                    yAxes: [{--}}
+{{--                        ticks: {--}}
+{{--                            min: 0,--}}
+{{--                            max: 100--}}
+{{--                        }--}}
+{{--                    }],--}}
+{{--                }--}}
+{{--            }--}}
+{{--        });--}}
+{{--        console.log(yValues[{{$key}}])--}}
+{{--        @endforeach--}}
+{{--    </script>--}}
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
     <script>
         mapboxgl.accessToken = 'pk.eyJ1Ijoic2FoYWIyMiIsImEiOiJja3Zud2NjeG03cGk1MnBxd3NrMm5kaDd4In0.vsQXgdGOH8KQ91g4rHkvUA';
@@ -214,5 +306,41 @@
         //     .addTo(map);
 
     </script>
+    <script>
+        // Prepare the preview for profile picture
+        $("#wizard-picture").change(function () {
+            readURL(this);
+        });
 
+        //Function to show image before upload
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#wizardPicturePreview').attr('src', e.target.result).fadeIn('slow');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+    {{--    <script>--}}
+    {{--        $(document).ready(function () {--}}
+    {{--            $('#parameters').select2({--}}
+    {{--                placeholder: "Choose Some parameters"--}}
+    {{--            });--}}
+    {{--        });--}}
+    {{--        $(function () {--}}
+    {{--            $('.selectpicker').selectpicker();--}}
+    {{--        });--}}
+    {{--    </script>--}}
+    {{--    <script>--}}
+    {{--        $(document).ready(function () {--}}
+    {{--            $('#settings').select2({--}}
+    {{--                placeholder: "Choose Some settings"--}}
+    {{--            });--}}
+    {{--        });--}}
+    {{--        $(function () {--}}
+    {{--            $('.selectpicker').selectpicker();--}}
+    {{--        });--}}
+    {{--    </script>--}}
 @endpush
