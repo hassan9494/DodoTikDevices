@@ -21,11 +21,9 @@
   <component name="ChangeListManager">
     <list default="true" id="4b9c3d3c-a351-4ab6-90ca-e38cb16d2c4d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceApiController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/GeneralController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/GeneralController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/DeviceTypesRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/DeviceTypesRequest.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/admin/device/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device/show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,22 +181,22 @@
     <property name="DefaultHtmlFileTemplate" value="XHTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Validation/Rules" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/admin/device" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="php.override.implement.member.chooser.php.doc" value="NONE" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\projects\DodotikDevice\vendor\laravel\framework\src\Illuminate\Validation\Rules" />
-      <recent name="D:\projects\DodotikDevice\app\Http\Requests" />
-      <recent name="D:\projects\DodotikDevice\public\admin\img" />
-      <recent name="D:\projects\DodotikDevice\resources\views\admin\device" />
-      <recent name="D:\projects\DodotikDevice\resources\views\admin\device_types" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\projects\DodotikDevice\public" />
       <recent name="D:\lastAnapat\resources" />
       <recent name="D:\lastAnapat\database\migrations" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\projects\DodotikDevice\resources\views\admin\device" />
+      <recent name="D:\projects\DodotikDevice\vendor\laravel\framework\src\Illuminate\Validation\Rules" />
+      <recent name="D:\projects\DodotikDevice\app\Http\Requests" />
+      <recent name="D:\projects\DodotikDevice\public\admin\img" />
+      <recent name="D:\projects\DodotikDevice\resources\views\admin\device_types" />
     </key>
   </component>
   <component name="RunManager">
@@ -267,7 +265,9 @@
       <workItem from="1649847330683" duration="938000" />
       <workItem from="1651352271984" duration="7794000" />
       <workItem from="1651575386623" duration="5929000" />
-      <workItem from="1651911690208" duration="4413000" />
+      <workItem from="1651911690208" duration="6840000" />
+      <workItem from="1652092964175" duration="610000" />
+      <workItem from="1652165090189" duration="8523000" />
     </task>
     <servers />
   </component>
