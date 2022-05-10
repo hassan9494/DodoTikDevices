@@ -51,6 +51,7 @@
             </div>
             <div class="col-md-1 "></div>
 
+
             @if(count($device->deviceType->deviceSettings) != 0)
             <div class="col-md-12">
                 <div class="card shadow mb-4">
@@ -147,12 +148,23 @@
                 }
             },
             scales: {
-                yAxes: [{
-                    ticks: {
-                        min: 0,
-                        max: 50
+                x: {
+                    position: 'bottom',
+                    grid: {
+                        offset: true // offset true to get labels in between the lines instead of on the lines
                     }
-                }],
+                },
+                x2: {
+                    position: 'top',
+                    grid: {
+                        offset: true // offset true to get labels in between the lines instead of on the lines
+                    }
+                },
+                y: {
+                    ticks: {
+                        count: (context) => (context.scale.chart.data.labels.length + 1)
+                    }
+                }
             },
             legend: {
                 display: true,
