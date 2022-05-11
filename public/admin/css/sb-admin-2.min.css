@@ -212,3 +212,81 @@
 .toggled img {
     width: 100px!important;
 }
+
+.card.card-custom {
+    box-shadow: 0 0 30px 0 rgb(82 63 105 / 5%);
+    border: 0;
+}
+
+.mb-4, .my-4 {
+    margin-bottom: 1rem!important;
+}
+
+.card.card-custom>.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    flex-wrap: wrap;
+    min-height: 70px;
+    padding-top: 0;
+    padding-bottom: 0;
+    background-color: transparent;
+}
+
+.card-header:first-child {
+    border-radius: calc(0.42rem - 1px) calc(0.42rem - 1px) 0 0;
+}
+
+.card.card-custom>.card-header .card-title, .card.card-custom>.card-header .card-title .card-label {
+    font-weight: 500;
+    font-size: 1.275rem;
+    color: #181c32;
+}
+
+.card.card-custom>.card-header .card-title {
+    display: flex;
+    align-items: center;
+    margin: 0.5rem 0.5rem 0.5rem 0;
+}
+
+.card.card-custom>.card-header .card-title .card-label {
+    margin: 0 0.75rem 0 0;
+    flex-wrap: wrap;
+}
+
+.card.card-custom>.card-header .card-title, .card.card-custom>.card-header .card-title .card-label {
+    font-weight: 500;
+    font-size: 1.275rem;
+    color: #181c32;
+}
+
+.text-dark {
+    color: #181c32!important;
+}
+
+.card.card-custom>.card-header .card-toolbar {
+    display: flex;
+    align-items: center;
+    margin: 0.5rem 0;
+    flex-wrap: wrap;
+}
+
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.nav.nav-pills.nav-fill .nav-link .nav-icon, .nav.nav-pills .nav-item {
+    margin-right: 0.25rem;
+}
+
+.nav.nav-pills .nav-link, .nav.nav-pills .nav-link .nav-icon i, .nav.nav-pills .nav-link .nav-text, .nav.nav-pills .nav-link:after {
+    transition: color .15s ease,background-color .15s ease,border-color .15s ease,box-shadow .15s ease;
+}
+
+.card.card-custom>.card-body {
+    padding: 2rem 2.25rem;
+}

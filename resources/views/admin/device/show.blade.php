@@ -45,20 +45,51 @@
     @endif
 
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12 ">
-                <h1 class="text-center">{{__('message.Name')}} : {{$device->name}} </h1>
-                <h1 class="text-center">{{__('message.device_id')}} : {{$device->device_id}} </h1>
-                <h1 class="text-center">{{__('message.type')}} : {{$device->deviceType->name}} </h1>
-            </div>
-            {{--            <div class="col-md-1 "></div>--}}
-            {{--            <div class="col-md-10 ">--}}
-            {{--                <canvas id="speedChart" style="width:100%;max-width:100%;height: 500px"></canvas>--}}
-            {{--            </div>--}}
-            {{--            <div class="col-md-1 "></div>--}}
+        <div class="row" style="text-align: -webkit-center;">
+            <div class="col-lg-12 col-xxl-12 order-1 order-xxl-1 mb-4">
+                <div class="card card-custom mb-4">
+                    <div class="card-header border-0 pt-5"><h3 class="card-title align-items-start flex-column"><span
+                                class="card-label font-weight-bolder text-dark">{{__('message.device_id')}} : {{$device->device_id}} </span>
+                            <span
+                                class="card-label font-weight-bolder text-dark" style="margin-top: 15px">{{__('message.type')}} : {{$device->deviceType->name}}  </span></h3>
 
-            <div id="chart">
+{{--                        <div class="card-toolbar">--}}
+{{--                            <ul class="nav nav-pills nav-pills-sm nav-dark-75 nav" role="tablist">--}}
+{{--                                <li class="nav-item nav-item"><a href="#" role="tab" data-rb-event-key="Custom"--}}
+{{--                                                                 tabindex="-1" aria-selected="false"--}}
+{{--                                                                 class="nav-link py-2 px-4   nav-link">Custom</a></li>--}}
+{{--                                <li class="nav-item nav-item"><a href="#" role="tab" data-rb-event-key="Year"--}}
+{{--                                                                 tabindex="-1" aria-selected="false"--}}
+{{--                                                                 class="nav-link py-2 px-4   nav-link">Year</a></li>--}}
+{{--                                <li class="nav-item nav-item"><a href="#" role="tab" data-rb-event-key="LastMonth"--}}
+{{--                                                                 tabindex="-1" aria-selected="false"--}}
+{{--                                                                 class="nav-link py-2 px-4   nav-link">Last Month</a>--}}
+{{--                                </li>--}}
+{{--                                <li class="nav-item nav-item"><a href="#" role="tab" data-rb-event-key="ThisMonth"--}}
+{{--                                                                 tabindex="-1" aria-selected="false"--}}
+{{--                                                                 class="nav-link py-2 px-4   nav-link">This Month</a>--}}
+{{--                                </li>--}}
+{{--                                <li class="nav-item nav-item"><a href="#" role="tab" data-rb-event-key="ThisWeek"--}}
+{{--                                                                 aria-selected="true"--}}
+{{--                                                                 class="nav-link py-2 px-4  active nav-link active">This--}}
+{{--                                        Week</a></li>--}}
+{{--                            </ul>--}}
+{{--                        </div>--}}
+                    </div>
+                    <div class="card-body pt-2" style="position: relative;">
+                        <div id="chart">
+                        </div>
+                        <div class="resize-triggers">
+                            <div class="expand-trigger">
+                                <div style="width: 1291px; height: 399px;"></div>
+                            </div>
+                            <div class="contract-trigger"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
+        <div class="row">
             @if(count($device->deviceType->deviceSettings) != 0)
                 <div class="col-md-12">
                     <div class="card shadow mb-4">
@@ -104,13 +135,32 @@
             @endif
 
             <div class="col-md-12 ">
-                <div id="map"></div>
-                <pre id="coordinates" class="coordinates"></pre>
+
                 <form action="{{ route('admin.devices.update_location',$device->id) }}" method="POST">
                     @csrf
-                    <input type="text" name="longitude" id="longitude" value="{{$device->longitude}}">
-                    <input type="text" name="latitude" id="latitude" value="{{$device->latitude}}">
-                    <input type="submit" value="Save Location" class="btn btn-primary">
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-5">
+                            <label for="longitude" >Longitude :</label>
+                            <input type="text" class="form-control" name="longitude" id="longitude" value="{{$device->longitude}}">
+                        </div>
+                        <div class="col-md-5">
+                            <label for="latitude" >Latitude :</label>
+                            <input type="text" class="form-control" name="latitude" id="latitude" value="{{$device->latitude}}">
+                        </div>
+                        <div class="col-md-1"></div>
+
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10" style="margin-top: 15px;margin-bottom: 15px">
+                            <div id="map"></div>
+                            <pre id="coordinates" class="coordinates"></pre>
+                            <input type="submit" value="Save Location" class="btn btn-primary" style="margin-top: 15px">
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+
+
+
                 </form>
             </div>
 
@@ -123,133 +173,165 @@
     <script>
         var xValues = {!! json_encode($xValues, JSON_HEX_TAG) !!};
         var yValues = {!! json_encode($paraValues, JSON_HEX_TAG) !!};
+        var xVals = [];
+        xValues.forEach(element => xVals.push(new Date(element).toLocaleString()))
+        var units = [];
+
+
         @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+            @if ($parameter->name == "Humidity"){
+                units.push("%")
+            }@elseif($parameter->name == "Temperature"){
+            units.push("°")
+        }@elseif($parameter->name == "Bat_v"){
+            units.push("volt")
+        }@elseif($parameter->name == "Gas_Resistance"){
+            units.push("ohm")
+        }
+            @endif
 
         @endforeach
-
+            console.log(units)
         var options = {
             series: [
                     @foreach($device->deviceType->deviceParameters as $key=>$parameter)
 
                 {
-                    name: "{{$parameter->name}}",
+                    name: "{{$parameter->name}} ("+units[{{$key}}] + ")",
                     data: yValues[{{$key}}]
                 },
                 @endforeach ],
             chart: {
                 height: 500,
-                width: 1400,
+                width: 1500,
                 type: 'area'
             },
             dataLabels: {
                 enabled: false
             },
             stroke: {
+                width: 4,
                 curve: 'smooth'
             },
+            plotOptions: {
+                bar: {
+                    columnWidth: '90%'
+                }
+            },
             xaxis: {
-                // labels: {
-                //     formatter: function (value, timestamp) {
-                //         return new Date(timestamp) // The formatter function overrides format property
-                //     },
-                // },
                 type: 'datetime',
-                categories: xValues
+                labels: {
+                    datetimeUTC: false
+                },
+                categories: xVals,
             },
             tooltip: {
-                x: {
-                    format: 'dd/MM/yy HH:mm'
+                shared: true,
+                intersect: false,
+                y: {
+                    formatter: function (y,{series, seriesIndex, dataPointIndex, w}) {
+                        if(typeof y !== "undefined") {
+                            return  y + " " + units[seriesIndex];
+                        }
+                        return y;
+
+                    }
+                }
+            },
+            legend: {
+                position: 'top',
+                horizontalAlign: 'left',
+                fontSize: "12px",
+                itemMargin: {
+                    horizontal: 25,
+                    vertical: 0
                 },
             },
-            responsive: [{
-                breakpoint: undefined,
-                options: {},
-            }]
         };
 
         var chart = new ApexCharts(document.querySelector("#chart"), options);
         chart.render();
     </script>
-    <script>
-        var speedCanvas = document.getElementById("speedChart");
-        var yValues = {!! json_encode($paraValues, JSON_HEX_TAG) !!};
-        var xValues = {!! json_encode($xValues, JSON_HEX_TAG) !!};
+{{--    <script>--}}
+{{--        var speedCanvas = document.getElementById("speedChart");--}}
+{{--        var yValues = {!! json_encode($paraValues, JSON_HEX_TAG) !!};--}}
+{{--        var xValues = {!! json_encode($xValues, JSON_HEX_TAG) !!};--}}
 
-        Chart.defaults.global.defaultFontFamily = "Lato";
-        Chart.defaults.global.defaultFontSize = 18;
-        var x = [];
-        var colors = ["red", "blue", "green", "black", "brown", "yellow", "grey", "pink", "purbel"]
-        @foreach($device->deviceType->deviceParameters as $key=>$parameter)
-        var data_{{$key}} = {
-            label: "{{$parameter->name}}",
-            data: yValues[{{$key}}],
-            lineTension: 0,
-            fill: false,
-            borderColor: colors[{{$key}}],
-            unit: "tst",
-            {{--backgroundColor: colors[{{$key}}],--}}
-        };
-        x.push(data_{{$key}})
-        @endforeach
+{{--        // Chart.defaults.global.defaultFontFamily = "Lato";--}}
+{{--        Chart.defaults.global.defaultFontSize = 18;--}}
+{{--        var x = [];--}}
+{{--        var colors = ["red", "blue", "green", "black", "brown", "yellow", "grey", "pink", "purbel"]--}}
+{{--        @foreach($device->deviceType->deviceParameters as $key=>$parameter)--}}
+{{--        var data_{{$key}} = {--}}
+{{--            label: "{{$parameter->name}}",--}}
+{{--            data: yValues[{{$key}}],--}}
+{{--            lineTension: 0,--}}
+{{--            fill: false,--}}
+{{--            borderColor: colors[{{$key}}],--}}
+{{--            unit: "tst",--}}
+{{--            --}}{{--backgroundColor: colors[{{$key}}],--}}
+{{--        };--}}
+{{--        x.push(data_{{$key}})--}}
+{{--        @endforeach--}}
 
 
-        var speedData = {
-            labels: xValues,
-            datasets: x
-        };
+{{--        var speedData = {--}}
+{{--            labels: xValues,--}}
+{{--            datasets: x--}}
+{{--        };--}}
 
-        var chartOptions = {
-            elements: {
-                point: {
-                    radius: 1.5
-                }
-            },
-            scales: {
-                x: {
-                    position: 'bottom',
-                    grid: {
-                        offset: true // offset true to get labels in between the lines instead of on the lines
-                    }
-                },
-                x2: {
-                    position: 'top',
-                    grid: {
-                        offset: true // offset true to get labels in between the lines instead of on the lines
-                    }
-                },
-                y: {
-                    ticks: {
-                        count: (context) => (context.scale.chart.data.labels.length + 1)
-                    }
-                }
-            },
-            legend: {
-                display: true,
-                position: 'top',
-                labels: {
-                    boxWidth: 80,
-                    fontColor: 'black'
-                }
-            },
-            tooltips: {
-                enabled: true,
-                mode: 'single',
-                callbacks: {
-                    label: function (tooltipItems, data) {
-                        var text = tooltipItems.datasetIndex === 0 ? 'g/m³' : tooltipItems.datasetIndex === 1 ? '°' : tooltipItems.datasetIndex === 2 ? 'Volt' : 'mq2'
-                        return data.datasets[tooltipItems.datasetIndex].label + " : " + tooltipItems.yLabel + ' ' + text;
-                    }
-                }
-            }
+{{--        var chartOptions = {--}}
+{{--            elements: {--}}
+{{--                point: {--}}
+{{--                    radius: 1.5--}}
+{{--                }--}}
+{{--            },--}}
+{{--            scales: {--}}
+{{--                x: {--}}
+{{--                    position: 'bottom',--}}
+{{--                    grid: {--}}
+{{--                        offset: true // offset true to get labels in between the lines instead of on the lines--}}
+{{--                    }--}}
+{{--                },--}}
+{{--                x2: {--}}
+{{--                    position: 'top',--}}
+{{--                    grid: {--}}
+{{--                        offset: true // offset true to get labels in between the lines instead of on the lines--}}
+{{--                    }--}}
+{{--                },--}}
+{{--                y: {--}}
+{{--                    ticks: {--}}
+{{--                        count: (context) => (context.scale.chart.data.labels.length + 1)--}}
+{{--                    }--}}
+{{--                }--}}
+{{--            },--}}
+{{--            legend: {--}}
+{{--                display: true,--}}
+{{--                position: 'top',--}}
+{{--                labels: {--}}
+{{--                    boxWidth: 80,--}}
+{{--                    fontColor: 'black'--}}
+{{--                }--}}
+{{--            },--}}
+{{--            tooltips: {--}}
+{{--                enabled: true,--}}
+{{--                mode: 'single',--}}
+{{--                callbacks: {--}}
+{{--                    label: function (tooltipItems, data) {--}}
+{{--                        var text = tooltipItems.datasetIndex === 0 ? 'g/m³' : tooltipItems.datasetIndex === 1 ? '°' : tooltipItems.datasetIndex === 2 ? 'Volt' : 'mq2'--}}
+{{--                        return data.datasets[tooltipItems.datasetIndex].label + " : " + tooltipItems.yLabel + ' ' + text;--}}
+{{--                    }--}}
+{{--                }--}}
+{{--            }--}}
 
-        };
+{{--        };--}}
 
-        var lineChart = new Chart(speedCanvas, {
-            type: 'line',
-            data: speedData,
-            options: chartOptions
-        });
-    </script>
+{{--        var lineChart = new Chart(speedCanvas, {--}}
+{{--            type: 'line',--}}
+{{--            data: speedData,--}}
+{{--            options: chartOptions--}}
+{{--        });--}}
+{{--    </script>--}}
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
     <script>
         mapboxgl.accessToken = 'pk.eyJ1Ijoic2FoYWIyMiIsImEiOiJja3Zud2NjeG03cGk1MnBxd3NrMm5kaDd4In0.vsQXgdGOH8KQ91g4rHkvUA';
