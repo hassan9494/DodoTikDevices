@@ -6,6 +6,12 @@
         body {
             margin: 0;
             padding: 0;
+            font-family: Roboto, sans-serif;
+        }
+
+        #chart {
+            max-width: 100%;
+            margin: 35px auto;
         }
 
         #map {
@@ -45,55 +51,56 @@
                 <h1 class="text-center">{{__('message.device_id')}} : {{$device->device_id}} </h1>
                 <h1 class="text-center">{{__('message.type')}} : {{$device->deviceType->name}} </h1>
             </div>
-            <div class="col-md-1 "></div>
-            <div class="col-md-10 ">
-                <canvas id="speedChart" style="width:100%;max-width:100%;height: 500px"></canvas>
+            {{--            <div class="col-md-1 "></div>--}}
+            {{--            <div class="col-md-10 ">--}}
+            {{--                <canvas id="speedChart" style="width:100%;max-width:100%;height: 500px"></canvas>--}}
+            {{--            </div>--}}
+            {{--            <div class="col-md-1 "></div>--}}
+
+            <div id="chart">
             </div>
-            <div class="col-md-1 "></div>
-
-
             @if(count($device->deviceType->deviceSettings) != 0)
-            <div class="col-md-12">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h1>{{__('message.settings')}} : </h1>
-                    </div>
-                    <div class="card-body">
+                <div class="col-md-12">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h1>{{__('message.settings')}} : </h1>
+                        </div>
+                        <div class="card-body">
 
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                <tr>
-                                    @foreach($device->deviceType->deviceSettings as $setting)
-                                        <th>{{$setting->name}}</th>
-                                    @endforeach
-                                    <th>{{__('message.Option')}}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-
-                                    @if($device->deviceSetting == null)
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                    <tr>
                                         @foreach($device->deviceType->deviceSettings as $setting)
-                                            <td>{{$setting->pivot->value}}</td>
+                                            <th>{{$setting->name}}</th>
                                         @endforeach
-                                    @else
-                                        @foreach($device->deviceType->deviceSettings as $setting)
-                                            <td>{{json_decode($device->deviceSetting->settings,true)[$setting->name] }}</td>
-                                        @endforeach
-                                    @endif
-                                    <td>
-                                        <a href="{{route('admin.devices.add_device_setting_values', [$device->id])}}"
-                                           class="btn btn-edit btn-sm"> <i class="fas fa-cogs"></i> </a>
+                                        <th>{{__('message.Option')}}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
 
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                                        @if($device->deviceSetting == null)
+                                            @foreach($device->deviceType->deviceSettings as $setting)
+                                                <td>{{$setting->pivot->value}}</td>
+                                            @endforeach
+                                        @else
+                                            @foreach($device->deviceType->deviceSettings as $setting)
+                                                <td>{{json_decode($device->deviceSetting->settings,true)[$setting->name] }}</td>
+                                            @endforeach
+                                        @endif
+                                        <td>
+                                            <a href="{{route('admin.devices.add_device_setting_values', [$device->id])}}"
+                                               class="btn btn-edit btn-sm"> <i class="fas fa-cogs"></i> </a>
+
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             @endif
 
             <div class="col-md-12 ">
@@ -101,8 +108,8 @@
                 <pre id="coordinates" class="coordinates"></pre>
                 <form action="{{ route('admin.devices.update_location',$device->id) }}" method="POST">
                     @csrf
-                    <input type="hidden" name="longitude" id="longitude" value="{{$device->longitude}}">
-                    <input type="hidden" name="latitude" id="latitude" value="{{$device->latitude}}">
+                    <input type="text" name="longitude" id="longitude" value="{{$device->longitude}}">
+                    <input type="text" name="latitude" id="latitude" value="{{$device->latitude}}">
                     <input type="submit" value="Save Location" class="btn btn-primary">
                 </form>
             </div>
@@ -114,6 +121,56 @@
 
 @push('scripts')
     <script>
+        var xValues = {!! json_encode($xValues, JSON_HEX_TAG) !!};
+        var yValues = {!! json_encode($paraValues, JSON_HEX_TAG) !!};
+        @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+
+        @endforeach
+
+        var options = {
+            series: [
+                    @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+
+                {
+                    name: "{{$parameter->name}}",
+                    data: yValues[{{$key}}]
+                },
+                @endforeach ],
+            chart: {
+                height: 500,
+                width: 1400,
+                type: 'area'
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'smooth'
+            },
+            xaxis: {
+                // labels: {
+                //     formatter: function (value, timestamp) {
+                //         return new Date(timestamp) // The formatter function overrides format property
+                //     },
+                // },
+                type: 'datetime',
+                categories: xValues
+            },
+            tooltip: {
+                x: {
+                    format: 'dd/MM/yy HH:mm'
+                },
+            },
+            responsive: [{
+                breakpoint: undefined,
+                options: {},
+            }]
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+    </script>
+    <script>
         var speedCanvas = document.getElementById("speedChart");
         var yValues = {!! json_encode($paraValues, JSON_HEX_TAG) !!};
         var xValues = {!! json_encode($xValues, JSON_HEX_TAG) !!};
@@ -121,15 +178,15 @@
         Chart.defaults.global.defaultFontFamily = "Lato";
         Chart.defaults.global.defaultFontSize = 18;
         var x = [];
-        var colors = ["red","blue","green","black","brown","yellow","grey","pink","purbel"]
+        var colors = ["red", "blue", "green", "black", "brown", "yellow", "grey", "pink", "purbel"]
         @foreach($device->deviceType->deviceParameters as $key=>$parameter)
         var data_{{$key}} = {
             label: "{{$parameter->name}}",
             data: yValues[{{$key}}],
             lineTension: 0,
             fill: false,
-            borderColor:colors[{{$key}}],
-            unit : "tst",
+            borderColor: colors[{{$key}}],
+            unit: "tst",
             {{--backgroundColor: colors[{{$key}}],--}}
         };
         x.push(data_{{$key}})
@@ -178,7 +235,7 @@
                 enabled: true,
                 mode: 'single',
                 callbacks: {
-                    label: function(tooltipItems, data) {
+                    label: function (tooltipItems, data) {
                         var text = tooltipItems.datasetIndex === 0 ? 'g/m³' : tooltipItems.datasetIndex === 1 ? '°' : tooltipItems.datasetIndex === 2 ? 'Volt' : 'mq2'
                         return data.datasets[tooltipItems.datasetIndex].label + " : " + tooltipItems.yLabel + ' ' + text;
                     }
