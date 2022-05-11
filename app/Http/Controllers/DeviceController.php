@@ -124,7 +124,7 @@ class DeviceController extends Controller
         $paraValues = [];
         foreach ($parameters as $parameter) {
             if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0){
-                array_push($xValues, date("m/d/Y,H:i", strtotime($parameter->time_of_read)));
+                array_push($xValues, date(DATE_ISO8601, strtotime($parameter->time_of_read)));
             }
 
         }
