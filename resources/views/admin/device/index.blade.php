@@ -56,7 +56,7 @@
                 @php
 
                 $no=0;
-
+                $x=Session::get('current_time_zone');
                 @endphp
 
                 @foreach ($devices as $device)
@@ -72,7 +72,7 @@
                         </td>
                         <td>
                             <a href="{{route('admin.devices.edit', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-edit"></i> </a>
-                            <a href="{{route('admin.devices.show', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-eye"></i> </a>
+                            <a id="d_{{$device->id}}" href="{{route('admin.devices.show', [$device->id,'offset'])}}" class="btn btn-edit btn-sm"> <i class="fas fa-eye"></i> </a>
 
                             <form method="POST" action="{{route('admin.devices.destroy', [$device->id])}}" class="d-inline" onsubmit="return confirm('{{__("message.Delete this type permanently?")}}')">
 
@@ -97,7 +97,6 @@
             </table>
 
         </div>
-
     </div>
 
 </div>
@@ -105,6 +104,25 @@
 @endsection
 
 @push('scripts')
+    <script>
+        $(document).ready(function () {
+            const date = new Date();
+            const offset = date.getTimezoneOffset()
+            console.log(offset);
+            const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            @foreach($devices as $device)
+               var rrr = document.getElementById('d_{{$device->id}}')
+            text = rrr.href
+            res = text.replace("offset",offset)
+            rrr.href = res
+            @endforeach
+{{--            {{$no}} = offset--}}
+
+        });
+
+
+
+    </script>
 
 <script src="{{ asset('admin/vendor/datatables/jquery.dataTables.min.js') }}"></script>
 

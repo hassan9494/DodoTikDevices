@@ -22,7 +22,8 @@ class DeviceController extends Controller
     public function index()
     {
         $devices = Device::all();
-        return view('admin.device.index', compact('devices'));
+        $x = 'test';
+        return view('admin.device.index', compact('devices','x'));
     }
 
 
@@ -112,18 +113,25 @@ class DeviceController extends Controller
      * @param int $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id,$zone)
     {
         $device = Device::findOrFail($id);
         $device_type = $device->deviceType;
         $now = Carbon::now();
-//        dd($now);
+        if ((int)$zone > 0){
+            $n = $now->subMinutes(abs($zone));
+        }else{
+            $n = $now->addMinutes(abs($zone));
+        }
         $parameters = $device->deviceParameters;
         $xValues = [];
         $yValues = [];
         $paraValues = [];
         foreach ($parameters as $parameter) {
-            if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0){
+//dd(getDate(strtotime($parameter->time_of_read))['minutes']);
+//            dd(abs(strtotime($now) - strtotime($parameter->time_of_read))/(60*60));
+//            if ( abs(strtotime($now) - strtotime($parameter->time_of_read))/(60*60) < 12){
+            if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0) {
                 array_push($xValues, date(DATE_ISO8601, strtotime($parameter->time_of_read)));
             }
 
@@ -131,15 +139,49 @@ class DeviceController extends Controller
 //        dd($xValues);
         foreach ($device_type->deviceParameters as $tPara) {
             foreach ($parameters as $parameter) {
-                if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0){
-                    array_push($yValues, json_decode($parameter->parameters, true)[$tPara->name]);
+                if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0) {
+                    array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
                 }
 
             }
-            array_push($paraValues,$yValues);
+            array_push($paraValues, $yValues);
             $yValues = [];
         }
-        return view('admin.device.show', compact('device', 'xValues', 'yValues','paraValues'));
+        return view('admin.device.show', compact('device', 'xValues', 'yValues', 'paraValues'));
+    }
+
+
+    public function showWithDate($id,$from,$to)
+    {
+
+        $device = Device::findOrFail($id);
+        $device_type = $device->deviceType;
+        $now = Carbon::now();
+        $parameters = $device->deviceParameters;
+        $xValues = [];
+        $yValues = [];
+        $paraValues = [];
+        foreach ($parameters as $parameter) {
+//
+//            dd(abs(strtotime($now) - strtotime($parameter->time_of_read))/(60*60));
+//            if ( abs(strtotime($now) - strtotime($parameter->time_of_read))/(60*60) < 12){
+            if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0) {
+                array_push($xValues, date(DATE_ISO8601, strtotime($parameter->time_of_read)));
+            }
+
+        }
+//        dd($xValues);
+        foreach ($device_type->deviceParameters as $tPara) {
+            foreach ($parameters as $parameter) {
+                if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0) {
+                    array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                }
+
+            }
+            array_push($paraValues, $yValues);
+            $yValues = [];
+        }
+        return view('admin.device.show', compact('device', 'xValues', 'yValues', 'paraValues'));
     }
 
     /**
