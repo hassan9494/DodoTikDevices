@@ -52,7 +52,7 @@
 
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.dashboard') }}">
-            <img width="200" height="150" src="{{ asset('admin/img/logoDodo.png')}}" class="attachment-medium size-medium" alt="" loading="lazy" srcset="{{ asset('admin/img/logoDodo.png')}}" sizes="(max-width: 200px) 100vw, 207px">
+            <img  height="170" src="{{ asset('admin/img/logoDodo.png')}}" class="attachment-medium size-medium" alt="" loading="lazy" srcset="{{ asset('admin/img/logoDodo.png')}}" sizes="(max-width: 200px) 100vw, 207px">
         </a>
 
         <!-- Divider -->

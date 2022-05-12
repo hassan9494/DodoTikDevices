@@ -290,3 +290,11 @@
 .card.card-custom>.card-body {
     padding: 2rem 2.25rem;
 }
+
+.nav.nav-pills .nav-link.active, .nav.nav-pills .show>.nav-link {
+    background-color: #00989d!important;
+}
+
+.nav.nav-pills .nav-link {
+    color: #b5b5c3;
+}

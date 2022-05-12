@@ -39,7 +39,7 @@ class DeviceApiController extends Controller
             $type = $device->deviceType;
             foreach ($type->deviceParameters as $key => $parameter) {
                 $parameters = new DeviceParametersValues();
-                $jsonParameters[$parameter->name] = $test[$key + 1];
+                $jsonParameters[$parameter->code] = $test[$key + 1];
                 $parameters->parameters = json_encode($jsonParameters);
                 $parameters->device_id = $device->id;
                 $parameters->time_of_read = last($test);
@@ -109,14 +109,14 @@ class DeviceApiController extends Controller
                 $type = $device->deviceType;
                 foreach ($type->deviceParameters as $key => $parameter) {
                     $parameters = new DeviceParametersValues();
-                    if ($parameter->name == "Bat_v"){
-                        $jsonParameters[$parameter->name] = $last_vol;
-                    }elseif ($parameter->name == "Temperature"){
-                        $jsonParameters[$parameter->name] = $last_temp;
-                    }elseif ($parameter->name == "Humidity"){
-                        $jsonParameters[$parameter->name] = $last_hum;
-                    }elseif ($parameter->name == "Gas_Resistance"){
-                        $jsonParameters[$parameter->name] = $last_gaz;
+                    if ($parameter->code == "Bat_v"){
+                        $jsonParameters[$parameter->code] = $last_vol;
+                    }elseif ($parameter->code == "Temperature"){
+                        $jsonParameters[$parameter->code] = $last_temp;
+                    }elseif ($parameter->code == "Humidity"){
+                        $jsonParameters[$parameter->code] = $last_hum;
+                    }elseif ($parameter->code == "Gas_Resistance"){
+                        $jsonParameters[$parameter->code] = $last_gaz;
                     }
 
                     $parameters->parameters = json_encode($jsonParameters);

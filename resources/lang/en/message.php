@@ -47,7 +47,7 @@ return [
     'devices' => 'Devices',
     'device_id' => 'Device Id',
     'parameters' => 'parameters',
-    'settings' => 'settings',
+    'settings' => 'Settings',
     'add_devices' => 'Add Device To Account',
     'are you want to add this device to you' => 'are you want to add this device to you',
     'get_devices' => 'Get Devices',
