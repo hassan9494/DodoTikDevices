@@ -9,6 +9,7 @@ use App\Models\DeviceSettingPerDevice;
 use App\Models\DeviceSettings;
 use App\Models\DeviceType;
 use App\Models\DeviceTypeSetting;
+use App\Models\LimitValues;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -113,16 +114,16 @@ class DeviceController extends Controller
      * @param int $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
-    public function show($id,$zone)
+    public function show($id)
     {
         $device = Device::findOrFail($id);
         $device_type = $device->deviceType;
         $now = Carbon::now();
-        if ((int)$zone > 0){
-            $n = $now->subMinutes(abs($zone));
-        }else{
-            $n = $now->addMinutes(abs($zone));
-        }
+//        if ((int)$zone > 0){
+//            $n = $now->subMinutes(abs($zone));
+//        }else{
+//            $n = $now->addMinutes(abs($zone));
+//        }
         $parameters = $device->deviceParameters;
         $xValues = [];
         $yValues = [];
@@ -147,25 +148,37 @@ class DeviceController extends Controller
             array_push($paraValues, $yValues);
             $yValues = [];
         }
-        return view('admin.device.show', compact('device', 'xValues', 'yValues', 'paraValues'));
+        $label = 1;
+        return view('admin.device.show', compact('device','label', 'xValues', 'yValues', 'paraValues'));
     }
 
 
     public function showWithDate($id,$from,$to)
     {
-
         $device = Device::findOrFail($id);
         $device_type = $device->deviceType;
         $now = Carbon::now();
+        if ($from == 7 && $to == 0){
+            $label = 7;
+        } elseif ($from == 30 && $to == 0){
+            $label = 30;
+        }else{
+            $label = 2;
+        }
+//        if ((int)$zone > 0){
+//            $n = $now->subMinutes(abs($zone));
+//        }else{
+//            $n = $now->addMinutes(abs($zone));
+//        }
         $parameters = $device->deviceParameters;
         $xValues = [];
         $yValues = [];
         $paraValues = [];
         foreach ($parameters as $parameter) {
-//
+//dd(getDate(strtotime($parameter->time_of_read))['minutes']);
 //            dd(abs(strtotime($now) - strtotime($parameter->time_of_read))/(60*60));
 //            if ( abs(strtotime($now) - strtotime($parameter->time_of_read))/(60*60) < 12){
-            if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0) {
+            if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d <= $from && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d >= $to) {
                 array_push($xValues, date(DATE_ISO8601, strtotime($parameter->time_of_read)));
             }
 
@@ -173,7 +186,7 @@ class DeviceController extends Controller
 //        dd($xValues);
         foreach ($device_type->deviceParameters as $tPara) {
             foreach ($parameters as $parameter) {
-                if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0) {
+                if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d <= $from && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d >= $to) {
                     array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
                 }
 
@@ -181,7 +194,8 @@ class DeviceController extends Controller
             array_push($paraValues, $yValues);
             $yValues = [];
         }
-        return view('admin.device.show', compact('device', 'xValues', 'yValues', 'paraValues'));
+//        return response()->json(['success' => 'Data is successfully added'],$xValues,$paraValues,$yValues);
+        return view('admin.device.show', compact('device','label', 'xValues', 'yValues', 'paraValues'));
     }
 
     /**
@@ -239,6 +253,77 @@ class DeviceController extends Controller
 
     }
 
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param int $typeid
+     * @param int $settingid
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     */
+    public function add_device_limit_values($id)
+    {
+        $device = Device::findOrFail($id);
+        return view('admin.device.add_device_limit_values', compact('device'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function add_limit_values(Request $request, $id)
+    {
+        $device = Device::findOrFail($id);
+
+        $validate = [];
+        foreach ($device->deviceType->deviceParameters as $limit){
+            $validate[$limit->code."_max"] = "required|numeric";
+            $validate[$limit->code."_min"] = "required|numeric";
+        }
+//        dd($request);
+        \Validator::make($request->all(), $validate)->validate();
+        $devLim = LimitValues::where('device_id', $id)->first();
+//        dd($devLim);
+        $min = [];
+        $max = [];
+        if ($devLim != null) {
+            foreach ($device->deviceType->deviceParameters as $para) {
+                if ($request[$para->code."_min"] != null && $request[$para->code."_max"] != null) {
+                    $min[$para->code] = $request[$para->code."_min"];
+                    $max[$para->code] = $request[$para->code."_max"];
+                } else {
+                    $min[$para->code] = "0";
+                    $max[$para->code] = "0";
+                }
+
+//                dd($setting);
+            }
+        } else {
+            $devLim = new LimitValues();
+            foreach ($device->deviceType->deviceParameters as $para) {
+                if ($request[$para->code."_min"] != null) {
+                    $min[$para->code] = $request[$para->code."_min"];
+                    $max[$para->code] = $request[$para->code."_max"];
+                } else {
+                    $min[$para->code] = "0";
+                    $max[$para->code] = "0";
+                }
+            }
+            $devLim->device_id = $id;
+        }
+        $devLim->min_value = json_encode($min);
+        $devLim->max_value = json_encode($max);
+        $devLim->save();
+//        dd($test);
+
+        return redirect()->route('admin.devices', $id)->with('success', 'Data updated successfully');
+
+
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -279,6 +364,13 @@ class DeviceController extends Controller
         }
     }
 
+    public function location($id)
+    {
+        $device = Device::findOrFail($id);
+
+        return view('admin.device.location', compact('device'));
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -293,11 +385,11 @@ class DeviceController extends Controller
         $device->longitude = $request->longitude;
         $device->latitude = $request->latitude;
         if ($device->save()) {
-            return redirect()->route('admin.devices.show', $id)->with('success', 'Data updated successfully');
+            return redirect()->route('admin.devices', $id)->with('success', 'Data updated successfully');
 
         } else {
 
-            return redirect()->route('admin.devices.show', $id)->with('error', 'Data failed to updated');
+            return redirect()->route('admin.devices.location', $id)->with('error', 'Data failed to updated');
 
         }
     }

@@ -37,6 +37,11 @@ class Device extends Model
         return $this->hasOne(DeviceSettingPerDevice::class,'device_id');
     }
 
+    public function limitValues()
+    {
+        return $this->hasOne(LimitValues::class,'device_id');
+    }
+
     public function deviceParameters()
     {
         return $this->hasMany(DeviceParametersValues::class,'device_id');
