@@ -55,31 +55,31 @@
                         </h3>
 
                         <div class="card-toolbar">
-                            <ul class="nav nav-pills nav-pills-sm nav-dark-75 nav" role="tablist">
+                            <ul class="nav nav-pills nav-pills-sm nav-dark-75 nav nav-test" role="tablist">
                                 <li class="nav-item nav-item">
                                     <a href="#" role="tab" data-rb-event-key="Custom"
                                        tabindex="-1" aria-selected="false"
-                                       class="nav-link py-2 px-4   nav-link" id="custom">Custom</a></li>
+                                       class="nav-link py-2 px-4   nav-link {{$label == 2 ? "active" : ""}}" id="custom">Custom</a></li>
                                 <li class="nav-item nav-item">
-                                    <a href="#" role="tab" data-rb-event-key="ThisMonth"
+                                    <a href="{{route('admin.devices.showWithDate', [$device->id,30,0])}}" role="tab" data-rb-event-key="ThisMonth"
                                        tabindex="-1" aria-selected="false"
-                                       class="nav-link py-2 px-4   nav-link">This Month</a>
+                                       class="nav-link py-2 px-4   nav-link {{$label == 30 ? "active" : ""}}">This Month</a>
                                 </li>
                                 <li class="nav-item nav-item">
-                                    <a href="#" role="tab" data-rb-event-key="ThisWeek"
+                                    <a href="{{route('admin.devices.showWithDate', [$device->id,7,0])}}" role="tab" data-rb-event-key="ThisWeek"
                                        tabindex="-1" aria-selected="false"
-                                       class="nav-link py-2 px-4   nav-link">This Week</a>
+                                       class="nav-link py-2 px-4   nav-link {{$label == 7 ? "active" : ""}}">This Week</a>
                                 </li>
                                 <li class="nav-item nav-item">
-                                    <a href="#" role="tab" data-rb-event-key="ThisDay"
+                                    <a href="{{route('admin.devices.show', [$device->id])}}" role="tab" data-rb-event-key="ThisDay"
                                        aria-selected="true"
-                                       class="nav-link py-2 px-4  active nav-link active">This
+                                       class="nav-link py-2 px-4  nav-link {{$label == 1 ? "active" : ""}} ">This
                                         Day</a></li>
                             </ul>
                         </div>
 
                     </div>
-                    <div class="custom-date" id="custom-date" style="display: none">
+                    <div class="custom-date" id="custom-date" style="display: {{$label == 2 ? "block" : "none"}}">
 
                             <div class="col-md-2"></div>
                             <div class="col-md-8">
@@ -180,7 +180,15 @@
                                 class="card-label font-weight-bolder text-dark">Device Location</span>
                         </h3>
 
+                        <div class="card-toolbar">
+                            <ul class="nav nav-pills nav-pills-sm nav-dark-75 nav nav-test" role="tablist">
 
+                                <li class="nav-item nav-item">
+                                    <a href="{{route('admin.devices.location', [$device->id])}}" role="tab" data-rb-event-key="Location"
+                                       aria-selected="true"
+                                       class="nav-link py-2 px-4  nav-link active ">Edit Location</a></li>
+                            </ul>
+                        </div>
 
                     </div>
 
@@ -188,33 +196,16 @@
                     <div class="card-body pt-2" style="position: relative;">
                         <div class="col-md-12 ">
 
-                            <form action="{{ route('admin.devices.update_location',$device->id) }}" method="POST">
-                                @csrf
-                                <div class="row">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-5">
-                                        <label for="longitude">Longitude :</label>
-                                        <input type="text" class="form-control" name="longitude" id="longitude"
-                                               value="{{$device->longitude}}">
-                                    </div>
-                                    <div class="col-md-5">
-                                        <label for="latitude">Latitude :</label>
-                                        <input type="text" class="form-control" name="latitude" id="latitude"
-                                               value="{{$device->latitude}}">
-                                    </div>
-                                    <div class="col-md-1"></div>
 
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-10" style="margin-top: 15px;margin-bottom: 15px">
+                                <div class="row">
+                                    <div class="col-md-12" style="margin-top: 15px;margin-bottom: 15px">
                                         <div id="map"></div>
                                         <pre id="coordinates" class="coordinates"></pre>
-                                        <input type="submit" value="Save Location" class="btn btn-primary" style="margin-top: 15px">
-                                    </div>
-                                    <div class="col-md-1"></div>
+                                       </div>
                                 </div>
 
 
-                            </form>
+
                         </div>
                     </div>
                 </div>
@@ -228,10 +219,23 @@
 @push('scripts')
 
     <script>
+        var el = document.querySelectorAll('.nav-test li a');
+
+        for (let i = 0; i < el.length; i++) {
+            el[i].onclick = function() {
+                var c = 0;
+                while (c < el.length) {
+                    el[c++].className = 'nav-link py-2 px-4 nav-link';
+                }
+                el[i].className = 'nav-link py-2 px-4  active nav-link active';
+
+            };
+        }
         document.addEventListener('DOMContentLoaded',function () {
             $('.nav-link').click(function (e) {
 
                 $('#custom-date').attr('style','display :none')
+
             })
         });
         document.addEventListener('DOMContentLoaded',function () {
@@ -241,9 +245,23 @@
             })
         });
         document.addEventListener('DOMContentLoaded',function () {
-            $('#from').change(function (e) {
+            $('#to').change(function (e) {
 
                console.log($(this).val())
+                var from = document.getElementById('from')
+                var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                var yyyy = today.getFullYear();
+
+                today = yyyy + '-' + mm + '-' + dd;
+                const diffTime = Math.abs(Date.parse(today) - Date.parse($(this).val()));
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                const diffTime1 = Math.abs(Date.parse(today) - Date.parse(from.value));
+                const diffDays1 = Math.ceil(diffTime1 / (1000 * 60 * 60 * 24));
+                console.log(diffDays);
+                console.log(diffDays1);
+                window.location.href = "http://127.0.0.1:8000/admin/devices/showWithDate/" +12 +"/" + diffDays1 + "/" +diffDays;
             })
         });
     </script>
@@ -277,6 +295,7 @@
 
         @endforeach
         console.log(xVals)
+        console.log(units)
         var options = {
             series: [
                     @foreach($device->deviceType->deviceParameters as $key=>$parameter)
@@ -288,7 +307,7 @@
                 @endforeach ],
             chart: {
                 height: 500,
-                width: 1500,
+                width: "100%",
                 type: 'area'
             },
             dataLabels: {
@@ -308,7 +327,7 @@
                 labels: {
                     datetimeUTC: false
                 },
-                categories: xVals,
+                categories: xValues,
             },
             tooltip: {
                 shared: true,
@@ -423,8 +442,8 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
     <script>
         mapboxgl.accessToken = 'pk.eyJ1Ijoic2FoYWIyMiIsImEiOiJja3Zud2NjeG03cGk1MnBxd3NrMm5kaDd4In0.vsQXgdGOH8KQ91g4rHkvUA';
-        var long = document.getElementById('longitude').value;
-        var lat = document.getElementById('latitude').value;
+        var long = {{$device->longitude}};
+        var lat = {{$device->latitude}};
         const map = new mapboxgl.Map({
             container: 'map', // container ID
             style: 'mapbox://styles/mapbox/streets-v11', // style URL
