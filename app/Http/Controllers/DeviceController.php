@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DeviceRequest;
 use App\Models\Device;
 use App\Models\DeviceParameters;
+use App\Models\DeviceParametersValues;
 use App\Models\DeviceSettingPerDevice;
 use App\Models\DeviceSettings;
 use App\Models\DeviceType;
@@ -98,6 +99,7 @@ class DeviceController extends Controller
         $device->device_id = $request->device_id;
         $device->user_id = 0;
         $device->type_id = $request->type;
+        $device->time_between_two_read = $request->time_between_two_read;
         if ($device->save()) {
             return redirect()->route('admin.devices')->with('success', 'Data added successfully');
         } else {
@@ -128,6 +130,13 @@ class DeviceController extends Controller
         $xValues = [];
         $yValues = [];
         $paraValues = [];
+        $lastPara = DeviceParametersValues::where('device_id',$id)->orderBy('id','desc')->first();
+        if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i <= $device->time_between_two_read){
+            $status = "Online";
+        }else{
+            $status = "Offline";
+        }
+//        dd($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i);
         foreach ($parameters as $parameter) {
 //dd(getDate(strtotime($parameter->time_of_read))['minutes']);
 //            dd(abs(strtotime($now) - strtotime($parameter->time_of_read))/(60*60));
@@ -138,10 +147,26 @@ class DeviceController extends Controller
 
         }
 //        dd($xValues);
+        $warning = 1;
         foreach ($device_type->deviceParameters as $tPara) {
             foreach ($parameters as $parameter) {
                 if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0) {
                     array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                    if (isset($device->limitValues)){
+                        if ($device->limitValues->min_warning == 1){
+                            if (json_decode($parameter->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code] ){
+                                $warning += 1;
+                            }
+                        }
+                        if ($device->limitValues->max_warning == 1){
+                            if (json_decode($parameter->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]){
+                                $warning += 1;
+                            }
+                        }
+
+                    }
+
+//                    dd(json_decode($device->limitValues->min_value, true)[$tPara->code]);
                 }
 
             }
@@ -149,7 +174,8 @@ class DeviceController extends Controller
             $yValues = [];
         }
         $label = 1;
-        return view('admin.device.show', compact('device','label', 'xValues', 'yValues', 'paraValues'));
+//        dd($warning);
+        return view('admin.device.show', compact('device','warning','status','label', 'xValues', 'yValues', 'paraValues'));
     }
 
 
@@ -174,6 +200,12 @@ class DeviceController extends Controller
         $xValues = [];
         $yValues = [];
         $paraValues = [];
+        $lastPara = DeviceParametersValues::where('device_id',$id)->orderBy('id','desc')->first();
+        if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i < $device->time_between_two_read){
+            $status = "Online";
+        }else{
+            $status = "Offline";
+        }
         foreach ($parameters as $parameter) {
 //dd(getDate(strtotime($parameter->time_of_read))['minutes']);
 //            dd(abs(strtotime($now) - strtotime($parameter->time_of_read))/(60*60));
@@ -184,10 +216,24 @@ class DeviceController extends Controller
 
         }
 //        dd($xValues);
+        $warning = 1;
         foreach ($device_type->deviceParameters as $tPara) {
             foreach ($parameters as $parameter) {
                 if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d <= $from && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d >= $to) {
                     array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                    if (isset($device->limitValues)){
+                        if ($device->limitValues->min_warning == 1){
+                            if (json_decode($parameter->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code] ){
+                                $warning += 1;
+                            }
+                        }
+                        if ($device->limitValues->max_warning == 1){
+                            if (json_decode($parameter->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]){
+                                $warning += 1;
+                            }
+                        }
+
+                    }
                 }
 
             }
@@ -195,7 +241,7 @@ class DeviceController extends Controller
             $yValues = [];
         }
 //        return response()->json(['success' => 'Data is successfully added'],$xValues,$paraValues,$yValues);
-        return view('admin.device.show', compact('device','label', 'xValues', 'yValues', 'paraValues'));
+        return view('admin.device.show', compact('device','warning','status','label', 'xValues', 'yValues', 'paraValues'));
     }
 
     /**
@@ -277,7 +323,7 @@ class DeviceController extends Controller
     public function add_limit_values(Request $request, $id)
     {
         $device = Device::findOrFail($id);
-
+//dd($request);
         $validate = [];
         foreach ($device->deviceType->deviceParameters as $limit){
             $validate[$limit->code."_max"] = "required|numeric";
@@ -313,6 +359,16 @@ class DeviceController extends Controller
                 }
             }
             $devLim->device_id = $id;
+        }
+        if ($request['min_warning'] == 'on'){
+            $devLim->min_warning = true;
+        }else{
+            $devLim->min_warning = false;
+        }
+        if ($request['max_warning'] == 'on'){
+            $devLim->max_warning = true;
+        }else{
+            $devLim->max_warning = false;
         }
         $devLim->min_value = json_encode($min);
         $devLim->max_value = json_encode($max);
@@ -351,6 +407,7 @@ class DeviceController extends Controller
         $device->name = $request->name;
         $device->device_id = $request->device_id;
         $device->user_id = 0;
+        $device->time_between_two_read = $request->time_between_two_read;
         $device->type_id = $request->type;
         $device->longitude = $request->longitude;
         $device->latitude = $request->latitude;

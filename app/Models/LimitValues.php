@@ -15,7 +15,7 @@ class LimitValues extends Model
      * @var array
      */
     protected $fillable = [
-        'min_value', 'max_value', 'device_id'
+        'min_value', 'max_value', 'device_id' ,'min_warning','max_warning'
     ];
 
     protected $guarded=[];
