@@ -55,7 +55,12 @@ return [
     'type' => 'Type',
     'type_setting' => 'Type Settings',
     'type_parameters' => 'Type Parameters',
-    'Time' => 'Time of read'
+    'Time' => 'Time of read',
+    'Min Values' => 'Min Values',
+    'Max Values' => 'Max Values',
+    'time_between_two_read' => 'Time Between Two Read',
+    'status' => 'Status'
+
 
 
 

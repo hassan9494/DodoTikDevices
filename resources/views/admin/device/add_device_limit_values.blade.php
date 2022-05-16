@@ -18,8 +18,19 @@
                         <div class="card-header border-0 pt-5">
                             <h3 class="card-title align-items-start flex-column">
                             <span
-                                class="card-label font-weight-bolder text-dark">Min Values</span>
+                                class="card-label font-weight-bolder text-dark">{{__('message.Min Values')}}</span>
                             </h3>
+                            <div class="card-toolbar">
+                                <label class="switch">
+                                    @if($device->limitValues != null)
+                                        <input type="checkbox"
+                                               name="min_warning" {{$device->limitValues->min_warning == 1 ? "checked" : ""}}>
+                                    @else
+                                        <input type="checkbox" name="min_warning">
+                                    @endif
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
                         </div>
                         <div class="card-body pt-2" style="position: relative;">
                             <div class="col-md-12 ">
@@ -44,17 +55,17 @@
                                         @foreach($device->deviceType->deviceParameters as $para)
                                             <div class="form-group ml-5">
                                                 <label for="{{$para->code}}"
-                                                       class="col-sm-2 col-form-label">{{$para->name}} </label>
-                                                <div class="col-sm-9">
+                                                       class="col-sm-8 col-form-label">{{$para->name}} </label>
+                                                <div class="col-sm-12">
                                                     {{-- <input type="text" class="form-control" id="title" placeholder="Title"> --}}
 
                                                     <input type="text" name="{{$para->code}}_min"
                                                            placeholder="{{ $para->value}}" id="{{$para->code}}"
                                                            class="form-control   {{$errors->first($para->code."_min") ? "is-invalid" : "" }} "
                                                            value="{{json_decode($device->limitValues->min_value,true)[$para->code] }}">
-                                                                        <div class="invalid-feedback">
-                                                                            {{ $errors->first($para->code."_min") }}
-                                                                        </div>
+                                                    <div class="invalid-feedback">
+                                                        {{ $errors->first($para->code."_min") }}
+                                                    </div>
                                                 </div>
                                             </div>
                                         @endforeach
@@ -69,8 +80,20 @@
                         <div class="card-header border-0 pt-5">
                             <h3 class="card-title align-items-start flex-column">
                             <span
-                                class="card-label font-weight-bolder text-dark">Max Values</span>
+                                class="card-label font-weight-bolder text-dark">{{__('message.Max Values')}}</span>
                             </h3>
+
+                            <div class="card-toolbar">
+                                <label class="switch">
+                                    @if($device->limitValues != null)
+                                        <input type="checkbox"
+                                               name="max_warning" {{$device->limitValues->max_warning == 1 ? "checked" : ""}}>
+                                    @else
+                                        <input type="checkbox" name="max_warning">
+                                    @endif
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
                         </div>
                         <div class="card-body pt-2" style="position: relative;">
                             <div class="col-md-12 ">
@@ -95,8 +118,8 @@
                                         @foreach($device->deviceType->deviceParameters as $para)
                                             <div class="form-group ml-5">
                                                 <label for="{{$para->code}}"
-                                                       class="col-sm-2 col-form-label">{{$para->name}} </label>
-                                                <div class="col-sm-9">
+                                                       class="col-sm-8 col-form-label">{{$para->name}} </label>
+                                                <div class="col-sm-12">
                                                     {{-- <input type="text" class="form-control" id="title" placeholder="Title"> --}}
 
                                                     <input type="text" name="{{$para->code}}_max"

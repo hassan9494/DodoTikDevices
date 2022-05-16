@@ -101,6 +101,17 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group ml-5">
+                <label for="time_between_two_read" class="col-sm-2 col-form-label">{{__('message.time_between_two_read')}} </label>
+                <div class="col-sm-9">
+                    <input type="number" name="time_between_two_read" placeholder="Time Between Two Read In Minute" id="time_between_two_read"
+                           class="form-control {{$errors->first('time_between_two_read') ? "is-invalid" : "" }} "
+                           value="{{old('time_between_two_read')}}">
+                    <div class="invalid-feedback">
+                        {{ $errors->first('time_between_two_read') }}
+                    </div>
+                </div>
+            </div>
             <div class="form-group col-md-12">
                 <div class="col-sm-3">
                     <button type="submit" class="btn btn-info">{{__('message.Create')}}</button>
