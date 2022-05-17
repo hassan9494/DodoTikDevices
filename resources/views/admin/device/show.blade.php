@@ -49,11 +49,11 @@
             <div class="col-lg-12 col-xxl-12 order-1 order-xxl-1 mb-4">
                 <div class="card card-custom mb-4">
                     <div class="card-header border-0 pt-5"><h3 class="card-title align-items-start flex-column"><span
-                                class="card-label font-weight-bolder text-dark">{{__('message.device_id')}} : {{$device->device_id}} </span>
+                                class="card-label font-weight-bolder text-dark" style="font-size: 1rem;">{{__('message.device_id')}} : {{$device->device_id}} </span>
                             <span
-                                class="card-label font-weight-bolder text-dark" style="margin-top: 15px">{{__('message.type')}} : {{$device->deviceType->name}}  </span>
+                                class="card-label font-weight-bolder text-dark" style="margin-top: 15px;font-size: 1rem;">{{__('message.type')}} : {{$device->deviceType->name}}  </span>
                             <span id="status"
-                                  class="card-label font-weight-bolder text-dark" style="margin-top: 15px">{{__('message.status')}} : {{$status}}  </span>
+                                  class="card-label font-weight-bolder text-dark" style="margin-top: 15px;font-size: 1rem;">{{__('message.status')}} : {{$status}}  <i class="fas {{$status == "Offline" ? 'fa-times' : 'fa-check'  }}" style="color:{{$status == "Offline" ? 'red' : 'green'  }} "></i> </span>
                         </h3>
 
                         <div class="card-toolbar">
@@ -94,13 +94,13 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="from" class="form-label">From</label>
-                                    <input id="from" type="date" name="from" class="form-control"
+                                    <input id="from" min="{{\Carbon\Carbon::now()->subMonth()->format("Y-m-d")}}" max="{{\Carbon\Carbon::now()->format("Y-m-d")}}"  type="date" name="from" class="form-control"
                                            value="{{\Carbon\Carbon::now()->format("Y-m-01")}}">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="to" class="form-label">To</label>
-                                    <input id="to" type="date" name="to" class="form-control"
-                                           value="{{\Carbon\Carbon::now()->format("Y-m-t")}}">
+                                    <input id="to" min="{{\Carbon\Carbon::now()->subMonth()->format("Y-m-d")}}" max="{{\Carbon\Carbon::now()->format("Y-m-d")}}" type="date" name="to" class="form-control"
+                                           value="{{\Carbon\Carbon::now()->format("Y-m-d")}}">
                                 </div>
                             </div>
 
@@ -256,7 +256,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             $('#to').change(function (e) {
 
-                console.log($(this).val())
+
                 var from = document.getElementById('from')
                 var today = new Date();
                 var dd = String(today.getDate()).padStart(2, '0');
@@ -268,8 +268,6 @@
                 const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                 const diffTime1 = Math.abs(Date.parse(today) - Date.parse(from.value));
                 const diffDays1 = Math.ceil(diffTime1 / (1000 * 60 * 60 * 24));
-                console.log(diffDays);
-                console.log(diffDays1);
                 window.location.href = "http://127.0.0.1:8000/admin/devices/showWithDate/" + 12 + "/" + diffDays1 + "/" + diffDays;
             })
         });
@@ -304,8 +302,7 @@
         @endif
 
         @endforeach
-        console.log(xVals)
-        console.log(units)
+        var labels = {{$label}}
         var options = {
             series: [
                     @foreach($device->deviceType->deviceParameters as $key=>$parameter)
@@ -318,7 +315,13 @@
             chart: {
                 height: 500,
                 width: "100%",
-                type: 'area'
+                type: 'area',
+                animations: {
+                    enabled: labels == 1 ? true : false ,
+                }
+            },
+            markers: {
+                size: 0
             },
             dataLabels: {
                 enabled: false
@@ -369,7 +372,7 @@
         var chart = new ApexCharts(document.querySelector("#chart"), options);
         chart.render();
     </script>
-    
+
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
     <script>
         mapboxgl.accessToken = 'pk.eyJ1Ijoic2FoYWIyMiIsImEiOiJja3Zud2NjeG03cGk1MnBxd3NrMm5kaDd4In0.vsQXgdGOH8KQ91g4rHkvUA';
@@ -381,7 +384,6 @@
             center: [long, lat], // starting position [lng, lat]
             zoom: 10 // starting zoom
         });
-        console.log({{$warning}})
 
         var warning = {{$warning}}
         if ( warning == 1)

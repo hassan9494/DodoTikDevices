@@ -31,7 +31,7 @@ Route::get('about-us', [FrontController::class, 'about'])->name('about');
 
 
 Auth::routes([
-    'register' => false
+    'register' => true
 ]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('can:isAdmin')->name('home');
