@@ -32,7 +32,7 @@ class DeviceApiController extends Controller
 
         $testsApi->settings = json_encode($para);
 //        dd($testsApi->settings);
-        $testsApi->save();
+//        $testsApi->save();
         $test = explode(',', $para);
         $device = Device::where('device_id', $test[0])->first();
         if ($device != null) {
@@ -77,7 +77,7 @@ class DeviceApiController extends Controller
 
         $testsApi->settings = json_encode($para);
 //        dd($testsApi->settings);
-        $testsApi->save();
+//        $testsApi->save();
         if (isset(json_decode($para)->data) ){
             $dev_id_base64= json_decode($para)->devEUI;
             $dev_id_ascii = base64_decode($dev_id_base64);

@@ -4,12 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DeviceRequest;
 use App\Models\Device;
-use App\Models\DeviceParameters;
 use App\Models\DeviceParametersValues;
 use App\Models\DeviceSettingPerDevice;
-use App\Models\DeviceSettings;
 use App\Models\DeviceType;
-use App\Models\DeviceTypeSetting;
 use App\Models\LimitValues;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -25,7 +22,7 @@ class DeviceController extends Controller
     {
         $devices = Device::all();
         $x = 'test';
-        return view('admin.device.index', compact('devices','x'));
+        return view('admin.device.index', compact('devices', 'x'));
     }
 
 
@@ -39,16 +36,14 @@ class DeviceController extends Controller
     public function get_devices()
     {
         $user = auth()->user();
-//        dd($user->id);
         $devices = Device::where('user_id', $user->id)->get();
-//        dd($devices);
         return view('admin.device.get_devices', compact('devices'));
     }
 
     /**
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function add_device($id)
     {
@@ -63,12 +58,11 @@ class DeviceController extends Controller
     /**
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function remove_device($id)
     {
         $device = Device::findOrFail($id);
-        $user = auth()->user();
         $device->user_id = 0;
         $device->save();
 
@@ -121,52 +115,40 @@ class DeviceController extends Controller
         $device = Device::findOrFail($id);
         $device_type = $device->deviceType;
         $now = Carbon::now();
-//        if ((int)$zone > 0){
-//            $n = $now->subMinutes(abs($zone));
-//        }else{
-//            $n = $now->addMinutes(abs($zone));
-//        }
         $parameters = $device->deviceParameters;
         $xValues = [];
         $yValues = [];
         $paraValues = [];
-        $lastPara = DeviceParametersValues::where('device_id',$id)->orderBy('id','desc')->first();
-        if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i <= $device->time_between_two_read){
+        $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
+        if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i <= $device->time_between_two_read) {
             $status = "Online";
-        }else{
+        } else {
             $status = "Offline";
         }
-//        dd($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i);
         foreach ($parameters as $parameter) {
-//dd(getDate(strtotime($parameter->time_of_read))['minutes']);
-//            dd(abs(strtotime($now) - strtotime($parameter->time_of_read))/(60*60));
-//            if ( abs(strtotime($now) - strtotime($parameter->time_of_read))/(60*60) < 12){
             if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0) {
                 array_push($xValues, date(DATE_ISO8601, strtotime($parameter->time_of_read)));
             }
 
         }
-//        dd($xValues);
         $warning = 1;
         foreach ($device_type->deviceParameters as $tPara) {
             foreach ($parameters as $parameter) {
                 if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0) {
                     array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
-                    if (isset($device->limitValues)){
-                        if ($device->limitValues->min_warning == 1){
-                            if (json_decode($parameter->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code] ){
+                    if (isset($device->limitValues)) {
+                        if ($device->limitValues->min_warning == 1) {
+                            if (json_decode($parameter->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
                                 $warning += 1;
                             }
                         }
-                        if ($device->limitValues->max_warning == 1){
-                            if (json_decode($parameter->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]){
+                        if ($device->limitValues->max_warning == 1) {
+                            if (json_decode($parameter->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]) {
                                 $warning += 1;
                             }
                         }
 
                     }
-
-//                    dd(json_decode($device->limitValues->min_value, true)[$tPara->code]);
                 }
 
             }
@@ -174,36 +156,30 @@ class DeviceController extends Controller
             $yValues = [];
         }
         $label = 1;
-//        dd($warning);
-        return view('admin.device.show', compact('device','warning','status','label', 'xValues', 'yValues', 'paraValues'));
+        return view('admin.device.show', compact('device', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
     }
 
 
-    public function showWithDate($id,$from,$to)
+    public function showWithDate($id, $from, $to)
     {
         $device = Device::findOrFail($id);
         $device_type = $device->deviceType;
         $now = Carbon::now();
-        if ($from == 7 && $to == 0){
+        if ($from == 7 && $to == 0) {
             $label = 7;
-        } elseif ($from == 30 && $to == 0){
+        } elseif ($from == 30 && $to == 0) {
             $label = 30;
-        }else{
+        } else {
             $label = 2;
         }
-//        if ((int)$zone > 0){
-//            $n = $now->subMinutes(abs($zone));
-//        }else{
-//            $n = $now->addMinutes(abs($zone));
-//        }
         $parameters = $device->deviceParameters;
         $xValues = [];
         $yValues = [];
         $paraValues = [];
-        $lastPara = DeviceParametersValues::where('device_id',$id)->orderBy('id','desc')->first();
-        if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i < $device->time_between_two_read){
+        $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
+        if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i < $device->time_between_two_read) {
             $status = "Online";
-        }else{
+        } else {
             $status = "Offline";
         }
         foreach ($parameters as $parameter) {
@@ -221,14 +197,14 @@ class DeviceController extends Controller
             foreach ($parameters as $parameter) {
                 if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d <= $from && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d >= $to) {
                     array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
-                    if (isset($device->limitValues)){
-                        if ($device->limitValues->min_warning == 1){
-                            if (json_decode($parameter->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code] ){
+                    if (isset($device->limitValues)) {
+                        if ($device->limitValues->min_warning == 1) {
+                            if (json_decode($parameter->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
                                 $warning += 1;
                             }
                         }
-                        if ($device->limitValues->max_warning == 1){
-                            if (json_decode($parameter->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]){
+                        if ($device->limitValues->max_warning == 1) {
+                            if (json_decode($parameter->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]) {
                                 $warning += 1;
                             }
                         }
@@ -241,7 +217,7 @@ class DeviceController extends Controller
             $yValues = [];
         }
 //        return response()->json(['success' => 'Data is successfully added'],$xValues,$paraValues,$yValues);
-        return view('admin.device.show', compact('device','warning','status','label', 'xValues', 'yValues', 'paraValues'));
+        return view('admin.device.show', compact('device', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
     }
 
     /**
@@ -325,9 +301,9 @@ class DeviceController extends Controller
         $device = Device::findOrFail($id);
 //dd($request);
         $validate = [];
-        foreach ($device->deviceType->deviceParameters as $limit){
-            $validate[$limit->code."_max"] = "required|numeric";
-            $validate[$limit->code."_min"] = "required|numeric";
+        foreach ($device->deviceType->deviceParameters as $limit) {
+            $validate[$limit->code . "_max"] = "required|numeric";
+            $validate[$limit->code . "_min"] = "required|numeric";
         }
 //        dd($request);
         \Validator::make($request->all(), $validate)->validate();
@@ -337,9 +313,9 @@ class DeviceController extends Controller
         $max = [];
         if ($devLim != null) {
             foreach ($device->deviceType->deviceParameters as $para) {
-                if ($request[$para->code."_min"] != null && $request[$para->code."_max"] != null) {
-                    $min[$para->code] = $request[$para->code."_min"];
-                    $max[$para->code] = $request[$para->code."_max"];
+                if ($request[$para->code . "_min"] != null && $request[$para->code . "_max"] != null) {
+                    $min[$para->code] = $request[$para->code . "_min"];
+                    $max[$para->code] = $request[$para->code . "_max"];
                 } else {
                     $min[$para->code] = "0";
                     $max[$para->code] = "0";
@@ -350,9 +326,9 @@ class DeviceController extends Controller
         } else {
             $devLim = new LimitValues();
             foreach ($device->deviceType->deviceParameters as $para) {
-                if ($request[$para->code."_min"] != null) {
-                    $min[$para->code] = $request[$para->code."_min"];
-                    $max[$para->code] = $request[$para->code."_max"];
+                if ($request[$para->code . "_min"] != null) {
+                    $min[$para->code] = $request[$para->code . "_min"];
+                    $max[$para->code] = $request[$para->code . "_max"];
                 } else {
                     $min[$para->code] = "0";
                     $max[$para->code] = "0";
@@ -360,14 +336,14 @@ class DeviceController extends Controller
             }
             $devLim->device_id = $id;
         }
-        if ($request['min_warning'] == 'on'){
+        if ($request['min_warning'] == 'on') {
             $devLim->min_warning = true;
-        }else{
+        } else {
             $devLim->min_warning = false;
         }
-        if ($request['max_warning'] == 'on'){
+        if ($request['max_warning'] == 'on') {
             $devLim->max_warning = true;
-        }else{
+        } else {
             $devLim->max_warning = false;
         }
         $devLim->min_value = json_encode($min);
