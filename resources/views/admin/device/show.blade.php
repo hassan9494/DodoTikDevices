@@ -33,6 +33,37 @@
             border-radius: 3px;
             display: none;
         }
+        .legend {
+            background-color: #fff;
+            border-radius: 3px;
+            top: 30px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            padding: 10px;
+            position: absolute;
+            right: 10px;
+            z-index: 1;
+        }
+
+        .legend h4 {
+            margin: 0 0 10px;
+        }
+        .legend div{
+            text-align: left;
+        }
+
+        .legend div span {
+            border-radius: 50%;
+            display: inline-block;
+            height: 10px;
+            margin-right: 5px;
+            width: 10px;
+        }
+
+        .mapboxgl-popup {
+            max-width: 500px;
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        }
     </style>
 
 @endsection
@@ -50,37 +81,39 @@
                 <div class="card card-custom mb-4">
                     <div class="card-header border-0 pt-5"><h3 class="card-title align-items-start flex-column"><span
                                 class="card-label font-weight-bolder text-dark" style="font-size: 1rem;">{{__('message.device_id')}} : {{$device->device_id}} </span>
-                            <span
-                                class="card-label font-weight-bolder text-dark" style="margin-top: 15px;font-size: 1rem;">{{__('message.type')}} : {{$device->deviceType->name}}  </span>
                             <span id="status"
-                                  class="card-label font-weight-bolder text-dark" style="margin-top: 15px;font-size: 1rem;">{{__('message.status')}} : {{$status}}  <i class="fas {{$status == "Offline" ? 'fa-times' : 'fa-check'  }}" style="color:{{$status == "Offline" ? 'red' : 'green'  }} "></i> </span>
+                                  class="card-label font-weight-bolder text-dark"
+                                  style="margin-top: 15px;font-size: 1rem;">{{__('message.status')}} : {{$status}}  <i
+                                    class="fas {{$status == "Offline" ? 'fa-times' : 'fa-check'  }}"
+                                    style="color:{{$status == "Offline" ? 'red' : 'green'  }} "></i> </span>
                         </h3>
 
                         <div class="card-toolbar">
                             <ul class="nav nav-pills nav-pills-sm nav-dark-75 nav nav-test" role="tablist">
                                 <li class="nav-item nav-item">
                                     <a href="#" role="tab" data-rb-event-key="Custom"
-                                       tabindex="-1" aria-selected="false"
+                                       tabindex="3" aria-selected="false"
                                        class="nav-link py-2 px-4   nav-link {{$label == 2 ? "active" : ""}}"
                                        id="custom">Custom</a></li>
                                 <li class="nav-item nav-item">
-                                    <a href="{{route('admin.devices.showWithDate', [$device->id,30,0])}}" role="tab"
+                                    <a href="#" role="tab"
                                        data-rb-event-key="ThisMonth"
-                                       tabindex="-1" aria-selected="false"
+                                       tabindex="2" aria-selected="false"
                                        class="nav-link py-2 px-4   nav-link {{$label == 30 ? "active" : ""}}">This
                                         Month</a>
                                 </li>
                                 <li class="nav-item nav-item">
-                                    <a href="{{route('admin.devices.showWithDate', [$device->id,7,0])}}" role="tab"
+                                    <a href="#" role="tab"
                                        data-rb-event-key="ThisWeek"
-                                       tabindex="-1" aria-selected="false"
+                                       tabindex="1" aria-selected="false"
                                        class="nav-link py-2 px-4   nav-link {{$label == 7 ? "active" : ""}}">This
                                         Week</a>
                                 </li>
                                 <li class="nav-item nav-item">
-                                    <a href="{{route('admin.devices.show', [$device->id])}}" role="tab"
+                                    <a href="#" role="tab"
                                        data-rb-event-key="ThisDay"
                                        aria-selected="true"
+                                       tabindex="0"
                                        class="nav-link py-2 px-4  nav-link {{$label == 1 ? "active" : ""}} ">This
                                         Day</a></li>
                             </ul>
@@ -94,12 +127,16 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="from" class="form-label">From</label>
-                                    <input id="from" min="{{\Carbon\Carbon::now()->subMonth()->format("Y-m-d")}}" max="{{\Carbon\Carbon::now()->format("Y-m-d")}}"  type="date" name="from" class="form-control"
+                                    <input id="from" min="{{\Carbon\Carbon::now()->subMonth()->format("Y-m-d")}}"
+                                           max="{{\Carbon\Carbon::now()->format("Y-m-d")}}" type="date" name="from"
+                                           class="form-control"
                                            value="{{\Carbon\Carbon::now()->format("Y-m-01")}}">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="to" class="form-label">To</label>
-                                    <input id="to" min="{{\Carbon\Carbon::now()->subMonth()->format("Y-m-d")}}" max="{{\Carbon\Carbon::now()->format("Y-m-d")}}" type="date" name="to" class="form-control"
+                                    <input id="to" min="{{\Carbon\Carbon::now()->subMonth()->format("Y-m-d")}}"
+                                           max="{{\Carbon\Carbon::now()->format("Y-m-d")}}" type="date" name="to"
+                                           class="form-control"
                                            value="{{\Carbon\Carbon::now()->format("Y-m-d")}}">
                                 </div>
                             </div>
@@ -211,6 +248,17 @@
                                 <div class="col-md-12" style="margin-top: 15px;margin-bottom: 15px">
                                     <div id="map"></div>
                                     <pre id="coordinates" class="coordinates"></pre>
+                                    @if(count($xValues) > 0)
+                                    <div id="state-legend" class="legend" style="display: none">
+                                        <h4>Last Read</h4>
+                                        @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+                                        <div><span style="background-color: #{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}">
+
+                                            </span>{{$parameter->name}} :{{$paraValues[$key][count($paraValues[$key]) - 1]}}
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
 
@@ -229,7 +277,8 @@
 
     <script>
         var el = document.querySelectorAll('.nav-test li a');
-
+        var fromm = -1;
+        var too = -1;
         for (let i = 0; i < el.length; i++) {
             el[i].onclick = function () {
                 var c = 0;
@@ -238,12 +287,53 @@
                 }
                 el[i].className = 'nav-link py-2 px-4  active nav-link active';
 
+                if (el[i].getAttribute('tabindex') == 0){
+                    fromm = 1;
+                    too = 0;
+                }else if(el[i].getAttribute('tabindex') == 1){
+                    fromm = 7;
+                    too = 0;
+                }else if(el[i].getAttribute('tabindex') == 2){
+                    fromm = 30;
+                    too = 0;
+                }
+
             };
         }
         document.addEventListener('DOMContentLoaded', function () {
             $('.nav-link').click(function (e) {
 
                 $('#custom-date').attr('style', 'display :none')
+                jQuery.ajax({
+                    url: '/admin/devices/showWithDate/{{$device->id}}/'+fromm+'/'+too,
+                    type: 'GET',
+                    success: function (data) {
+                        chart.updateOptions({
+                            series: [
+                                    @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+
+                                {
+                                    name: "{{$parameter->name}} (" + units[{{$key}}] + ")",
+                                    data: data[0][{{$key}}]
+                                },
+                                @endforeach],
+                            chart: {
+                                height: 500,
+                                width: "100%",
+                                type: 'area',
+                                animations: {
+                                    enabled: data[1].length < 500 ? true : false,
+                                }
+                            },
+                            labels : data[1]
+
+
+                    })
+                    },
+                    error: function (xhr, b, c) {
+                        console.log("xhr=" + xhr + " b=" + b + " c=" + c);
+                    }
+                });
 
             })
         });
@@ -268,8 +358,37 @@
                 const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                 const diffTime1 = Math.abs(Date.parse(today) - Date.parse(from.value));
                 const diffDays1 = Math.ceil(diffTime1 / (1000 * 60 * 60 * 24));
-                window.location.href = "http://127.0.0.1:8000/admin/devices/showWithDate/" + 12 + "/" + diffDays1 + "/" + diffDays;
-            })
+                jQuery.ajax({
+                    url: '/admin/devices/showWithDate/{{$device->id}}/'+diffDays1+'/'+diffDays,
+                    type: 'GET',
+                    success: function (data) {
+                        chart.updateOptions({
+                            series: [
+                                    @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+
+                                {
+                                    name: "{{$parameter->name}} (" + units[{{$key}}] + ")",
+                                    data: data[0][{{$key}}]
+                                },
+                                @endforeach],
+                            chart: {
+                                height: 500,
+                                width: "100%",
+                                type: 'area',
+                                animations: {
+                                    enabled: data[1].length < 500 ? true : false,
+                                }
+                            },
+                            labels : data[1]
+
+
+                        })
+                    },
+                    error: function (xhr, b, c) {
+                        console.log("xhr=" + xhr + " b=" + b + " c=" + c);
+                    }
+                });
+                })
         });
     </script>
     <script>
@@ -317,7 +436,7 @@
                 width: "100%",
                 type: 'area',
                 animations: {
-                    enabled: labels == 1 ? true : false ,
+                    enabled:  false,
                 }
             },
             markers: {
@@ -385,24 +504,8 @@
             zoom: 10 // starting zoom
         });
 
-        var warning = {{$warning}}
-        if ( warning == 1)
-        {
-            const marker = new mapboxgl.Marker({
-                draggable: true
-            })
-                .setLngLat([long, lat])
-                .addTo(map);
-
-            function onDragEnd() {
-                const lngLat = marker.getLngLat();
-                coordinates.style.display = 'block';
-                coordinates.innerHTML = `Longitude: ${lngLat.lng}<br />Latitude: ${lngLat.lat}`;
-                document.getElementById('longitude').value = lngLat.lng;
-                document.getElementById('latitude').value = lngLat.lat;
-            }
-        }
-        else {
+        var warning =
+        {{$warning}}
             const size = 200;
 
             const pulsingDot = {
@@ -433,7 +536,7 @@
                         0,
                         Math.PI * 2
                     );
-                    context.fillStyle = `rgba(255, 200, 200, ${1 - t})`;
+                    context.fillStyle = warning != 1 ? `rgba(255, 200, 200, ${1 - t})` : '#00989d11';
                     context.fill();
 
 // Draw the inner circle.
@@ -445,7 +548,7 @@
                         0,
                         Math.PI * 2
                     );
-                    context.fillStyle = 'rgba(255, 100, 100, 1)';
+                    context.fillStyle = warning != 1 ? 'rgba(255, 100, 100, 1)' : '#00989d';
                     context.strokeStyle = 'white';
                     context.lineWidth = 2 + 4 * (1 - t);
                     context.fill();
@@ -470,6 +573,7 @@
             map.on('load', () => {
                 map.addImage('pulsing-dot', pulsingDot, {pixelRatio: 3});
 
+
                 map.addSource('dot-point', {
                     'type': 'geojson',
                     'data': {
@@ -485,6 +589,28 @@
                         ]
                     }
                 });
+                map.addSource('places', {
+                    'type': 'geojson',
+                    'data': {
+                        'type': 'FeatureCollection',
+                        'features': [
+                            {
+                                'type': 'Feature',
+                                'properties': {
+                                    'description':
+                                        '<div id="state-legend" class="legend">' +
+                                        '<h5>Last_Read</h5>'+
+                                        '</div>'
+                                },
+                                'geometry': {
+                                    'type': 'Point',
+                                    'coordinates': [long, lat]
+                                }
+                            },
+                        ]
+                    }
+                });
+
                 map.addLayer({
                     'id': 'layer-with-pulsing-dot',
                     'type': 'symbol',
@@ -493,8 +619,51 @@
                         'icon-image': 'pulsing-dot'
                     }
                 });
+                map.addLayer({
+                    'id': 'places',
+                    'type': 'circle',
+                    'source': 'places',
+                    'paint': {
+                        'circle-color': warning != 1 ? 'rgba(255, 100, 100, 1)' : '#00989d',
+                        'circle-radius': 6,
+                        'circle-stroke-width': 2,
+                        'circle-stroke-color': warning != 1 ? 'rgba(255, 100, 100, 1)' : '#00989d',
+                    }
+                });
+                const popup = new mapboxgl.Popup({
+                    closeButton: false,
+                    closeOnClick: false
+                });
+                map.on('mouseenter', 'places', (e) => {
+// Change the cursor style as a UI indicator.
+                    map.getCanvas().style.cursor = 'pointer';
+
+// Copy coordinates array.
+                    const coordinates = e.features[0].geometry.coordinates.slice();
+                    const description = e.features[0].properties.description;
+
+// Ensure that if the map is zoomed out such that multiple
+// copies of the feature are visible, the popup appears
+// over the copy being pointed to.
+                    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                    }
+                    $('#state-legend').attr('style','display : block')
+
+// Populate the popup and set its coordinates
+// based on the feature found.
+//                     popup.setLngLat(coordinates).setHTML(description).addTo(map);
+
+                });
+
+                map.on('mouseleave', 'places', () => {
+                    map.getCanvas().style.cursor = '';
+                    popup.remove();
+                    $('#state-legend').attr('style','display : none')
+                });
             });
-        }
+
+
 
 
         //

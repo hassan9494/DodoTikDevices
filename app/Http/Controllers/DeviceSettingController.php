@@ -15,8 +15,9 @@ class DeviceSettingController extends Controller
      */
     public function index()
     {
-        $settings = DeviceSettings::all();
-        return view('admin.device_setting.index',compact('settings'));
+        $type_settings = DeviceSettings::all();
+//        dd($settings);
+        return view('admin.device_setting.index',compact('type_settings'));
     }
 
     /**

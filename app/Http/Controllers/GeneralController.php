@@ -3,29 +3,58 @@
 namespace App\Http\Controllers;
 
 use App\Models\EntidadesFormadoreas;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Models\{About, Cursos, Formadores, General, Operadores, Page, Post, Team, TestApi, User};
+use App\Models\{About,
+    Cursos,
+    Device,
+    DeviceParametersValues,
+    Formadores,
+    General,
+    Operadores,
+    Page,
+    Post,
+    Team,
+    TestApi,
+    User};
 
 class GeneralController extends Controller
 {
-    public function dashboard(){
+    public function dashboard()
+    {
         $user = auth()->user();
-        if($user->role=='Administrator') {
-            $admin = User::orderBy('id','desc')->count();
-           }else{
-            $admin = User::orderBy('id','desc')->count();
-           }
-        $locations[0] = ['test',45,454554];
-        $locations[1] = ['test',45,454554];
-        $locations[2] = ['test',45,454554];
-        $locations[3] = ['test',45,454554];
-        $tests = TestApi::orderBy('id','desc')->limit(10)->get();
-        return view ('admin.dashboard', compact('admin','locations','tests'));
+
+        $now = Carbon::now();
+        if ($user->role == 'Administrator') {
+            $admin = User::orderBy('id', 'desc')->count();
+            $devices = Device::all();
+        } else {
+            $admin = User::orderBy('id', 'desc')->count();
+            $devices = Device::where('user_id', $user->id)->get();
+        }
+        $state = [];
+        $status = "Offline";
+        foreach ($devices as $key=>$device){
+            $parameters = $device->deviceParameters;
+            $lastPara = DeviceParametersValues::where('device_id', $device->id)->orderBy('id', 'desc')->first();
+            if (count($parameters) > 0) {
+                if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i < $device->time_between_two_read) {
+                    $status = "Online";
+                } else {
+                    $status = "Offline";
+                }
+            }
+            array_push($state,$status );
+
+        }
+
+        return view('admin.dashboard', compact('admin', 'devices','state'));
     }
 
-    public function general(){
+    public function general()
+    {
         $general = General::find(1);
-        return view ('admin.general',[
+        return view('admin.general', [
             'general' => $general
         ]);
     }
@@ -36,7 +65,7 @@ class GeneralController extends Controller
 
             "title" => "required",
             "address1" => "required",
-            "phone" => "required" ,
+            "phone" => "required",
             "email" => "required",
             "footer" => "required",
             "gmaps" => "required"
@@ -63,45 +92,45 @@ class GeneralController extends Controller
 
         $new_logo = $request->file('logo');
 
-        if($new_logo){
-        if($general->logo && file_exists(storage_path('app/public/' . $general->logo))){
-            \Storage::delete('public/'. $general->logo);
-        }
+        if ($new_logo) {
+            if ($general->logo && file_exists(storage_path('app/public/' . $general->logo))) {
+                \Storage::delete('public/' . $general->logo);
+            }
 
-        $new_cover_path = $new_logo->store('images/general', 'public');
+            $new_cover_path = $new_logo->store('images/general', 'public');
 
-        $general->logo = $new_cover_path;
+            $general->logo = $new_cover_path;
         }
 
         $new_favicon = $request->file('favicon');
 
-        if($new_favicon){
-        if($general->favicon && file_exists(storage_path('app/public/' . $general->favicon))){
-            \Storage::delete('public/'. $general->favicon);
-        }
+        if ($new_favicon) {
+            if ($general->favicon && file_exists(storage_path('app/public/' . $general->favicon))) {
+                \Storage::delete('public/' . $general->favicon);
+            }
 
-        $new_cover_path = $new_favicon->store('images/general', 'public');
+            $new_cover_path = $new_favicon->store('images/general', 'public');
 
-        $general->favicon = $new_cover_path;
+            $general->favicon = $new_cover_path;
         }
 
 
         // dd($general);
-        if ( $general->save()) {
+        if ($general->save()) {
 
             return redirect()->route('admin.general')->with('success', 'Data updated successfully');
 
-           } else {
+        } else {
 
             return redirect()->route('admin.general')->with('error', 'Data failed to update');
 
-           }
+        }
     }
 
     public function about()
     {
         $about = About::find(1);
-        return view ('admin.about',[
+        return view('admin.about', [
             'about' => $about
         ]);
     }
@@ -113,15 +142,15 @@ class GeneralController extends Controller
         $about->subject = $request->subject;
         $about->desc = $request->desc;
 
-        if ( $about->save()) {
+        if ($about->save()) {
 
             return redirect()->route('admin.about')->with('success', 'Data updated successfully');
 
-           } else {
+        } else {
 
             return redirect()->route('admin.about')->with('error', 'Data failed to update');
 
-           }
+        }
 
     }
 }

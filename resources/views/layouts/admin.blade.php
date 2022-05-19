@@ -30,7 +30,7 @@
 
     {{-- Select2 Style CDN --}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
-{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>--}}
+    {{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>--}}
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
     @yield('styles')
@@ -52,7 +52,8 @@
 
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.dashboard') }}">
-            <img  height="170" src="{{ asset('admin/img/logoDodo.png')}}" class="attachment-medium size-medium" alt="" loading="lazy" srcset="{{ asset('admin/img/logoDodo.png')}}" sizes="(max-width: 200px) 100vw, 207px">
+            <img height="170" src="{{ asset('admin/img/logoDodo.png')}}" class="attachment-medium size-medium" alt=""
+                 loading="lazy" srcset="{{ asset('admin/img/logoDodo.png')}}" sizes="(max-width: 200px) 100vw, 207px">
         </a>
 
         <!-- Divider -->
@@ -66,45 +67,62 @@
         </li>
     @can('isAdmin')
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-            <a class="nav-link" href="{{ route('admin.device_types') }}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>{{__('message.device_types')}}</span></a>
-        </li>
-        <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-            <a class="nav-link" href="{{ route('admin.device_parameters') }}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>{{__('message.type_parameters')}}</span></a>
-        </li>
-        <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-            <a class="nav-link" href="{{ route('admin.device_setting') }}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>{{__('message.type_setting')}}</span></a>
-        </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ route('admin.device_types') }}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>{{__('message.device_types')}}</span></a>
+            </li>
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ route('admin.device_parameters') }}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>{{__('message.type_parameters')}}</span></a>
+            </li>
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ route('admin.device_setting') }}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>{{__('message.type_setting')}}</span></a>
+            </li>
 
 
-        <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-            <a class="nav-link" href="{{ route('admin.devices') }}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>{{__('message.devices')}}</span></a>
-        </li>
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ route('admin.devices') }}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>{{__('message.devices')}}</span></a>
+            </li>
     @endcan
     <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="{{ route('admin.devices.add') }}">
+            <a class="nav-link" href="{{ route('admin.devices.create') }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>{{__('message.add_devices')}}</span></a>
+                <span>{{__('message.add_new_devices')}}</span></a>
         </li>
+        @can('isUser')
+            <li class="nav-item active">
+                <a class="nav-link  collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>{{__('message.devices')}}</span></a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        @foreach($all_devices as $all_device)
+                            <a class="collapse-item"
+                               href="{{route('admin.devices.show', [$all_device->id])}}">{{$all_device->name}}</a>
+                        @endforeach
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ route('admin.devices.get_devices') }}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>{{__('message.settings')}}</span></a>
+            </li>
+        @endcan
 
-        <li class="nav-item active">
-            <a class="nav-link" href="{{ route('admin.devices.get_devices') }}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>{{__('message.get_devices')}}</span></a>
-        </li>
-        <!-- Nav Item - Pages Collapse Menu -->
+    <!-- Nav Item - Pages Collapse Menu -->
+        @can('isAdmin')
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
                aria-expanded="true" aria-controls="collapseOne">
@@ -117,24 +135,25 @@
                 </div>
             </div>
         </li>
-{{--        @can('isAdmin')--}}
-{{--        <!-- Nav Item - Utilities Collapse Menu -->--}}
-{{--        <li class="nav-item">--}}
-{{--            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"--}}
-{{--               aria-expanded="true" aria-controls="collapseUtilities">--}}
-{{--                <i class="fas fa-fw fa-wrench"></i>--}}
-{{--                <span>{{__('message.Settings')}}</span>--}}
-{{--            </a>--}}
-{{--            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"--}}
-{{--                 data-parent="#accordionSidebar">--}}
-{{--                <div class="bg-white py-2 collapse-inner rounded">--}}
-{{--                    <a class="collapse-item" href="{{ route('admin.about') }}">{{__('message.About')}}</a>--}}
-{{--                    <a class="collapse-item" href="{{ route('admin.general') }}">{{__('message.General Settings')}}</a>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </li>--}}
-{{--        <!-- Divider -->--}}
-{{--            @endcan--}}
+        @endcan
+        {{--        @can('isAdmin')--}}
+        {{--        <!-- Nav Item - Utilities Collapse Menu -->--}}
+        {{--        <li class="nav-item">--}}
+        {{--            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"--}}
+        {{--               aria-expanded="true" aria-controls="collapseUtilities">--}}
+        {{--                <i class="fas fa-fw fa-wrench"></i>--}}
+        {{--                <span>{{__('message.Settings')}}</span>--}}
+        {{--            </a>--}}
+        {{--            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"--}}
+        {{--                 data-parent="#accordionSidebar">--}}
+        {{--                <div class="bg-white py-2 collapse-inner rounded">--}}
+        {{--                    <a class="collapse-item" href="{{ route('admin.about') }}">{{__('message.About')}}</a>--}}
+        {{--                    <a class="collapse-item" href="{{ route('admin.general') }}">{{__('message.General Settings')}}</a>--}}
+        {{--                </div>--}}
+        {{--            </div>--}}
+        {{--        </li>--}}
+        {{--        <!-- Divider -->--}}
+        {{--            @endcan--}}
         <hr class="sidebar-divider d-none d-md-block">
         <!-- Sidebar Toggler (Sidebar) -->
         <div class="text-center d-none d-md-inline">
@@ -162,14 +181,20 @@
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}</span>
                             <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
                         </a>
+
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="{{route('admin.users.edit', [Auth::user()->id])}}">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                {{__('message.Account_Setting')}}
+                            </a>
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 {{__('message.Logout')}}
                             </a>
                         </div>
+
                     </li>
                 </ul>
             </nav>
@@ -209,7 +234,8 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body">{{__('message.Select "Logout" below if you are ready to end your current session.')}}</div>
+            <div
+                class="modal-body">{{__('message.Select "Logout" below if you are ready to end your current session.')}}</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">{{__('message.Cancel')}}</button>
                 <a class="btn btn-primary" href="{{ route('logout') }}"

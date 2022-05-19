@@ -57,7 +57,7 @@
 
                 @endphp
 
-                @foreach ($settings as $setting)
+                @foreach ($type_settings as $setting)
                 @if(auth()->user()->role=='Administrator')
                     <tr>
                         <td>{{ ++$no }}</td>

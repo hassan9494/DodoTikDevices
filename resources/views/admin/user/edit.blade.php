@@ -78,6 +78,5 @@
             <button type="submit" class="btn btn-info">{{__('message.Update')}}</button>
         </div>
     </div>
-    </div>
   </form>
 @endsection
