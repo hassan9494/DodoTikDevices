@@ -60,8 +60,10 @@
                         <td>{{ $device->name }}</td>
                         <td>{{ $device->device_id }}</td>
                         <td>
-{{--                            <a title="Edit" href="{{route('admin.devices.edit', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-edit"></i> </a>--}}
+                            <a title="Edit" href="{{route('admin.devices.edit', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-edit"></i> </a>
+                            @if(count($device->deviceType->deviceSettings) > 0 )
                             <a href="{{route('admin.devices.add_device_setting_values', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-cogs"></i> </a>
+                            @endif
                             <a href="{{route('admin.devices.add_device_limit_values', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-chart-line"></i> </a>
                             <a title="Edit Location" href="{{route('admin.devices.location', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-location-arrow"></i> </a>
                             <a href="{{route('admin.devices.show', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-eye"></i> </a>

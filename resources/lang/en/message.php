@@ -59,7 +59,9 @@ return [
     'Min Values' => 'Min Values',
     'Max Values' => 'Max Values',
     'time_between_two_read' => 'Time Between Two Read',
-    'status' => 'Status'
+    'status' => 'Status',
+    'add_new_devices' => 'Add New Device',
+    'Account_Setting' => 'Account Setting'
 
 
 

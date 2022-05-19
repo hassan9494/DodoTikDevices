@@ -4,8 +4,15 @@
 
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet">
     <style>
-        body { margin: 0; padding: 0; }
-        #map { width: 100%;height: 400px; }
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            width: 100%;
+            height: 400px;
+        }
     </style>
     <style>
         .coordinates {
@@ -27,49 +34,71 @@
 
 @section('content')
 
-    <div class="card-body">
+    <div class="container-fluid">
+        <div class="row" style="text-align: -webkit-center;">
+            <div class="col-lg-12 col-xxl-12 order-1 order-xxl-1 mb-4">
+                <div class="card card-custom mb-4">
+                    <div class="card-header border-0 pt-5">
+                        <h3 class="card-title align-items-start flex-column">
+                            <span
+                                class="card-label font-weight-bolder text-dark">Devices Locations</span>
+                        </h3>
+                    </div>
+                    <div class="card-body pt-2" style="position: relative;">
+                        <div class="col-md-12 " style="margin-top: 15px;margin-bottom: 15px">
+                            <div id="map"></div>
+                            <pre id="coordinates" class="coordinates"></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-xxl-12 order-1 order-xxl-1 mb-4">
+                <div class="card card-custom mb-4">
+                    <div class="card-header border-0 pt-5">
+                        <h3 class="card-title align-items-start flex-column">
+                            <span
+                                class="card-label font-weight-bolder text-dark">Devices Status</span>
+                        </h3>
+                    </div>
+                    <div class="card-body pt-2" style="position: relative;">
+                        <div class="row">
+                            @foreach($devices as $key=>$device)
+                            <div class="col-md-4 " style="margin-top: 15px;margin-bottom: 15px">
+                                <div class="card card-custom mb-4">
+                                    <div class="card-header border-0 pt-5" style="padding-top: 1rem!important;">
+                                        <h3 class="card-title align-items-start flex-column"><span
+                                                class="card-label font-weight-bolder text-dark">{{$device->device_id}}</span></h3>
+                                        <div class="card-toolbar">
+                                            <ul class="nav nav-pills nav-pills-sm nav-dark-75 nav nav-test" role="tablist">
+                                                <li class="nav-item nav-item">
+                                                    <a title="Show" id="d_{{$device->id}}" href="{{route('admin.devices.show', [$device->id])}}" class="btn btn-sm"> <i class="fas fa-eye"></i> </a>
+{{--                                                    <a title="Edit" href="{{route('admin.devices.edit', [$device->id])}}" class="btn btn-sm"> <i class="fas fa-edit"></i> </a>--}}
+{{--                                                    <a href="{{route('admin.devices.add_device_setting_values', [$device->id])}}" class="btn btn-sm"> <i class="fas fa-cogs"></i> </a>--}}
+{{--                                                    <a href="{{route('admin.devices.add_device_limit_values', [$device->id])}}" class="btn btn-sm"> <i class="fas fa-chart-line"></i> </a>--}}
+{{--                                                    <a title="Edit Location" href="{{route('admin.devices.location', [$device->id])}}" class="btn btn-sm"> <i class="fas fa-location-arrow"></i> </a>--}}
+                                                <li class="nav-item nav-item">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="card-body  pt-2" style="background-color: {{$state[$key] == 'Offline' ? '#ff6464' : '#00989d'}} ;    padding-top: 2rem!important;">
+                                        <h4 class="device-status" style="color: #FFFFFF">{{$state[$key]}} </h4><i
+                                            class="fas {{$state[$key] == "Offline" ? 'fa-times' : 'fa-check'  }}"
+                                            style="font-size: 25px; color:{{$state[$key] == "Offline" ? 'red' : 'green'  }} "></i>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
 
-        <div class="table-responsive">
-
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                <tr>
-                    <th>{{__('message.No.')}}</th>
-
-                    <th>{{__('message.settings')}}</th>
-
-                </tr>
-
-                </thead>
-
-                <tbody>
-
-                @php
-
-                    $no=0;
-
-                @endphp
-
-                @foreach ($tests as $test)
-                    @if(auth()->user()->role=='Administrator')
-                        <tr>
-                            <td>{{ ++$no }}</td>
-                            <td>{{json_decode($test->settings) }}</td>
-
-                        </tr>
-                    @endif
-                @endforeach
-
-                </tbody>
-
-            </table>
-
+                    </div>
+                </div>
+            </div>
         </div>
-
     </div>
 @endsection
 
 @push('scripts')
+
 
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
     <script>
@@ -78,110 +107,17 @@
             container: 'map', // container ID
             style: 'mapbox://styles/mapbox/streets-v11', // style URL
             center: [0, 0], // starting position [lng, lat]
-            zoom: 5 // starting zoom
+            zoom: 1 // starting zoom
         });
 
-        const marker = new mapboxgl.Marker({
-            draggable: true
+        @foreach($devices as $key=>$device)
+        const {{$device->device_id}} =
+        new mapboxgl.Marker({
+            draggable: false
         })
-            .setLngLat([0, 0])
+            .setLngLat([{{$device->longitude}}, {{$device->latitude}}])
             .addTo(map);
-
-        function onDragEnd() {
-            const lngLat = marker.getLngLat();
-            coordinates.style.display = 'block';
-            coordinates.innerHTML = `Longitude: ${lngLat.lng}<br />Latitude: ${lngLat.lat}`;
-        }
-
-        marker.on('dragend', onDragEnd);
-        // Create a default Marker and add it to the map.
-        const marker1 = new mapboxgl.Marker()
-            .setLngLat([12.554729, 55.70651])
-            .addTo(map);
-        const marker3 = new mapboxgl.Marker()
-            .setLngLat([15.554729, 55.70651])
-            .addTo(map);
-        const marker4 = new mapboxgl.Marker()
-            .setLngLat([14.554729, 55.70651])
-            .addTo(map);
-
-        // Create a default Marker, colored black, rotated 45 degrees.
-        const marker2 = new mapboxgl.Marker({ color: 'black', rotation: 45 })
-            .setLngLat([12.65147, 55.608166])
-            .addTo(map);
+        @endforeach
     </script>
-
-{{--    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFE47G8Hie0gWOuFRPnzUnA8clIWvgpWc&callback=initialize" async defer></script>--}}
-
-{{--    <script>--}}
-{{--        function initialize() {--}}
-
-{{--            // Create a LatLng object--}}
-{{--            // We use this LatLng object to center the map and position the marker--}}
-{{--            var center = new google.maps.LatLng(30, 20);--}}
-
-{{--            // Declare your map options--}}
-{{--            var mapOptions = {--}}
-{{--                zoom: 8,--}}
-{{--                center: center,--}}
-{{--                mapTypeId: google.maps.MapTypeId.ROADMAP--}}
-{{--            };--}}
-
-{{--            // Create a map in the #map HTML element, using the declared options--}}
-{{--            var map = new google.maps.Map(document.getElementById("map"), mapOptions);--}}
-
-{{--            // Create a marker and place it on the map--}}
-{{--            var marker = new google.maps.Marker({--}}
-{{--                position: center,--}}
-{{--                map: map--}}
-{{--            });--}}
-{{--        }--}}
-
-{{--        // let map;--}}
-{{--        //--}}
-{{--        // function initMap() {--}}
-{{--        //     map = new google.maps.Map(document.getElementById("map"), {--}}
-{{--        //         center: { lat: -34.397, lng: 150.644 },--}}
-{{--        //         zoom: 8,--}}
-{{--        //     });--}}
-{{--        // }--}}
-        {{--var locations = <?php print_r(json_encode($locations)) ?>;--}}
-
-
-        {{--var mymap = new GMaps({--}}
-
-        {{--    el: '#mymap',--}}
-
-        {{--    lat: 21.170240,--}}
-
-        {{--    lng: 72.831061,--}}
-
-        {{--    zoom: 6--}}
-
-        {{--});--}}
-
-
-        {{--$.each(locations, function (index, value) {--}}
-
-        {{--    mymap.addMarker({--}}
-
-        {{--        lat: value.lat,--}}
-
-        {{--        lng: value.lng,--}}
-
-        {{--        title: value.city,--}}
-
-        {{--        click: function (e) {--}}
-
-        {{--            alert('This is ' + value.city + ', gujarat from India.');--}}
-
-        {{--        }--}}
-
-        {{--    });--}}
-
-        {{--});--}}
-
-
-{{--    // </script>--}}
 
 @endpush
