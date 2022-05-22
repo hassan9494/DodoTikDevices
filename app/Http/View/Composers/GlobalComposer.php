@@ -52,15 +52,19 @@ class GlobalComposer
     {
         return Cache::remember('website',120, function (){
             $user = auth()->user();
-            if ($user->role == 'Administrator') {
-                $admin = User::orderBy('id', 'desc')->count();
-                $all_devices = Device::all();
-            } else {
-                $admin = User::orderBy('id', 'desc')->count();
-                $all_devices = Device::where('user_id', $user->id)->get();
-            }
+//            dd($user);
+            if ($user != null){
+                if ($user->role == 'Administrator') {
+                    $admin = User::orderBy('id', 'desc')->count();
+                    $all_devices = Device::all();
+                } else {
+                    $admin = User::orderBy('id', 'desc')->count();
+                    $all_devices = Device::where('user_id', $user->id)->get();
+                }
 //            dd($all_devices);
-            return compact('all_devices');
+                return compact('all_devices');
+            }
+
         });
     }
 

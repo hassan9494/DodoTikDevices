@@ -60,6 +60,7 @@
                         <input class="custom-control-input" type="checkbox" name="remember" id="customCheck" {{ old('remember') ? 'checked' : '' }}>
                         <label class="custom-control-label" for="customCheck">Remember Me </label>
                     </div>
+
                     {{-- <a href="index.html" class="btn btn-primary btn-user btn-block">
                     Login
                   </a> --}}
@@ -68,15 +69,15 @@
                         <span class="button__text">Login</span>
                     </button>
                 </form>
-                <!-- <div class="social-login">
-                  <h3>log in via</h3>
-                  <div class="social-icons">
-                    <a href="#" class="social-login__icon fab fa-instagram"></a>
-                    <a href="#" class="social-login__icon fab fa-facebook"></a>
-                    <a href="#" class="social-login__icon fab fa-twitter"></a>
-                  </div>
-                </div> -->
-{{--                <a href="{{ route('register') }}" class="social-login__icon fab fa-twitter"></a>--}}
+{{--                <div class="">--}}
+                  <h5 style="color: #0b2e13"><a  href="{{ route('register') }}" class="button login__submit">create new account</a></h5>
+{{--                  <div class="social-icons">--}}
+{{--                    <a href="#" class="social-login__icon fab fa-instagram"></a>--}}
+{{--                    <a href="#" class="social-login__icon fab fa-facebook"></a>--}}
+{{--                    <a href="#" class="social-login__icon fab fa-twitter"></a>--}}
+{{--                  </div>--}}
+{{--                </div>--}}
+
 
             </div>
             <div class="screen__background">
