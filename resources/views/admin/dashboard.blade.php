@@ -111,7 +111,7 @@
         });
 
         @foreach($devices as $key=>$device)
-        const {{$device->device_id}} =
+        const marker_{{$device->device_id}} =
         new mapboxgl.Marker({
             draggable: false
         })

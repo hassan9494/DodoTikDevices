@@ -60,6 +60,34 @@
             width: 10px;
         }
 
+
+        .legend-2 {
+            background-color: #fff;
+            border-radius: 3px;
+            top: 30px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            padding: 10px;
+            position: absolute;
+            left: 10px;
+            z-index: 1;
+        }
+
+        .legend-2 h4 {
+            margin: 0 0 10px;
+        }
+        .legend-2 div{
+            text-align: left;
+        }
+
+        .legend-2 div span {
+            border-radius: 50%;
+            display: inline-block;
+            height: 10px;
+            margin-right: 5px;
+            width: 10px;
+        }
+
         .mapboxgl-popup {
             max-width: 500px;
             font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
@@ -258,6 +286,25 @@
                                         </div>
                                         @endforeach
                                     </div>
+                                    @endif
+                                    @if(count($lastMaxDanger) > 0 || count($lastMinDanger) > 0)
+                                        <div id="state-legend-2" class="legend-2" style="display: none">
+                                            <h4>Last Danger Read</h4>
+                                            <h5>max Danger Read</h5>
+                                            @foreach($lastMaxDanger as $key=>$parameter)
+                                                <div><span style="background-color: #{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}">
+
+                                            </span>{{$parameter[$key]}}
+                                                </div>
+                                            @endforeach
+                                            <h5>min Danger Read</h5>
+                                            @foreach($lastMinDanger as $key1=>$parameter1)
+                                                <div><span style="background-color: #{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}">
+
+                                            </span>{{$parameter1[0]}}
+                                                </div>
+                                            @endforeach
+                                        </div>
                                     @endif
                                 </div>
                             </div>
@@ -649,6 +696,7 @@
                         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
                     }
                     $('#state-legend').attr('style','display : block')
+                    $('#state-legend-2').attr('style','display : block')
 
 // Populate the popup and set its coordinates
 // based on the feature found.
@@ -660,6 +708,7 @@
                     map.getCanvas().style.cursor = '';
                     popup.remove();
                     $('#state-legend').attr('style','display : none')
+                    $('#state-legend-2').attr('style','display : none')
                 });
             });
 
