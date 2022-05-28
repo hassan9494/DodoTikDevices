@@ -18,6 +18,14 @@
             width: 100%;
             height: 400px;
         }
+
+        .spinner-border {
+            position: relative;
+            bottom: 300px;
+            width: 5rem;
+            height: 5rem;
+            display: none;
+        }
     </style>
     <style>
         .coordinates {
@@ -33,6 +41,7 @@
             border-radius: 3px;
             display: none;
         }
+
         .legend {
             background-color: #fff;
             border-radius: 3px;
@@ -48,7 +57,8 @@
         .legend h4 {
             margin: 0 0 10px;
         }
-        .legend div{
+
+        .legend div {
             text-align: left;
         }
 
@@ -76,7 +86,8 @@
         .legend-2 h4 {
             margin: 0 0 10px;
         }
-        .legend-2 div{
+
+        .legend-2 div {
             text-align: left;
         }
 
@@ -92,6 +103,8 @@
             max-width: 500px;
             font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
         }
+
+
     </style>
 
 @endsection
@@ -177,6 +190,10 @@
 
                     <div class="card-body pt-2" style="position: relative;">
                         <div id="chart">
+
+                        </div>
+                        <div class="spinner-border  text-success" role="status" id="spinner">
+                            <span class="sr-only">Loading...</span>
                         </div>
                         <div class="resize-triggers">
                             <div class="expand-trigger">
@@ -277,33 +294,42 @@
                                     <div id="map"></div>
                                     <pre id="coordinates" class="coordinates"></pre>
                                     @if(count($xValues) > 0)
-                                    <div id="state-legend" class="legend" style="display: none">
-                                        <h4>Last Read</h4>
-                                        @foreach($device->deviceType->deviceParameters as $key=>$parameter)
-                                        <div><span style="background-color: #{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}">
+                                        <div id="state-legend" class="legend" style="display: none">
+                                            <h4>Last Read</h4>
+                                            @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+                                                <div><span
+                                                        style="background-color: #{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}">
 
-                                            </span>{{$parameter->name}} :{{$paraValues[$key][count($paraValues[$key]) - 1]}}
+                                            </span>{{$parameter->name}}
+                                                    :{{$paraValues[$key][count($paraValues[$key]) - 1]}}
+                                                </div>
+                                            @endforeach
                                         </div>
-                                        @endforeach
-                                    </div>
                                     @endif
                                     @if(count($lastMaxDanger) > 0 || count($lastMinDanger) > 0)
                                         <div id="state-legend-2" class="legend-2" style="display: none">
                                             <h4>Last Danger Read</h4>
                                             <h5>max Danger Read</h5>
-                                            @foreach($lastMaxDanger as $key=>$parameter)
-                                                <div><span style="background-color: #{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}">
+                                            @if(count($lastMaxDanger) > 0)
+                                                @foreach($lastMaxDanger as $key4=>$parametere)
+                                                    <div>
+                                                    <span
+                                                        style="background-color: #{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}">
 
-                                            </span>{{$parameter[$key]}}
-                                                </div>
-                                            @endforeach
+                                                    </span>{{$parametere[0]}}
+                                                    </div>
+                                                @endforeach
+                                            @endif
                                             <h5>min Danger Read</h5>
-                                            @foreach($lastMinDanger as $key1=>$parameter1)
-                                                <div><span style="background-color: #{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}">
+                                            @if(count($lastMinDanger) > 0)
+                                                @foreach($lastMinDanger as $key1=>$parameter1)
+                                                    <div><span
+                                                            style="background-color: #{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}">
 
                                             </span>{{$parameter1[0]}}
-                                                </div>
-                                            @endforeach
+                                                    </div>
+                                                @endforeach
+                                            @endif
                                         </div>
                                     @endif
                                 </div>
@@ -334,13 +360,13 @@
                 }
                 el[i].className = 'nav-link py-2 px-4  active nav-link active';
 
-                if (el[i].getAttribute('tabindex') == 0){
+                if (el[i].getAttribute('tabindex') == 0) {
                     fromm = 1;
                     too = 0;
-                }else if(el[i].getAttribute('tabindex') == 1){
+                } else if (el[i].getAttribute('tabindex') == 1) {
                     fromm = 7;
                     too = 0;
-                }else if(el[i].getAttribute('tabindex') == 2){
+                } else if (el[i].getAttribute('tabindex') == 2) {
                     fromm = 30;
                     too = 0;
                 }
@@ -351,11 +377,13 @@
             $('.nav-link').click(function (e) {
 
                 $('#custom-date').attr('style', 'display :none')
+
                 jQuery.ajax({
-                    url: '/admin/devices/showWithDate/{{$device->id}}/'+fromm+'/'+too,
+                    url: '/admin/devices/showWithDate/{{$device->id}}/' + fromm + '/' + too,
                     type: 'GET',
                     success: function (data) {
                         chart.updateOptions({
+
                             series: [
                                     @foreach($device->deviceType->deviceParameters as $key=>$parameter)
 
@@ -372,15 +400,23 @@
                                     enabled: data[1].length < 500 ? true : false,
                                 }
                             },
-                            labels : data[1]
+                            labels: data[1]
 
 
-                    })
+                        })
                     },
                     error: function (xhr, b, c) {
                         console.log("xhr=" + xhr + " b=" + b + " c=" + c);
                     }
                 });
+                var $loading = $('#spinner').show();
+                $(document)
+                    .ajaxStart(function () {
+                        $loading.show();
+                    })
+                    .ajaxStop(function () {
+                        $loading.hide();
+                    });
 
             })
         });
@@ -406,7 +442,7 @@
                 const diffTime1 = Math.abs(Date.parse(today) - Date.parse(from.value));
                 const diffDays1 = Math.ceil(diffTime1 / (1000 * 60 * 60 * 24));
                 jQuery.ajax({
-                    url: '/admin/devices/showWithDate/{{$device->id}}/'+diffDays1+'/'+diffDays,
+                    url: '/admin/devices/showWithDate/{{$device->id}}/' + diffDays1 + '/' + diffDays,
                     type: 'GET',
                     success: function (data) {
                         chart.updateOptions({
@@ -426,7 +462,7 @@
                                     enabled: data[1].length < 500 ? true : false,
                                 }
                             },
-                            labels : data[1]
+                            labels: data[1]
 
 
                         })
@@ -435,7 +471,7 @@
                         console.log("xhr=" + xhr + " b=" + b + " c=" + c);
                     }
                 });
-                })
+            })
         });
     </script>
     <script>
@@ -483,7 +519,7 @@
                 width: "100%",
                 type: 'area',
                 animations: {
-                    enabled:  false,
+                    enabled: false,
                 }
             },
             markers: {
@@ -553,166 +589,164 @@
 
         var warning =
         {{$warning}}
-            const size = 200;
+        const size = 200;
 
-            const pulsingDot = {
-                width: size,
-                height: size,
-                data: new Uint8Array(size * size * 4),
-                onAdd: function () {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = this.width;
-                    canvas.height = this.height;
-                    this.context = canvas.getContext('2d');
-                },
-                render: function () {
-                    const duration = 1000;
-                    const t = (performance.now() % duration) / duration;
+        const pulsingDot = {
+            width: size,
+            height: size,
+            data: new Uint8Array(size * size * 4),
+            onAdd: function () {
+                const canvas = document.createElement('canvas');
+                canvas.width = this.width;
+                canvas.height = this.height;
+                this.context = canvas.getContext('2d');
+            },
+            render: function () {
+                const duration = 1000;
+                const t = (performance.now() % duration) / duration;
 
-                    const radius = (size / 2) * 0.3;
-                    const outerRadius = (size / 2) * 0.7 * t + radius;
-                    const context = this.context;
+                const radius = (size / 2) * 0.3;
+                const outerRadius = (size / 2) * 0.7 * t + radius;
+                const context = this.context;
 
 // Draw the outer circle.
-                    context.clearRect(0, 0, this.width, this.height);
-                    context.beginPath();
-                    context.arc(
-                        this.width / 2,
-                        this.height / 2,
-                        outerRadius,
-                        0,
-                        Math.PI * 2
-                    );
-                    context.fillStyle = warning != 1 ? `rgba(255, 200, 200, ${1 - t})` : '#00989d11';
-                    context.fill();
+                context.clearRect(0, 0, this.width, this.height);
+                context.beginPath();
+                context.arc(
+                    this.width / 2,
+                    this.height / 2,
+                    outerRadius,
+                    0,
+                    Math.PI * 2
+                );
+                context.fillStyle = warning != 1 ? `rgba(255, 200, 200, ${1 - t})` : '#00989d11';
+                context.fill();
 
 // Draw the inner circle.
-                    context.beginPath();
-                    context.arc(
-                        this.width / 2,
-                        this.height / 2,
-                        radius,
-                        0,
-                        Math.PI * 2
-                    );
-                    context.fillStyle = warning != 1 ? 'rgba(255, 100, 100, 1)' : '#00989d';
-                    context.strokeStyle = 'white';
-                    context.lineWidth = 2 + 4 * (1 - t);
-                    context.fill();
-                    context.stroke();
+                context.beginPath();
+                context.arc(
+                    this.width / 2,
+                    this.height / 2,
+                    radius,
+                    0,
+                    Math.PI * 2
+                );
+                context.fillStyle = warning != 1 ? 'rgba(255, 100, 100, 1)' : '#00989d';
+                context.strokeStyle = 'white';
+                context.lineWidth = 2 + 4 * (1 - t);
+                context.fill();
+                context.stroke();
 
 // Update this image's data with data from the canvas.
-                    this.data = context.getImageData(
-                        0,
-                        0,
-                        this.width,
-                        this.height
-                    ).data;
+                this.data = context.getImageData(
+                    0,
+                    0,
+                    this.width,
+                    this.height
+                ).data;
 
 // Continuously repaint the map, resulting
 // in the smooth animation of the dot.
-                    map.triggerRepaint();
+                map.triggerRepaint();
 
 // Return `true` to let the map know that the image was updated.
-                    return true;
-                }
-            };
-            map.on('load', () => {
-                map.addImage('pulsing-dot', pulsingDot, {pixelRatio: 3});
+                return true;
+            }
+        };
+        map.on('load', () => {
+            map.addImage('pulsing-dot', pulsingDot, {pixelRatio: 3});
 
 
-                map.addSource('dot-point', {
-                    'type': 'geojson',
-                    'data': {
-                        'type': 'FeatureCollection',
-                        'features': [
-                            {
-                                'type': 'Feature',
-                                'geometry': {
-                                    'type': 'Point',
-                                    'coordinates': [long, lat] // icon position [lng, lat]
-                                }
+            map.addSource('dot-point', {
+                'type': 'geojson',
+                'data': {
+                    'type': 'FeatureCollection',
+                    'features': [
+                        {
+                            'type': 'Feature',
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [long, lat] // icon position [lng, lat]
                             }
-                        ]
-                    }
-                });
-                map.addSource('places', {
-                    'type': 'geojson',
-                    'data': {
-                        'type': 'FeatureCollection',
-                        'features': [
-                            {
-                                'type': 'Feature',
-                                'properties': {
-                                    'description':
-                                        '<div id="state-legend" class="legend">' +
-                                        '<h5>Last_Read</h5>'+
-                                        '</div>'
-                                },
-                                'geometry': {
-                                    'type': 'Point',
-                                    'coordinates': [long, lat]
-                                }
+                        }
+                    ]
+                }
+            });
+            map.addSource('places', {
+                'type': 'geojson',
+                'data': {
+                    'type': 'FeatureCollection',
+                    'features': [
+                        {
+                            'type': 'Feature',
+                            'properties': {
+                                'description':
+                                    '<div id="state-legend" class="legend">' +
+                                    '<h5>Last_Read</h5>' +
+                                    '</div>'
                             },
-                        ]
-                    }
-                });
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [long, lat]
+                            }
+                        },
+                    ]
+                }
+            });
 
-                map.addLayer({
-                    'id': 'layer-with-pulsing-dot',
-                    'type': 'symbol',
-                    'source': 'dot-point',
-                    'layout': {
-                        'icon-image': 'pulsing-dot'
-                    }
-                });
-                map.addLayer({
-                    'id': 'places',
-                    'type': 'circle',
-                    'source': 'places',
-                    'paint': {
-                        'circle-color': warning != 1 ? 'rgba(255, 100, 100, 1)' : '#00989d',
-                        'circle-radius': 6,
-                        'circle-stroke-width': 2,
-                        'circle-stroke-color': warning != 1 ? 'rgba(255, 100, 100, 1)' : '#00989d',
-                    }
-                });
-                const popup = new mapboxgl.Popup({
-                    closeButton: false,
-                    closeOnClick: false
-                });
-                map.on('mouseenter', 'places', (e) => {
+            map.addLayer({
+                'id': 'layer-with-pulsing-dot',
+                'type': 'symbol',
+                'source': 'dot-point',
+                'layout': {
+                    'icon-image': 'pulsing-dot'
+                }
+            });
+            map.addLayer({
+                'id': 'places',
+                'type': 'circle',
+                'source': 'places',
+                'paint': {
+                    'circle-color': warning != 1 ? 'rgba(255, 100, 100, 1)' : '#00989d',
+                    'circle-radius': 6,
+                    'circle-stroke-width': 2,
+                    'circle-stroke-color': warning != 1 ? 'rgba(255, 100, 100, 1)' : '#00989d',
+                }
+            });
+            const popup = new mapboxgl.Popup({
+                closeButton: false,
+                closeOnClick: false
+            });
+            map.on('mouseenter', 'places', (e) => {
 // Change the cursor style as a UI indicator.
-                    map.getCanvas().style.cursor = 'pointer';
+                map.getCanvas().style.cursor = 'pointer';
 
 // Copy coordinates array.
-                    const coordinates = e.features[0].geometry.coordinates.slice();
-                    const description = e.features[0].properties.description;
+                const coordinates = e.features[0].geometry.coordinates.slice();
+                const description = e.features[0].properties.description;
 
 // Ensure that if the map is zoomed out such that multiple
 // copies of the feature are visible, the popup appears
 // over the copy being pointed to.
-                    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-                    }
-                    $('#state-legend').attr('style','display : block')
-                    $('#state-legend-2').attr('style','display : block')
+                while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                }
+                $('#state-legend').attr('style', 'display : block')
+                $('#state-legend-2').attr('style', 'display : block')
 
 // Populate the popup and set its coordinates
 // based on the feature found.
 //                     popup.setLngLat(coordinates).setHTML(description).addTo(map);
 
-                });
-
-                map.on('mouseleave', 'places', () => {
-                    map.getCanvas().style.cursor = '';
-                    popup.remove();
-                    $('#state-legend').attr('style','display : none')
-                    $('#state-legend-2').attr('style','display : none')
-                });
             });
 
-
+            map.on('mouseleave', 'places', () => {
+                map.getCanvas().style.cursor = '';
+                popup.remove();
+                $('#state-legend').attr('style', 'display : none')
+                $('#state-legend-2').attr('style', 'display : none')
+            });
+        });
 
 
         //

@@ -192,6 +192,7 @@ class DeviceController extends Controller
             $status = "Offline";
             $label = 1;
         }
+//        dd($lastMaxDanger[1][0]);
 
         return view('admin.device.show', compact('lastMaxDanger','lastMinDanger','device', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
     }
