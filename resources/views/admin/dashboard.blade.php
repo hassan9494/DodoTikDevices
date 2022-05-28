@@ -67,7 +67,7 @@
                                 <div class="card card-custom mb-4">
                                     <div class="card-header border-0 pt-5" style="padding-top: 1rem!important;">
                                         <h3 class="card-title align-items-start flex-column"><span
-                                                class="card-label font-weight-bolder text-dark">{{$device->device_id}}</span></h3>
+                                                class="card-label font-weight-bolder text-dark">{{$device->name}}</span></h3>
                                         <div class="card-toolbar">
                                             <ul class="nav nav-pills nav-pills-sm nav-dark-75 nav nav-test" role="tablist">
                                                 <li class="nav-item nav-item">
@@ -89,8 +89,8 @@
                             </div>
                             @endforeach
                         </div>
-
                     </div>
+
                 </div>
             </div>
         </div>

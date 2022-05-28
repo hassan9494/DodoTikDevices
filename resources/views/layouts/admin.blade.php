@@ -106,10 +106,10 @@
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>{{__('message.devices')}}</span></a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
+                    <div class="bg-white py-2 collapse-inner rounded"  style="background-color: #00989d!important;">
                         @foreach($all_devices as $all_device)
                             <a class="collapse-item"
-                               href="{{route('admin.devices.show', [$all_device->id])}}">{{$all_device->name}}</a>
+                               href="{{route('admin.devices.show', [$all_device->id])}}" style="color: #fff;">{{$all_device->name}}</a>
                         @endforeach
                     </div>
                 </div>
