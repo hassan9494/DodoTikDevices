@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ParametersDataExport;
 use App\Http\Requests\DeviceRequest;
 use App\Models\Device;
 use App\Models\DeviceParametersValues;
@@ -10,6 +11,7 @@ use App\Models\DeviceType;
 use App\Models\LimitValues;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DeviceController extends Controller
 {
@@ -124,6 +126,8 @@ class DeviceController extends Controller
         $xValues = [];
         $yValues = [];
         $paraValues = [];
+        $lastMinDanger = [];
+        $lastMaxDanger = [];
         $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
 //        dd(count($parameters));
         if (count($parameters) > 0) {
@@ -139,8 +143,7 @@ class DeviceController extends Controller
 
             }
             $warning = 1;
-            $lastMinDanger = [];
-            $lastMaxDanger = [];
+
             $minDanger = [];
             $maxDanger = [];
             foreach ($device_type->deviceParameters as $tPara) {
@@ -192,7 +195,7 @@ class DeviceController extends Controller
             $status = "Offline";
             $label = 1;
         }
-//        dd($lastMaxDanger[1][0]);
+//        dd($lastMaxDanger);
 
         return view('admin.device.show', compact('lastMaxDanger','lastMinDanger','device', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
     }
@@ -496,5 +499,11 @@ class DeviceController extends Controller
         $device->delete();
 
         return redirect()->route('admin.devices')->with('success', 'Data deleted successfully');
+    }
+
+
+    public function export($from,$to,$devType)
+    {
+        return Excel::download(new ParametersDataExport($from,$to,$devType), 'parameter.xlsx');
     }
 }

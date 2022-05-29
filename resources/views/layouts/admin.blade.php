@@ -69,19 +69,19 @@
         <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
                 <a class="nav-link" href="{{ route('admin.device_types') }}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-fw fa-keyboard"></i>
                     <span>{{__('message.device_types')}}</span></a>
             </li>
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
                 <a class="nav-link" href="{{ route('admin.device_parameters') }}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-fw fa-temperature-high"></i>
                     <span>{{__('message.type_parameters')}}</span></a>
             </li>
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
                 <a class="nav-link" href="{{ route('admin.device_setting') }}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-fw fa-cog"></i>
                     <span>{{__('message.type_setting')}}</span></a>
             </li>
 
@@ -89,21 +89,21 @@
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
                 <a class="nav-link" href="{{ route('admin.devices') }}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-fw fa-satellite-dish"></i>
                     <span>{{__('message.devices')}}</span></a>
             </li>
     @endcan
     <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
             <a class="nav-link" href="{{ route('admin.devices.create') }}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <i class="fas fa-fw fa-plus"></i>
                 <span>{{__('message.add_new_devices')}}</span></a>
         </li>
         @can('isUser')
             <li class="nav-item active">
                 <a class="nav-link  collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-fw fa-satellite-dish"></i>
                     <span>{{__('message.devices')}}</span></a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded"  style="background-color: #00989d!important;">
@@ -116,7 +116,7 @@
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="{{ route('admin.devices.get_devices') }}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-fw fa-cog"></i>
                     <span>{{__('message.settings')}}</span></a>
             </li>
         @endcan

@@ -33,7 +33,7 @@ Route::get('about-us', [FrontController::class, 'about'])->name('about');
 Auth::routes([
     'register' => true
 ]);
-
+Auth::routes(['verify' => true]);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('can:isAdmin')->name('home');
 
 Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth'],function () {
@@ -50,13 +50,13 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth'],function ()
 
     // Manage Admin
     Route::resource('users',UserController::class);
-     Route::get('users', [UserController::class, 'index'])->middleware('can:isAdminOrUser')->name('users.index');
-     Route::post('users/{id}', [UserController::class, 'changepassword'])->middleware('can:isAdminOrUser')->name('users.changepassword');
-     Route::get('users/create', [UserController::class, 'create'])->middleware('can:isAdminOrUser')->name('users.create');
+    Route::get('users', [UserController::class, 'index'])->middleware('can:isAdminOrUser')->name('users.index');
+    Route::post('users/{id}', [UserController::class, 'changepassword'])->middleware('can:isAdminOrUser')->name('users.changepassword');
+    Route::get('users/create', [UserController::class, 'create'])->middleware('can:isAdminOrUser')->name('users.create');
 //     Route::post('users/store', [UserController::class, 'store'])->middleware('can:isAdminOrUser')->name('users.store');
-     Route::get('users/edit/{id}', [UserController::class, 'edit'])->middleware('can:isAdminOrUser')->name('users.edit');
-     Route::post('users/edit/{id}', [UserController::class, 'update'])->middleware('can:isAdminOrUser')->name('users.update');
-     Route::delete('users/destroy/{id}',[UserController::class, 'destroy'])->middleware('can:isAdmin')->name('users.destroy');
+    Route::get('users/edit/{id}', [UserController::class, 'edit'])->middleware('can:isAdminOrUser')->name('users.edit');
+    Route::post('users/edit/{id}', [UserController::class, 'update'])->middleware('can:isAdminOrUser')->name('users.update');
+    Route::delete('users/destroy/{id}',[UserController::class, 'destroy'])->middleware('can:isAdmin')->name('users.destroy');
 
     // Manage device_types
     Route::get('device_types/add_default_values/{typeid}', [DevicTypeController::class, 'add_default_values'])->middleware('can:isAdmin')->name('device_types.add_default_values');
@@ -114,6 +114,7 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth'],function ()
     Route::post('devices/update_location/{id}', [DeviceController::class, 'update_location'])->middleware('can:isAdminOrUser')->name('devices.update_location');
     Route::delete('devices/destroy/{id}',[DeviceController::class, 'destroy'])->middleware('can:isAdminOrUser')->name('devices.destroy');
     Route::get('devices/location/{id}', [DeviceController::class, 'location'])->middleware('can:isAdminOrUser')->name('devices.location');
+    Route::get('devices/export/{from}/{to}/{devType}',[DeviceController::class, 'export'])->middleware('can:isAdminOrUser')->name('devices.export');
 //    Route::post('devices/setLocation', [DeviceController::class, 'setLocation'])->middleware('can:isAdminOrUser')->name('devices.setLocation');
 
 
