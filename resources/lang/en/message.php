@@ -61,7 +61,8 @@ return [
     'time_between_two_read' => 'Time Between Two Read',
     'status' => 'Status',
     'add_new_devices' => 'Add New Device',
-    'Account_Setting' => 'Account Setting'
+    'Account_Setting' => 'Account Setting',
+    "Export" => "Export",
 
 
 

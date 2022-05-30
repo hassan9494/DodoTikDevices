@@ -502,8 +502,25 @@ class DeviceController extends Controller
     }
 
 
-    public function export($from,$to,$devType)
+    public function export($id)
     {
+        $device = Device::findOrFail($id);
+        return view('admin.device.export', compact('device'));
         return Excel::download(new ParametersDataExport($from,$to,$devType), 'parameter.xlsx');
+    }
+
+    public function exportToDatasheet(Request $request)
+    {
+        $validate = [
+            'from' => 'required',
+            'to' => 'required'
+        ];
+
+//        dd($request);
+        \Validator::make($request->all(), $validate)->validate();
+        $from = $request->from;
+        $to = $request->to;
+        $dev = $request->id;
+        return Excel::download(new ParametersDataExport($from,$to,$dev), 'parameter.xlsx');
     }
 }

@@ -21,13 +21,169 @@
   <component name="ChangeListManager">
     <list default="true" id="4b9c3d3c-a351-4ab6-90ca-e38cb16d2c4d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/LoginController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/LoginController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Exports/ParametersDataExport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exports/ParametersDataExport.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/app.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/admin/vendor/fontawesome-free/css/all.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/admin/vendor/fontawesome-free/css/all.min.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/about.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/apple-touch-icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/blog-1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/blog-2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/blog-3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/blog-4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/blog-5.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/blog-author.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/blog-recent-posts-1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/blog-recent-posts-2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/blog-recent-posts-3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/blog-recent-posts-4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/blog-recent-posts-5.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/clients/client-1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/clients/client-2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/clients/client-3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/clients/client-4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/clients/client-5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/clients/client-6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/clients/client-7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/clients/client-8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/comments-1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/comments-2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/comments-3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/comments-4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/comments-5.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/comments-6.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/favicon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/haulotte.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/logo-anpat.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/portfolio/portfolio-1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/portfolio/portfolio-2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/portfolio/portfolio-3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/portfolio/portfolio-4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/portfolio/portfolio-5.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/portfolio/portfolio-6.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/portfolio/portfolio-7.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/portfolio/portfolio-8.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/portfolio/portfolio-9.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/portfolio/portfolio-details-1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/portfolio/portfolio-details-2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/portfolio/portfolio-details-3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/slide/slide-1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/slide/slide-2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/slide/slide-3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/team/team-1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/team/team-2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/team/team-3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/team/team-4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/testimonials/testimonials-1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/testimonials/testimonials-2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/testimonials/testimonials-3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/testimonials/testimonials-4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/testimonials/testimonials-5.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front/img/testimonials/testimonials-6.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/lang/en/message.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/en/message.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/device/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/auth/register.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/auth/register.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/auth/verify.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/auth/verify.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/front/blog.blade.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/front/blogshow.blade.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/front/carnet.blade.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/front/carnets.blade.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/front/category.blade.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/front/cotact.blade.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/front/curso.blade.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/front/cursos.blade.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/front/entidade_formadora.blade.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/front/entidades_formadoras.blade.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/front/entidades_formadoreas.blade.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/front/formadores.blade.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/front/home.blade.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/front/partner.blade.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/front/partners.blade.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Carnet/34643gg5/whlKWZDteQmSeg3K4zqV6FzcfotjsmUwkFwgBHVc.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Carnet/fhdfhd/9be7R4KagjzdEYoyzzLZL0PkLUOjpd6rzoFlbjoD.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Carnet/rhdfr/r10kY8aV2tEthFQuxsvqpELPabHFvDNIVW69cOtn.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Carnet/rhgsrher/1eDlszrHxJSfjpLwWMEgIOlJDhDKZJ3xTWV5wriX.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Carnet/rhgsrher/2hYWlLPT0pFeYjRcBaUgjsaJYNs2paBqavZmvPr6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Carnet/rhgsrher/K3fZuAPkcJwADaa5SQGgtOvtysCc1ACGvEhPPLh8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Carnet/rhgsrher/Lp4AfBImSz5PKhOncYS0X1SJ2qFNlazQ3xOpkNO4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Carnet/rhgsrher/NEaVukDY6wwYo3zP61wMbM9c833dzjNy6ygTdFu3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Carnet/rhgsrher/NoZWGha1IzcKCjY8Lfqf8Pudzq7Zjb02Pw5G8v5q.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Carnet/rhgsrher/NxsW6fF3Dt2TU5LbmNrf9zIohn0ywKf4SbUsb8Bc.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Carnet/rhgsrher/nurq7t3yDWk41eCRzp0cQrPs5sdsUzXbwXRpvhmP.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Carnet/test/SZdgEqyxVc698QmmEgkcKm6wn28saRkLhfk95giI.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Carnet/tetjet/TOuF7wHqmHthEX0dQFkSCwjYrOjiZ8U1pDKFEoxd.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/3258/MMFziFiea5Xmqtyo4mO5tHDbNmUhdIBKmcL84jpE.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/3258/uL36FTLS3yuIDkE2cDELZ4I0LAImW10miM2zpmRs.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/B01-2100037/71rKpLaTp35GoCJ2e1CpPvDX6vORPy1APqZnVHAf.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/B02-2100038/OAAEGXpHuqhDNyWNgsq9WmmBuzUvUpsrCm0EMdi0.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/B09-2100036/VjQp7oryzAKFKWXPW5eSo3pskFz1jv8g84Q6tfyK.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/B16-2100001/6hK4ceJ95NqUKNoM9O8V6bPf584Bd0yue3BlCU7G.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/B16-2100001/9i6tJIkUAIL33l8moEDVw1gtIKOPv6Rdb1BZ7xU1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/B16-2100001/Byc24GBet7xuKyJR3UAnJ61kEjabkytwuVkZAeF2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/B16-2100001/Gb6VE9U0ioNYpkqiZiywQrwVej2NEArYXMan4eIN.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/B16-2100001/JK5bR46RSYTz2BYly6L1HyU9vgVhNto075ZuDtuY.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/B16-2100001/YZLYOQKLDgNdkrwuiTk9aZmEwCg62kcWK1qSfBcv.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/B16-2100001/bYpwUea2GvMO9EKLVX5HGMpyfX8CSyracWZNBJDD.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/B16-2100001/lp0meLkEwoiXfdZkLMcBPNMCfb2KLeOVRYGRu5wj.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/hassassasda/6DYtwcRjeHfYA9LvKwJspCTizoKYV07IkjwDAh5M.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/hassassasda/7EVTjaXtfjMHE4CnGD4RyPhN9a6Y45SNQhS9UEYz.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/hassassasda/B8QBlhA0OJx8xbo4De75KMjP8lBzks1Vn7IuBEfK.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/hassassasda/Co33PhttIjDCdgm9sKrpQZevYnRfYX94874Wht37.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/hassassasda/DlxuS11dRI57R8I8X0CCNMDoKVOwfttdB8JJsKkV.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/hassassasda/Fc1uRiqFakCojWYCGvTsD3YW3OCwocrSuQx2kFKh.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/hassassasda/G0gBCNhqEe9PicRWDsTBETlky0VXDrmpkJiE5WJQ.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/hassassasda/HfguyrFotHlPRKdYoBm4uMQbDEvDibNqjtcOHjIu.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/hassassasda/WTAUIF05IyfoA62rUDMgZ8zY2nJgT4ut3PWT4OEY.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/hassassasda/fa1FxvIAYJfdMmsBobN02sO3IcCZnSKCzBhLStK8.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/hassassasda/vYRaKU29911CV4as8o7CmTZhCGKFOcUyjaHBbsm8.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/hassassasda/zDBKt5Sbzto8HfP20029GNTbuHLRzvo6kMsGbOZG.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/hrerhe/0S34pAij9M97RzOmotkQ3aTVzgq6f2gypp6YOknh.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/hrerhe/bwL1lJC4axEoCbWm2zOkK7R0nfKraAKHrsdIQlTt.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/hrerhe/xyIT3GkIs47HbjwZoAQEk4ZOS7X9cmEUoVnFCxFD.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/sgsg/BJIoxN8cidNlix2rJx4zToEDEYCMT79gpEMEhpLV.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/Cursos/sgsg/wpPazCH03dEWARAKppZLuQ6EzzCJOir2ORdsW0Cl.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/entidades_formadoreas/234/PonE2oX8oSA1ylDUAt1tZq91GnykOCllDyxtR2uk.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/entidades_formadoreas/234/WM59H1TWFCvzMdLpr1xMpYbZfepnnHLMI38CcmG5.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/entidades_formadoreas/ALQUILER DE MAQUINARIA RETAIRE/R7i08Cs0K5aNTCjx79f622IdDQYXG13ASxx5H2yC.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/entidades_formadoreas/ali/h0zO0Ep79BKoo1joUcKtIRLO8BU2PGXUd10BICef.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/entidades_formadoreas/dhfdh/A0MqHYz8v3wreGzmrd3GcXvbodVvAr22hpAyov33.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/entidades_formadoreas/dhfdh/jD9TzZYAUPk9C90npe7jfgSHceVVWqG45phbW54R.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/entidades_formadoreas/fgxdfd/UHoK1I5CF5XK6MpFE9rnJbpqiLQ6IREuJKxZySGT.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/entidades_formadoreas/gorge/ne6naiaNi6noL7mt8Yb24Hqjk34DTCPGrbtvgOvz.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/entidades_formadoreas/hassan/0ScR78q02Akhj9HMf0HKQN5tGSEpUlVxY7cDukuw.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/entidades_formadoreas/hassan/Co2WzZr1uwMmXViywRWlRuAqoQPwrWVI1lWvVbHP.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/entidades_formadoreas/hassan/W4dokoq7seQ1WQWFihOvu8U6S1xBXdGYaTGTP5vy.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/entidades_formadoreas/hassan/k0Y8uU8nV2qgWD1vCkYfag8ihAQuNJNQpTElAoh1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/entidades_formadoreas/sdgsdg/eL2tui4owk0fYzTjQ8Xb9qU2n6W9bXpP1gaQSFBh.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/entidades_formadoreas/test/XXCsOUX8Me3Uuq2ehyhvYqVvoQ4hA6S2e27cxTza.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/examen/test/K4khMyPJxfqv2hP1dJFL35eu8zgRcFJ2mfTNmfdh.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/examen/test/t1XEgnoF2BIOFCH4vg1A8ZQEXBDhvcsn7Fy5UT0v.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/examen/wq/STlLtXt8czDHdBUM2m5E4SmWE3H0oDhFJesIO297.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/formadores/213/jnF0zWYvxaF8W32QIGO7rrxB8dY4icitkXQTN8vA.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/formadores/234/QzN0JBpUbgCD22X2Z06Cpi5j63eJSp3Rto9DaIEg.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/formadores/admin/9dZslrBrkj0xQnkHFojoPwuqnlOINO1R5YHRsH9W.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/formadores/sd/AY1zYFsJNGyV1ZBg91lcrZHLF3vajnZlK2H28PKh.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/formadores/sd/KBMHhgtc5UeUJmkt2RBJeNiiC8Fs3fREb2JRNfoi.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/formadores/sd/lvHhyEXgGq6DkTwDTBQXNnOrRRuiCMi4TpnWEZED.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/formadores/sd/m1ApwHnrDmfNgBqW7wwaFOcM56YYjuAJCri3oAcG.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/formadores/sd/uxL71BZvr3RldwFS06oe2QEpvgJmtnL9sypFpUVt.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/formadores/sd/xu67BZfO7VtecphkenWbyFPG4EeYfmqImME9sJzv.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/formadores/sssssssssssssssss/NkH9VhZjK7s4HTW1kq1XbbLGhvJBDiDDRleZrM1d.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/images/Cursos/ColA2qNKK3obJvfkCaKYWW8RxHHNzFDTkM3HDJSw.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/images/Cursos/FzU3l19VuqJFbT1AVjCDDJNpWqbzZWAyr6JP2O4f.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/images/Cursos/dorASfCARL69kt2DXg77FkTkgZGbIHJ4DUJUPhMB.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/images/Cursos/t0A7jXukmp4rzFgPMA7RonMoHCJqVl8eEfWBlDeK.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/images/asistent/3ctph0ZrDY04DE2XQLaB0on4XbvVbXl1dh9JlLpR.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/images/asistent/LOLdBoS6XoSpwVlBmBuVGWnZYezvKwKp6IAa1Yog.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/images/blog/FmaUKaApM5d7Si42nHLsqZlDF2QrOjka8Fwkin9J.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/images/partner/43UKLwiQhf2xOp7ArOReC3e2YHnLTGOEkeRkFyDt.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/images/partner/nqjUZErhPhJFSJpnucIhGXAiHLMmiq2hyeX4k4fD.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/images/partner/zxtnnQz9dsfRhMIcrkg1DVHOWKvzuuCk3NNMX2Cx.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/operadoe/hassan/DjiPhVxGHzrT782HRiRaqg11JafDbiyI1fTXcIen.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/operadoe/hassan/YLs7Or0tLHFQZKT6MLAgBXg8lYFEnO8zLNH2CBs9.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/public/operadoe/rrrrrrrrrrrrrrrrrrrrrrrrrrr/II1RoGoYAykK5ZxWzJKtIGcSGLFyE9giB6CUGznI.jpg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -186,22 +342,22 @@
     <property name="DefaultHtmlFileTemplate" value="XHTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../syrian-market" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/admin/device" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="php.override.implement.member.chooser.php.doc" value="NONE" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\projects\DodotikDevice\resources\views\admin\device" />
+      <recent name="D:\projects\DodotikDevice\resources\views\vendor" />
+      <recent name="D:\projects\DodotikDevice\app\Providers" />
+      <recent name="D:\projects\DodotikDevice\app\Http" />
+      <recent name="D:\projects\DodotikDevice\vendor\laravel\framework\src\Illuminate\Validation\Rules" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\projects\DodotikDevice\public" />
       <recent name="D:\lastAnapat\resources" />
       <recent name="D:\lastAnapat\database\migrations" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\projects\DodotikDevice\resources\views\vendor" />
-      <recent name="D:\projects\DodotikDevice\app\Providers" />
-      <recent name="D:\projects\DodotikDevice\app\Http" />
-      <recent name="D:\projects\DodotikDevice\resources\views\admin\device" />
-      <recent name="D:\projects\DodotikDevice\vendor\laravel\framework\src\Illuminate\Validation\Rules" />
     </key>
   </component>
   <component name="RunManager">
@@ -283,7 +439,8 @@
       <workItem from="1653477387681" duration="369000" />
       <workItem from="1653567655733" duration="4656000" />
       <workItem from="1653734269827" duration="3597000" />
-      <workItem from="1653809947090" duration="10958000" />
+      <workItem from="1653809947090" duration="12208000" />
+      <workItem from="1653915987835" duration="5441000" />
     </task>
     <servers />
   </component>

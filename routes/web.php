@@ -34,9 +34,9 @@ Auth::routes([
     'register' => true
 ]);
 Auth::routes(['verify' => true]);
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('can:isAdmin')->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('verified')->middleware('can:isAdmin')->name('home');
 
-Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth'],function () {
+Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth','middleware'=>'verified'],function () {
     Route::get('migrate', [FrontController::class, 'migrate'])->middleware('can:isAdmin')->name('migrate');
     Route::get('dashboard', [GeneralController::class, 'dashboard'])->name('dashboard');
 
@@ -114,7 +114,8 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth'],function ()
     Route::post('devices/update_location/{id}', [DeviceController::class, 'update_location'])->middleware('can:isAdminOrUser')->name('devices.update_location');
     Route::delete('devices/destroy/{id}',[DeviceController::class, 'destroy'])->middleware('can:isAdminOrUser')->name('devices.destroy');
     Route::get('devices/location/{id}', [DeviceController::class, 'location'])->middleware('can:isAdminOrUser')->name('devices.location');
-    Route::get('devices/export/{from}/{to}/{devType}',[DeviceController::class, 'export'])->middleware('can:isAdminOrUser')->name('devices.export');
+    Route::get('devices/export/{id}',[DeviceController::class, 'export'])->middleware('can:isAdminOrUser')->name('devices.export');
+    Route::post('devices/exportToDatasheet', [DeviceController::class, 'exportToDatasheet'])->middleware('can:isAdminOrUser')->name('devices.exportToDatasheet');
 //    Route::post('devices/setLocation', [DeviceController::class, 'setLocation'])->middleware('can:isAdminOrUser')->name('devices.setLocation');
 
 
