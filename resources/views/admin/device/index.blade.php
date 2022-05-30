@@ -78,6 +78,7 @@
                             <a href="{{route('admin.devices.add_device_limit_values', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-chart-line"></i> </a>
                             <a title="Edit Location" href="{{route('admin.devices.location', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-location-arrow"></i> </a>
                             <a title="Show" id="d_{{$device->id}}" href="{{route('admin.devices.show', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-eye"></i> </a>
+                            <a title="export" id="d_{{$device->id}}" href="{{route('admin.devices.export', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-file-export"></i> </a>
 
                             <form method="POST" action="{{route('admin.devices.destroy', [$device->id])}}" class="d-inline" onsubmit="return confirm('{{__("message.Delete this type permanently?")}}')">
 
@@ -110,6 +111,7 @@
 
 @push('scripts')
     <script>
+
         $(document).ready(function () {
             const date = new Date();
             const offset = date.getTimezoneOffset()
