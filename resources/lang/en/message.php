@@ -36,7 +36,7 @@ return [
     'General Settings' => 'General Settings',
     'Logout' => 'Logout',
     'Copyright' => 'Copyright',
-    'DodoTik' => 'DodoTik' ,
+    'DodoTik' => 'DodoTik',
     'Ready to Leave?' => 'Ready to Leave?',
     'Select "Logout" below if you are ready to end your current session.' => 'Select "Logout" below if you are ready to end your current session.',
     'Management' => 'Management',
@@ -63,11 +63,21 @@ return [
     'add_new_devices' => 'Add New Device',
     'Account_Setting' => 'Account Setting',
     "Export" => "Export",
-
-
-
-
-
-
+    'From' => 'From',
+    'To' => 'To',
+    'Device Location' => 'Device Location',
+    'Longitude' => 'Longitude',
+    "Latitude" => "Latitude",
+    'Custom' => 'Custom',
+    'Month' => 'Month',
+    "Week" => "Week",
+    'This Day' => 'This Day',
+    'Edit Location' => 'Edit Location',
+    'Last Read' => 'Last Read',
+    'Last Danger Read' => 'Last Danger Read',
+    'max Danger Read' => 'max Danger Read',
+    'min Danger Read' => 'min Danger Read',
+    'Devices Locations' => 'Devices Locations',
+    'Devices Status' => 'Devices Status'
 
 ];

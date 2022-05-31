@@ -24,10 +24,12 @@ class ParametersDataExport implements FromCollection,WithHeadings
     */
     public function collection()
     {
-//        dd();
         $device = Device::findOrFail($this->devType);
-        $devPara =DeviceParametersValues::select('id','device_id','parameters','time_of_read')->where('device_id',$this->devType)->whereBetween('time_of_read', [date('Y-m-d',strtotime($this->from))." 00:00:00", date('Y-m-d',strtotime($this->to))." 23:59:59"])->get();
-//        dd(count($devPara));
+        $devPara =DeviceParametersValues::select('id','device_id','parameters','time_of_read')
+            ->where('device_id',$this->devType)
+            ->whereBetween('time_of_read', [date('Y-m-d',strtotime($this->from))." 00:00:00", date('Y-m-d',strtotime($this->to))." 23:59:59"])
+            ->get();
+
         foreach ($devPara as $para){
             $para->device_id = $device->device_id;
      }

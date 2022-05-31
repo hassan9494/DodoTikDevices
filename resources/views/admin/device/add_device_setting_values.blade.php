@@ -17,14 +17,10 @@
             <div class="form-group ml-5">
                 <label for="{{$set->name}}" class="col-sm-2 col-form-label">{{$set->name}} </label>
                 <div class="col-sm-9">
-                    {{-- <input type="text" class="form-control" id="title" placeholder="Title"> --}}
 
                     <input type="text" name="{{$set->name}}" placeholder="{{ $set->value}}" id="{{$set->name}}"
                            class="form-control "
                            value="{{ $set->pivot->value}}">
-{{--                    <div class="invalid-feedback">--}}
-{{--                        {{ $errors->first('name') }}--}}
-{{--                    </div>--}}
                 </div>
             </div>
             @endforeach
@@ -33,8 +29,6 @@
                     <div class="form-group ml-5">
                         <label for="{{$set->name}}" class="col-sm-2 col-form-label">{{$set->name}} </label>
                         <div class="col-sm-9">
-                            {{-- <input type="text" class="form-control" id="title" placeholder="Title"> --}}
-
                             <input type="text" name="{{$set->name}}" placeholder="{{ $set->value}}" id="{{$set->name}}"
                                    class="form-control "
                                    value="{{json_decode($device->deviceSetting->settings,true)[$set->name] }}">

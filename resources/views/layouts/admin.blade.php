@@ -51,9 +51,9 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.dashboard') }}">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.dashboard') }}" style="margin-bottom: 25px">
             <img height="170" src="{{ asset('admin/img/logoDodo.png')}}" class="attachment-medium size-medium" alt=""
-                 loading="lazy" srcset="{{ asset('admin/img/logoDodo.png')}}" sizes="(max-width: 200px) 100vw, 207px">
+                 loading="lazy" srcset="{{ asset('admin/img/logoDodo.png')}}" sizes="(max-width: 200px) 100vw, 207px" style="margin-top: 20px">
         </a>
 
         <!-- Divider -->

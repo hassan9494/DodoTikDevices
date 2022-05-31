@@ -34,7 +34,14 @@ class GeneralController extends Controller
         }
         $state = [];
         $status = "Offline";
+        $warning = [];
+        $lastMaxDanger = [];
+        $lastMinDanger = [];
+
         foreach ($devices as $key=>$device){
+            $warning[$key] = 0;
+            $lastMaxDanger[$key] = null;
+            $lastMinDanger[$key] = null;
             $parameters = $device->deviceParameters;
             $lastPara = DeviceParametersValues::where('device_id', $device->id)->orderBy('id', 'desc')->first();
             if (count($parameters) > 0) {
@@ -46,9 +53,29 @@ class GeneralController extends Controller
             }
             array_push($state,$status );
 
-        }
+            foreach ($device->deviceType->deviceParameters as $tPara) {
+                foreach ($parameters as $parameter) {
 
-        return view('admin.dashboard', compact('admin', 'devices','state'));
+                        if (isset($device->limitValues)) {
+                            if ($device->limitValues->min_warning == 1) {
+                                if (json_decode($parameter->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
+                                    $warning[$key] += 1;
+                                    $lastMinDanger[$key] = $parameter;
+                                }
+                            }
+                            if ($device->limitValues->max_warning == 1) {
+                                if (json_decode($parameter->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]) {
+                                    $warning[$key] += 1;
+                                    $lastMaxDanger[$key] = $parameter;
+                                }
+                            }
+                        }
+
+                }
+            }
+        }
+//        dd($lastMinDanger);
+        return view('admin.dashboard', compact('admin', 'devices','state','warning','lastMinDanger','lastMaxDanger'));
     }
 
     public function general()
@@ -113,9 +140,6 @@ class GeneralController extends Controller
 
             $general->favicon = $new_cover_path;
         }
-
-
-        // dd($general);
         if ($general->save()) {
 
             return redirect()->route('admin.general')->with('success', 'Data updated successfully');

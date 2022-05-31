@@ -135,28 +135,27 @@
                                     <a href="#" role="tab" data-rb-event-key="Custom"
                                        tabindex="3" aria-selected="false"
                                        class="nav-link py-2 px-4   nav-link {{$label == 2 ? "active" : ""}}"
-                                       id="custom">Custom</a></li>
+                                       id="custom">{{__('message.Custom')}}</a></li>
                                 <li class="nav-item nav-item">
                                     <a href="#" role="tab"
                                        data-rb-event-key="ThisMonth"
                                        tabindex="2" aria-selected="false"
                                        class="nav-link py-2 px-4   nav-link {{$label == 30 ? "active" : ""}}">This
-                                        Month</a>
+                                        {{__('message.Month')}} </a>
                                 </li>
                                 <li class="nav-item nav-item">
                                     <a href="#" role="tab"
                                        data-rb-event-key="ThisWeek"
                                        tabindex="1" aria-selected="false"
                                        class="nav-link py-2 px-4   nav-link {{$label == 7 ? "active" : ""}}">This
-                                        Week</a>
+                                        {{__('message.Week')}} </a>
                                 </li>
                                 <li class="nav-item nav-item">
                                     <a href="#" role="tab"
                                        data-rb-event-key="ThisDay"
                                        aria-selected="true"
                                        tabindex="0"
-                                       class="nav-link py-2 px-4  nav-link {{$label == 1 ? "active" : ""}} ">This
-                                        Day</a></li>
+                                       class="nav-link py-2 px-4  nav-link {{$label == 1 ? "active" : ""}} ">{{__('message.This Day')}}</a></li>
                             </ul>
                         </div>
 
@@ -167,14 +166,14 @@
                         <div class="col-md-8">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label for="from" class="form-label">From</label>
+                                    <label for="from" class="form-label">{{__('message.From')}}</label>
                                     <input id="from" min="{{\Carbon\Carbon::now()->subMonth()->format("Y-m-d")}}"
                                            max="{{\Carbon\Carbon::now()->format("Y-m-d")}}" type="date" name="from"
                                            class="form-control"
                                            value="{{\Carbon\Carbon::now()->format("Y-m-01")}}">
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="to" class="form-label">To</label>
+                                    <label for="to" class="form-label">{{__('message.To')}}</label>
                                     <input id="to" min="{{\Carbon\Carbon::now()->subMonth()->format("Y-m-d")}}"
                                            max="{{\Carbon\Carbon::now()->format("Y-m-d")}}" type="date" name="to"
                                            class="form-control"
@@ -268,7 +267,7 @@
                     <div class="card-header border-0 pt-5">
                         <h3 class="card-title align-items-start flex-column">
                             <span
-                                class="card-label font-weight-bolder text-dark">Device Location</span>
+                                class="card-label font-weight-bolder text-dark">{{__('message.Device Location')}}</span>
                         </h3>
 
                         <div class="card-toolbar">
@@ -278,7 +277,7 @@
                                     <a href="{{route('admin.devices.location', [$device->id])}}" role="tab"
                                        data-rb-event-key="Location"
                                        aria-selected="true"
-                                       class="nav-link py-2 px-4  nav-link active ">Edit Location</a></li>
+                                       class="nav-link py-2 px-4  nav-link active ">{{__('message.Edit Location')}}</a></li>
                             </ul>
                         </div>
 
@@ -295,7 +294,7 @@
                                     <pre id="coordinates" class="coordinates"></pre>
                                     @if(count($xValues) > 0)
                                         <div id="state-legend" class="legend" style="display: none">
-                                            <h4>Last Read</h4>
+                                            <h4>{{__('message.Last Read')}}</h4>
                                             @foreach($device->deviceType->deviceParameters as $key=>$parameter)
                                                 <div><span
                                                         style="background-color: #{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}">
@@ -308,8 +307,8 @@
                                     @endif
                                     @if(count($lastMaxDanger) > 0 || count($lastMinDanger) > 0)
                                         <div id="state-legend-2" class="legend-2" style="display: none">
-                                            <h4>Last Danger Read</h4>
-                                            <h5>max Danger Read</h5>
+                                            <h4>{{__('message.Last Danger Read')}}</h4>
+                                            <h5>{{__('message.max Danger Read')}}</h5>
                                             @if(count($lastMaxDanger) > 0)
                                                 @foreach($lastMaxDanger as $key4=>$parametere)
                                                     <div>
@@ -320,7 +319,7 @@
                                                     </div>
                                                 @endforeach
                                             @endif
-                                            <h5>min Danger Read</h5>
+                                            <h5>{{__('message.min Danger Read')}}</h5>
                                             @if(count($lastMinDanger) > 0)
                                                 @foreach($lastMinDanger as $key1=>$parameter1)
                                                     <div><span

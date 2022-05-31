@@ -23,15 +23,13 @@ class DeviceController extends Controller
     public function index()
     {
         $devices = Device::all();
-        $x = 'test';
-        return view('admin.device.index', compact('devices', 'x'));
+        return view('admin.device.index', compact('devices'));
     }
 
 
     public function add()
     {
         $devices = Device::all();
-//        dd($devices);
         return view('admin.device.add', compact('devices'));
     }
 
@@ -129,7 +127,6 @@ class DeviceController extends Controller
         $lastMinDanger = [];
         $lastMaxDanger = [];
         $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
-//        dd(count($parameters));
         if (count($parameters) > 0) {
             if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i <= $device->time_between_two_read) {
                 $status = "Online";
@@ -143,7 +140,6 @@ class DeviceController extends Controller
 
             }
             $warning = 1;
-
             $minDanger = [];
             $maxDanger = [];
             foreach ($device_type->deviceParameters as $tPara) {
@@ -155,49 +151,39 @@ class DeviceController extends Controller
                                 if (json_decode($parameter->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
                                     $warning += 1;
 //                                    $minDanger[0] = "$tPara->name : ".json_decode($parameter->parameters, true)[$tPara->code]." at : ".date("m/d/Y h:i", strtotime($parameter->time_of_read))  ;
-                                    $minDanger[0] = "$tPara->name : ".json_decode($parameter->parameters, true)[$tPara->code];
+                                    $minDanger[0] = "$tPara->name : " . json_decode($parameter->parameters, true)[$tPara->code];
                                 }
                             }
                             if ($device->limitValues->max_warning == 1) {
                                 if (json_decode($parameter->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]) {
                                     $warning += 1;
 //                                    $maxDanger[0] = "$tPara->name :". json_decode($parameter->parameters, true)[$tPara->code]  ." at : ".date("m/d/Y h:i ", strtotime($parameter->time_of_read))  ;
-                                    $maxDanger[0] = "$tPara->name :". json_decode($parameter->parameters, true)[$tPara->code];
+                                    $maxDanger[0] = "$tPara->name :" . json_decode($parameter->parameters, true)[$tPara->code];
                                 }
                             }
-
-
                         }
-//                        dd($maxDanger);
-
                     }
-
                 }
-                if (count($minDanger) > 0){
+                if (count($minDanger) > 0) {
 
-                    array_push($lastMinDanger,$minDanger);
+                    array_push($lastMinDanger, $minDanger);
                     $minDanger = [];
                 }
-                if (count($maxDanger) > 0){
-                    array_push($lastMaxDanger,$maxDanger);
+                if (count($maxDanger) > 0) {
+                    array_push($lastMaxDanger, $maxDanger);
                     $maxDanger = [];
                 }
-
-
                 array_push($paraValues, $yValues);
                 $yValues = [];
-
             }
-//            dd($lastMinDanger);
             $label = 1;
         } else {
             $warning = 1;
             $status = "Offline";
             $label = 1;
         }
-//        dd($lastMaxDanger);
 
-        return view('admin.device.show', compact('lastMaxDanger','lastMinDanger','device', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
+        return view('admin.device.show', compact('lastMaxDanger', 'lastMinDanger', 'device', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
     }
 
 
@@ -228,15 +214,10 @@ class DeviceController extends Controller
                 $status = "Offline";
             }
             foreach ($parameters as $parameter) {
-//dd(getDate(strtotime($parameter->time_of_read))['minutes']);
-//            dd(abs(strtotime($now) - strtotime($parameter->time_of_read))/(60*60));
-//            if ( abs(strtotime($now) - strtotime($parameter->time_of_read))/(60*60) < 12){
                 if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d <= $from && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d >= $to) {
                     array_push($xValues, date(DATE_ISO8601, strtotime($parameter->time_of_read)));
                 }
-
             }
-//        dd($xValues);
             $warning = 1;
             foreach ($device_type->deviceParameters as $tPara) {
                 foreach ($parameters as $parameter) {
@@ -253,24 +234,18 @@ class DeviceController extends Controller
                                     $warning += 1;
                                 }
                             }
-
                         }
                     }
-
                 }
                 array_push($paraValues, $yValues);
                 $yValues = [];
-
             }
         } else {
             $warning = 1;
             $status = "Offline";
             $label = 1;
         }
-//        dd($paraValues);
         return array($paraValues, $xValues, $device, $warning, $status, $label);
-        return response()->json(['success' => 'Data is successfully added'], $xValues, $paraValues, $yValues);
-//        return view('admin.device.show', compact('device', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
     }
 
     /**
@@ -305,8 +280,6 @@ class DeviceController extends Controller
                 } else {
                     $test[$setting->code] = "0";
                 }
-
-//                dd($setting);
             }
         } else {
             $devSet = new DeviceSettingPerDevice();
@@ -321,7 +294,6 @@ class DeviceController extends Controller
         }
         $devSet->settings = json_encode($test);
         $devSet->save();
-//        dd($test);
 
         return redirect()->route('admin.devices.show', $id)->with('success', 'Data updated successfully');
 
@@ -352,16 +324,13 @@ class DeviceController extends Controller
     public function add_limit_values(Request $request, $id)
     {
         $device = Device::findOrFail($id);
-//dd($request);
         $validate = [];
         foreach ($device->deviceType->deviceParameters as $limit) {
             $validate[$limit->code . "_max"] = "required|numeric";
             $validate[$limit->code . "_min"] = "required|numeric";
         }
-//        dd($request);
         \Validator::make($request->all(), $validate)->validate();
         $devLim = LimitValues::where('device_id', $id)->first();
-//        dd($devLim);
         $min = [];
         $max = [];
         if ($devLim != null) {
@@ -373,8 +342,6 @@ class DeviceController extends Controller
                     $min[$para->code] = "0";
                     $max[$para->code] = "0";
                 }
-
-//                dd($setting);
             }
         } else {
             $devLim = new LimitValues();
@@ -402,7 +369,6 @@ class DeviceController extends Controller
         $devLim->min_value = json_encode($min);
         $devLim->max_value = json_encode($max);
         $devLim->save();
-//        dd($test);
 
         return redirect()->route('admin.devices', $id)->with('success', 'Data updated successfully');
 
@@ -413,7 +379,7 @@ class DeviceController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function edit($id)
     {
@@ -431,7 +397,6 @@ class DeviceController extends Controller
      */
     public function update(DeviceRequest $request, $id)
     {
-//        dd($request);
         $device = Device::findOrFail($id);
         $device->name = $request->name;
         $device->device_id = $request->device_id;
@@ -443,12 +408,12 @@ class DeviceController extends Controller
         $device->latitude = $request->latitude;
         if ($device->save()) {
             if ($user->role == 'Administrator') {
+
                 return redirect()->route('admin.devices')->with('success', 'Data added successfully');
             } else {
+
                 return redirect()->route('admin.devices.get_devices')->with('success', 'Data added successfully');
             }
-
-
         } else {
 
             return redirect()->route('admin.devices.edit')->with('error', 'Data failed to add');
@@ -472,7 +437,6 @@ class DeviceController extends Controller
      */
     public function update_location(Request $request, $id)
     {
-//        dd($request);
         $device = Device::findOrFail($id);
         $device->longitude = $request->longitude;
         $device->latitude = $request->latitude;
@@ -506,7 +470,7 @@ class DeviceController extends Controller
     {
         $device = Device::findOrFail($id);
         return view('admin.device.export', compact('device'));
-        return Excel::download(new ParametersDataExport($from,$to,$devType), 'parameter.xlsx');
+        return Excel::download(new ParametersDataExport($from, $to, $devType), 'parameter.xlsx');
     }
 
     public function exportToDatasheet(Request $request)
@@ -515,12 +479,10 @@ class DeviceController extends Controller
             'from' => 'required',
             'to' => 'required'
         ];
-
-//        dd($request);
         \Validator::make($request->all(), $validate)->validate();
         $from = $request->from;
         $to = $request->to;
         $dev = $request->id;
-        return Excel::download(new ParametersDataExport($from,$to,$dev), 'parameter.xlsx');
+        return Excel::download(new ParametersDataExport($from, $to, $dev), 'parameter.xlsx');
     }
 }
