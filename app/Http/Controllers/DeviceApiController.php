@@ -26,12 +26,9 @@ class DeviceApiController extends Controller
 
     public function store( Request $request)
     {
-
         $para = $request->getContent();
         $testsApi = new TestApi();
-
         $testsApi->settings = json_encode($para);
-//        dd($testsApi->settings);
 //        $testsApi->save();
         $test = explode(',', $para);
         $device = Device::where('device_id', $test[0])->first();
@@ -43,10 +40,8 @@ class DeviceApiController extends Controller
                 $parameters->parameters = json_encode($jsonParameters);
                 $parameters->device_id = $device->id;
                 $parameters->time_of_read = last($test);
-
             }
             $parameters->save();
-
 
             $response = '##';
             if ($device->deviceSetting != null) {
@@ -66,7 +61,6 @@ class DeviceApiController extends Controller
         } else {
             return response()->json('device id is not exist', 404);
         }
-
     }
 
     public function read( Request $request)
@@ -74,9 +68,7 @@ class DeviceApiController extends Controller
 
         $para = $request->getContent();
         $testsApi = new TestApi();
-
         $testsApi->settings = json_encode($para);
-//        dd($testsApi->settings);
 //        $testsApi->save();
         if (isset(json_decode($para)->data) ){
             $dev_id_base64= json_decode($para)->devEUI;
@@ -105,7 +97,7 @@ class DeviceApiController extends Controller
                 $gaz = substr($finaldata, 12, 8);
                 $gaz_dec = hexdec( $gaz);
                 $last_gaz = $gaz_dec / 1000;
-//                dd($last_gaz);
+
                 $type = $device->deviceType;
                 foreach ($type->deviceParameters as $key => $parameter) {
                     $parameters = new DeviceParametersValues();
@@ -118,17 +110,13 @@ class DeviceApiController extends Controller
                     }elseif ($parameter->code == "Gas_Resistance"){
                         $jsonParameters[$parameter->code] = $last_gaz;
                     }
-
                     $parameters->parameters = json_encode($jsonParameters);
                     $parameters->device_id = $device->id;
                     $parameters->time_of_read = Carbon::now();
-
                 }
                 $parameters->save();
             }
             if ($device != null) {
-
-
                 $response = '##';
                 if ($device->deviceSetting != null) {
                     $x = json_decode($device->deviceSetting->settings, true);
@@ -150,14 +138,6 @@ class DeviceApiController extends Controller
         }else{
             return response()->json('No data was sent', 404);
         }
-
-//        dd($device->name);
-//        dd(json_decode($para)->devEUI);
-////        $testsApi->save();
-//        $test = explode(',', $para);
-//        $device = Device::where('device_id', $test[0])->first();
-
-
     }
 
     public function update(Request $request, $id)

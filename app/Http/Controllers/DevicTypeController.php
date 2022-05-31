@@ -14,7 +14,7 @@ class DevicTypeController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
@@ -42,7 +42,6 @@ class DevicTypeController extends Controller
      */
     public function store(DeviceTypesRequest $request)
     {
-//        dd($request);
         $type = new DeviceType();
         $type->name = $request->name;
         if ($type->save()) {
@@ -67,9 +66,6 @@ class DevicTypeController extends Controller
     public function add_default_values($typeid)
     {
         $type = DeviceType::findOrFail($typeid);
-//        $typeSetting = DeviceTypeSetting::where('device_settings_id',$settingid)->where('device_type_id',$typeid)->first();
-
-
         $parameters = DeviceParameters::all();
         $settings = DeviceSettings::all();
         return view('admin.device_types.add_default_values',compact('type','parameters','settings'));
@@ -92,7 +88,6 @@ class DevicTypeController extends Controller
             }else{
                 $typeSet->value = 0;
             }
-
             $typeSet->save();
         }
         return redirect()->route('admin.device_types')->with('success', 'Data updated successfully');
@@ -137,7 +132,6 @@ class DevicTypeController extends Controller
         $type = DeviceType::findOrFail($id);
         $type->name = $request->name;
         if ( $type->save()) {
-
             $type->deviceSettings()->sync(request('settings'));
             $type->deviceParameters()->sync(request('parameters'));
 
@@ -159,7 +153,6 @@ class DevicTypeController extends Controller
     public function destroy($id)
     {
         $type = DeviceType::findOrFail($id);
-
         $type->delete();
         $type->deviceSettings()->detach();
         $type->deviceParameters()->detach();

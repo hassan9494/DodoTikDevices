@@ -67,6 +67,8 @@
                             <a href="{{route('admin.devices.add_device_limit_values', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-chart-line"></i> </a>
                             <a title="Edit Location" href="{{route('admin.devices.location', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-location-arrow"></i> </a>
                             <a href="{{route('admin.devices.show', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-eye"></i> </a>
+                            <a title="Export" id="d_{{$device->id}}" href="{{route('admin.devices.export', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-file-export"></i> </a>
+
                             <form method="POST" action="{{route('admin.devices.remove_device', [$device->id])}}" class="d-inline" onsubmit="return confirm('{{__("message.are you want to remove this device from you")}}')">
 
                                 @csrf

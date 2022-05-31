@@ -52,7 +52,7 @@
                     <div class="card-header border-0 pt-5">
                         <h3 class="card-title align-items-start flex-column">
                             <span
-                                class="card-label font-weight-bolder text-dark">Device Location</span>
+                                class="card-label font-weight-bolder text-dark">{{__('message.Device Location')}}</span>
                         </h3>
 
 
@@ -68,12 +68,12 @@
                                 <div class="row">
                                     <div class="col-md-1"></div>
                                     <div class="col-md-5">
-                                        <label for="longitude">Longitude :</label>
+                                        <label for="longitude">{{__('message.Longitude')}} :</label>
                                         <input type="text" class="form-control" name="longitude" id="longitude"
                                                value="{{$device->longitude}}">
                                     </div>
                                     <div class="col-md-5">
-                                        <label for="latitude">Latitude :</label>
+                                        <label for="latitude">{{__('message.Latitude')}} :</label>
                                         <input type="text" class="form-control" name="latitude" id="latitude"
                                                value="{{$device->latitude}}">
                                     </div>

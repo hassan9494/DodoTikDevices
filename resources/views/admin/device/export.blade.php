@@ -48,7 +48,7 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-4">
-                        <label for="from" class="form-label">From</label>
+                        <label for="from" class="form-label">{{__('message.From')}}</label>
                         <input id="from"  type="date" name="from"
                                class="form-control {{$errors->first('from') ? "is-invalid" : "" }} "
                                value="{{old('from')}}">
@@ -57,7 +57,7 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <label for="to" class="form-label">To</label>
+                        <label for="to" class="form-label">{{__('message.To')}}</label>
                         <input id="to"  type="date" name="to"
                                class="form-control {{$errors->first('to') ? "is-invalid" : "" }} "
                                value="{{old('to')}}">
@@ -66,7 +66,6 @@
                         </div>
                     </div>
                     <div class="col-md-12" style="margin-top: 15px">
-                        <label for="submit" class="form-label">.</label>
                         <input id="submit" name="id" type="hidden" value="{{$device->id}}">
 
                         <button type="submit" class="btn btn-info">{{__('message.Export')}}</button>
