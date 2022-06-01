@@ -26,6 +26,7 @@ class DeviceParametersRequest extends FormRequest
         return [
             "name" => "required",
             "code" => "required",
+            "unit" => "required"
         ];
     }
 }

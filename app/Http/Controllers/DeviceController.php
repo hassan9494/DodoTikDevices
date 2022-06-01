@@ -140,50 +140,41 @@ class DeviceController extends Controller
 
             }
             $warning = 1;
-            $minDanger = [];
-            $maxDanger = [];
-            foreach ($device_type->deviceParameters as $tPara) {
+            $dangerColor = [];
+            foreach ($device_type->deviceParameters as $index=>$tPara) {
+                $dangerColor[$index] = '#000000';
                 foreach ($parameters as $parameter) {
                     if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0) {
                         array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
-                        if (isset($device->limitValues)) {
-                            if ($device->limitValues->min_warning == 1) {
-                                if (json_decode($parameter->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
-                                    $warning += 1;
-//                                    $minDanger[0] = "$tPara->name : ".json_decode($parameter->parameters, true)[$tPara->code]." at : ".date("m/d/Y h:i", strtotime($parameter->time_of_read))  ;
-                                    $minDanger[0] = "$tPara->name : " . json_decode($parameter->parameters, true)[$tPara->code];
-                                }
-                            }
-                            if ($device->limitValues->max_warning == 1) {
-                                if (json_decode($parameter->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]) {
-                                    $warning += 1;
-//                                    $maxDanger[0] = "$tPara->name :". json_decode($parameter->parameters, true)[$tPara->code]  ." at : ".date("m/d/Y h:i ", strtotime($parameter->time_of_read))  ;
-                                    $maxDanger[0] = "$tPara->name :" . json_decode($parameter->parameters, true)[$tPara->code];
-                                }
-                            }
-                        }
                     }
-                }
-                if (count($minDanger) > 0) {
-
-                    array_push($lastMinDanger, $minDanger);
-                    $minDanger = [];
-                }
-                if (count($maxDanger) > 0) {
-                    array_push($lastMaxDanger, $maxDanger);
-                    $maxDanger = [];
                 }
                 array_push($paraValues, $yValues);
                 $yValues = [];
+                if (isset($device->limitValues)) {
+                    if ($device->limitValues->min_warning == 1) {
+                        if (json_decode($parameters->last()->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
+                            $warning += 1;
+                            $dangerColor[$index] = 'red';
+                        }
+                    }
+                    if ($device->limitValues->max_warning == 1) {
+                        if (json_decode($parameters->last()->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]) {
+                            $warning += 1;
+                            $dangerColor[$index] = 'red';
+                        }
+                    }
+                }
             }
+
+
             $label = 1;
         } else {
             $warning = 1;
             $status = "Offline";
             $label = 1;
         }
-
-        return view('admin.device.show', compact('lastMaxDanger', 'lastMinDanger', 'device', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
+//dd($dangerColor);
+        return view('admin.device.show', compact( 'device','dangerColor', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
     }
 
 

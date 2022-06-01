@@ -43,6 +43,8 @@
 
                         <th>{{__('message.Code')}}</th>
 
+                        <th>{{__('message.Unit')}}</th>
+
                         <th>{{__('message.Option')}}</th>
 
                     </tr>
@@ -63,6 +65,7 @@
                         <td>{{ ++$no }}</td>
                         <td>{{ $parameter->name }}</td>
                         <td>{{ $parameter->code }}</td>
+                        <td>{{ $parameter->unit }}</td>
                         <td>
                             <a href="{{route('admin.device_parameters.edit', [$parameter->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-edit"></i> </a>
 
