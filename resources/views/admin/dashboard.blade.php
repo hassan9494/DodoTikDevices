@@ -141,8 +141,8 @@
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
-            center:  [28.981146402944574,41.01234595291763],
-            zoom: 9
+            center:  [{{$long}},{{$lat}}],
+            zoom: 8
         });
 
         map.on('load', () => {

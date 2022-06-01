@@ -20,19 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b9c3d3c-a351-4ab6-90ca-e38cb16d2c4d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Exports/ParametersDataExport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exports/ParametersDataExport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceParametersController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceParametersController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/GeneralController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/GeneralController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/DeviceParametersRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/DeviceParametersRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/DeviceParameters.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/DeviceParameters.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/en/message.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/en/message.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/dashboard.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/device/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device/show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_parameters/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_parameters/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_parameters/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_parameters/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_parameters/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_parameters/index.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -289,7 +277,7 @@
       <workItem from="1653567655733" duration="4656000" />
       <workItem from="1653734269827" duration="3597000" />
       <workItem from="1653809947090" duration="12208000" />
-      <workItem from="1653915987835" duration="40312000" />
+      <workItem from="1653915987835" duration="40693000" />
     </task>
     <servers />
   </component>

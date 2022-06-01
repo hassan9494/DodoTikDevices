@@ -37,8 +37,11 @@ class GeneralController extends Controller
         $warning = [];
         $lastMinDanger = [];
         $lastdangerRead = [];
-
+        $long = 0;
+        $lat = 0;
         foreach ($devices as $key=>$device){
+            $long += $device->longitude;
+            $lat += $device->latitude;
             $warning[$key] = 0;
             $lastMinDanger[$key] = null;
             $lastdangerRead[$key] = ["#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000",];
@@ -76,8 +79,10 @@ class GeneralController extends Controller
 
             }
         }
-//dd($lastdangerRead);
-        return view('admin.dashboard', compact('admin','lastdangerRead', 'devices','state','warning','lastMinDanger'));
+        $long = $long / count($devices);
+        $lat = $lat / count($devices);
+//dd($lat);
+        return view('admin.dashboard', compact('admin','long','lat','lastdangerRead', 'devices','state','warning','lastMinDanger'));
     }
 
     public function general()
