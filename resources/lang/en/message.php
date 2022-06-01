@@ -78,6 +78,7 @@ return [
     'max Danger Read' => 'max Danger Read',
     'min Danger Read' => 'min Danger Read',
     'Devices Locations' => 'Devices Locations',
-    'Devices Status' => 'Devices Status'
+    'Devices Status' => 'Devices Status',
+    'Unit' => 'Unit'
 
 ];

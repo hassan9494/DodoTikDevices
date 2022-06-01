@@ -62,7 +62,7 @@
             text-align: left;
         }
 
-        .legend div span {
+        .legend div p {
             border-radius: 50%;
             display: inline-block;
             height: 10px;
@@ -296,39 +296,11 @@
                                         <div id="state-legend" class="legend" style="display: none">
                                             <h4>{{__('message.Last Read')}}</h4>
                                             @foreach($device->deviceType->deviceParameters as $key=>$parameter)
-                                                <div><span
-                                                        style="background-color: #{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}">
-
-                                            </span>{{$parameter->name}}
-                                                    :{{$paraValues[$key][count($paraValues[$key]) - 1]}}
+                                                <div><p style=""></p>
+                                                    <span style="color: {{$dangerColor[$key]}}">{{$parameter->name}}</span>
+                                                    :<span style="color: {{$dangerColor[$key]}}">{{$paraValues[$key][count($paraValues[$key]) - 1]}}</span>
                                                 </div>
                                             @endforeach
-                                        </div>
-                                    @endif
-                                    @if(count($lastMaxDanger) > 0 || count($lastMinDanger) > 0)
-                                        <div id="state-legend-2" class="legend-2" style="display: none">
-                                            <h4>{{__('message.Last Danger Read')}}</h4>
-                                            <h5>{{__('message.max Danger Read')}}</h5>
-                                            @if(count($lastMaxDanger) > 0)
-                                                @foreach($lastMaxDanger as $key4=>$parametere)
-                                                    <div>
-                                                    <span
-                                                        style="background-color: #{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}">
-
-                                                    </span>{{$parametere[0]}}
-                                                    </div>
-                                                @endforeach
-                                            @endif
-                                            <h5>{{__('message.min Danger Read')}}</h5>
-                                            @if(count($lastMinDanger) > 0)
-                                                @foreach($lastMinDanger as $key1=>$parameter1)
-                                                    <div><span
-                                                            style="background-color: #{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}{{str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT)}}">
-
-                                            </span>{{$parameter1[0]}}
-                                                    </div>
-                                                @endforeach
-                                            @endif
                                         </div>
                                     @endif
                                 </div>
@@ -387,7 +359,7 @@
                                     @foreach($device->deviceType->deviceParameters as $key=>$parameter)
 
                                 {
-                                    name: "{{$parameter->name}} (" + units[{{$key}}] + ")",
+                                    name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
                                     data: data[0][{{$key}}]
                                 },
                                 @endforeach],
@@ -449,7 +421,7 @@
                                     @foreach($device->deviceType->deviceParameters as $key=>$parameter)
 
                                 {
-                                    name: "{{$parameter->name}} (" + units[{{$key}}] + ")",
+                                    name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
                                     data: data[0][{{$key}}]
                                 },
                                 @endforeach],
@@ -488,19 +460,7 @@
 
 
             @foreach($device->deviceType->deviceParameters as $key=>$parameter)
-            @if ($parameter->code == "Humidity"){
-            units.push("%")
-        }
-            @elseif($parameter->code == "Temperature"){
-            units.push("°")
-        }
-            @elseif($parameter->code == "Bat_v"){
-            units.push("volt")
-        }
-            @elseif($parameter->code == "Gas_Resistance"){
-            units.push("ohm")
-        }
-        @endif
+            units.push("{{$parameter->unit}}")
 
         @endforeach
         var labels = {{$label}}
@@ -509,7 +469,7 @@
                     @foreach($device->deviceType->deviceParameters as $key=>$parameter)
 
                 {
-                    name: "{{$parameter->name}} (" + units[{{$key}}] + ")",
+                    name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
                     data: yValues[{{$key}}]
                 },
                 @endforeach ],

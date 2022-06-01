@@ -13,6 +13,14 @@
             width: 100%;
             height: 400px;
         }
+
+        .legend-2 div span {
+            border-radius: 50%;
+            display: inline-block;
+            height: 10px;
+            margin-right: 5px;
+            width: 10px;
+        }
     </style>
     <style>
         .mapboxgl-popup {
@@ -126,12 +134,15 @@
 {{--        @endforeach--}}
 {{--    </script>--}}
     <script>
+        var countOfDevice = {{count($devices)}}
+            console.log(countOfDevice)
+
         mapboxgl.accessToken = 'pk.eyJ1Ijoic2FoYWIyMiIsImEiOiJja3Zud2NjeG03cGk1MnBxd3NrMm5kaDd4In0.vsQXgdGOH8KQ91g4rHkvUA';
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
-            center: [{{$devices[1]->longitude}}, {{$devices[1]->latitude}}],
-            zoom: 10
+            center:  [28.981146402944574,41.01234595291763],
+            zoom: 9
         });
 
         map.on('load', () => {
@@ -147,8 +158,24 @@
                             'type': 'Feature',
                             'properties': {
                                 'description':warning == 0 ?
-                                    '<strong>Last Read</strong><p>{{count($device->deviceParameters) > 0 ? $device->deviceParameters->last()->parameters . " at " .$device->deviceParameters->last()->time_of_read: 'No Data'}}</p>'
-                                    : '<strong>Last Danger Max Read</strong><p>{{$lastMaxDanger[$key] != null ? $lastMaxDanger[$key]->parameters . " at " .$lastMaxDanger[$key]->time_of_read: 'No Danger Data'}}</p><strong>Last Danger Min Read</strong><p>{{$lastMinDanger[$key] != null ? $lastMinDanger[$key]->parameters . " at " .$lastMinDanger[$key]->time_of_read: 'No Danger Data'}}</p>'
+                                    '<div id="state-legend" class="legend">' +
+                                    '<h4 style="color : #000000">{{__('message.Last Read')}}</h4>'+
+                                    '<h5>{{$device->name}}</h5>'+
+                                    @foreach($device->deviceType->deviceParameters as $key1=>$parameter)
+                                    '<div><span ></span>{{$parameter->name}}'+
+                                    ':{{count($device->deviceParameters) > 0 ? json_decode($device->deviceParameters->last()->parameters, true)[$parameter->code]. " (". $parameter->unit .") " : "No Data"}}'+
+                                     '</div>' +
+                                    @endforeach
+                                    '</div>' :
+                                    '<div>' +
+                                    '<h4 style="color : #000000">{{__('message.Last Read')}}</h4>'+
+                                    '<h5>{{$device->name}}</h5>'+
+                                    @foreach($device->deviceType->deviceParameters as $key2=>$parameter)
+                                        '<div><span style ="color:{{$lastdangerRead[$key][$key2]}}!important">{{$parameter->name}}</span>'+
+                                    ':<span style ="color:{{$lastdangerRead[$key][$key2]}}!important">{{$lastMinDanger[$key] != null ? json_decode($lastMinDanger[$key]->parameters, true)[$parameter->code]. " (". $parameter->unit .") " : "No Data"}}</span>'+
+                                    '</div>' +
+                                    @endforeach
+                                        '</div>'
                             },
                             'geometry': {
                                 'type': 'Point',

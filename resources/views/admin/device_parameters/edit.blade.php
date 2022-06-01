@@ -35,6 +35,17 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group col-md-6">
+                <label for="unit" class="col-sm-2 col-form-label">{{__('message.Unit')}} </label>
+                <div class="col-sm-9">
+                    <input type="text" name="unit" placeholder="unit" id="unit"
+                           class="form-control {{$errors->first('unit') ? "is-invalid" : "" }} "
+                           value="{{old('unit') ? old('unit') : $parameter->unit}}">
+                    <div class="invalid-feedback">
+                        {{ $errors->first('unit') }}
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="form-group col-md-12">
             <div class="col-sm-3">

@@ -40,6 +40,7 @@ class DeviceParametersController extends Controller
         $parameter = new DeviceParameters();
         $parameter->name = $request->name;
         $parameter->code = $request->code;
+        $parameter->unit = $request->unit;
         if ($parameter->save()) {
             return redirect()->route('admin.device_parameters')->with('success', 'Data added successfully');
         }else {
@@ -84,6 +85,7 @@ class DeviceParametersController extends Controller
         $parameter = DeviceParameters::findOrFail($id);
         $parameter->name = $request->name;
         $parameter->code = $request->code;
+        $parameter->unit = $request->unit;
         if ( $parameter->save()) {
 
             return redirect()->route('admin.device_parameters')->with('success', 'Data updated successfully');

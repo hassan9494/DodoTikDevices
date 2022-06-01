@@ -16,7 +16,7 @@ class DeviceParameters extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'code'
+        'name', 'code','unit'
     ];
 
     protected $guarded=[];
