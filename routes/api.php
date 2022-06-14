@@ -41,6 +41,7 @@ Route::get('devices', [DeviceApiController::class ,'index']);
 Route::get('show/{id}', [DeviceApiController::class ,'show']);
 Route::Post('create', [DeviceApiController::class ,'store']);
 Route::Post('read', [DeviceApiController::class ,'read']);
+Route::Post('read1', [DeviceApiController::class ,'read1']);
 Route::put('update/{id}', [DeviceApiController::class ,'update']);
 Route::delete('delete/{id}', [DeviceApiController::class ,'delete']);
 

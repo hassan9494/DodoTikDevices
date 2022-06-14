@@ -115,24 +115,6 @@
 
 
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
-{{--    <script>--}}
-{{--        mapboxgl.accessToken = 'pk.eyJ1Ijoic2FoYWIyMiIsImEiOiJja3Zud2NjeG03cGk1MnBxd3NrMm5kaDd4In0.vsQXgdGOH8KQ91g4rHkvUA';--}}
-{{--        const map = new mapboxgl.Map({--}}
-{{--            container: 'map', // container ID--}}
-{{--            style: 'mapbox://styles/mapbox/streets-v11', // style URL--}}
-{{--            center: [0, 0], // starting position [lng, lat]--}}
-{{--            zoom: 1 // starting zoom--}}
-{{--        });--}}
-
-{{--        @foreach($devices as $key=>$device)--}}
-{{--        const marker_{{$device->device_id}} =--}}
-{{--        new mapboxgl.Marker({--}}
-{{--            draggable: false--}}
-{{--        })--}}
-{{--            .setLngLat([{{$device->longitude}}, {{$device->latitude}}])--}}
-{{--            .addTo(map);--}}
-{{--        @endforeach--}}
-{{--    </script>--}}
     <script>
         var countOfDevice = {{count($devices)}}
             console.log(countOfDevice)

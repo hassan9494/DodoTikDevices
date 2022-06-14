@@ -79,6 +79,10 @@ return [
     'min Danger Read' => 'min Danger Read',
     'Devices Locations' => 'Devices Locations',
     'Devices Status' => 'Devices Status',
-    'Unit' => 'Unit'
+    'Unit' => 'Unit',
+    'Device Settings' => 'Device Settings',
+    'Device Parameters Order' => 'Device Parameters Order',
+    'Device Parameters Length' => 'Device Parameters Length',
+    'Device Parameters Rate' => 'Device Parameters Rate'
 
 ];

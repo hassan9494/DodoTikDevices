@@ -39,6 +39,6 @@ class DeviceType extends Model
 
     public function deviceParameters()
     {
-        return $this->belongsToMany(DeviceParameters::class);
+        return $this->belongsToMany(DeviceParameters::class)->withPivot('order','length','rate');
     }
 }
