@@ -50,7 +50,7 @@
                     @foreach ($type->deviceSettings as $sett)
                         <option selected value="{{ $sett->id }}">{{ $sett->name }}</option>
                     @endforeach
-                    @foreach ($settings as $setting)
+                    @foreach ($devSettings as $setting)
                         <option value="{{ $setting->id }}">{{ $setting->name }}</option>
                     @endforeach
                 </select>

@@ -93,7 +93,7 @@
                 <label for="settings" class="col-sm-2 col-form-label">{{__('message.settings')}}</label>
                 <div class="col-sm-9">
                     <select name='settings[]' class="form-control {{$errors->first('settings') ? "is-invalid" : "" }} select2" id="settings" multiple>
-                        @foreach ($settings as $setting)
+                        @foreach ($devSettings as $setting)
                             <option value="{{ $setting->id }}">{{ $setting->name }}</option>
                         @endforeach
                     </select>
@@ -113,7 +113,28 @@
 
 @push('scripts')
 
+
+        <script>
+        $(document).ready(function () {
+            $('#parameters').select2({
+                placeholder: "Choose Some parameters"
+            });
+        });
+        $(function () {
+            $('.selectpicker').selectpicker();
+        });
+    </script>
     <script>
+        $(document).ready(function () {
+            $('#settings').select2({
+                placeholder: "Choose Some settings"
+            });
+        });
+        $(function () {
+            $('.selectpicker').selectpicker();
+        });
+    </script>
+        <script>
         // Prepare the preview for profile picture
         $("#wizard-picture").change(function () {
             readURL(this);

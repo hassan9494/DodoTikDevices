@@ -2,20 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EntidadesFormadoreas;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\{About,
-    Cursos,
     Device,
     DeviceParametersValues,
-    Formadores,
     General,
-    Operadores,
-    Page,
-    Post,
-    Team,
-    TestApi,
     User};
 
 class GeneralController extends Controller
@@ -23,7 +15,6 @@ class GeneralController extends Controller
     public function dashboard()
     {
         $user = auth()->user();
-
         $now = Carbon::now();
         if ($user->role == 'Administrator') {
             $admin = User::orderBy('id', 'desc')->count();
@@ -37,8 +28,11 @@ class GeneralController extends Controller
         $warning = [];
         $lastMinDanger = [];
         $lastdangerRead = [];
-
+        $long = 0;
+        $lat = 0;
         foreach ($devices as $key=>$device){
+            $long += $device->longitude;
+            $lat += $device->latitude;
             $warning[$key] = 0;
             $lastMinDanger[$key] = null;
             $lastdangerRead[$key] = ["#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000",];
@@ -52,10 +46,7 @@ class GeneralController extends Controller
                 }
             }
             array_push($state,$status );
-
             foreach ($device->deviceType->deviceParameters as $key2=>$tPara) {
-
-
                         if (isset($device->limitValues)) {
                             if ($device->limitValues->min_warning == 1) {
                                 if (json_decode($device->deviceParameters->last()->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
@@ -72,12 +63,11 @@ class GeneralController extends Controller
                                 }
                             }
                         }
-
-
             }
         }
-//dd($lastdangerRead);
-        return view('admin.dashboard', compact('admin','lastdangerRead', 'devices','state','warning','lastMinDanger'));
+        $long = $long / count($devices);
+        $lat = $lat / count($devices);
+        return view('admin.dashboard', compact('admin','long','lat','lastdangerRead', 'devices','state','warning','lastMinDanger'));
     }
 
     public function general()

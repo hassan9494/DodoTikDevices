@@ -6,6 +6,7 @@ use App\Http\Requests\DeviceTypesRequest;
 use App\Models\DeviceParameters;
 use App\Models\DeviceSettings;
 use App\Models\DeviceType;
+use App\Models\DeviceTypeParameter;
 use App\Models\DeviceTypeSetting;
 use Illuminate\Http\Request;
 
@@ -30,8 +31,9 @@ class DevicTypeController extends Controller
     public function create()
     {
         $parameters = DeviceParameters::all();
-        $settings = DeviceSettings::all();
-        return view ('admin.device_types.create',compact('parameters','settings'));
+        $devSettings = DeviceSettings::all();
+//        dd($settings);
+        return view ('admin.device_types.create',compact('parameters','devSettings'));
     }
 
     /**
@@ -67,6 +69,7 @@ class DevicTypeController extends Controller
     {
         $type = DeviceType::findOrFail($typeid);
         $parameters = DeviceParameters::all();
+//        dd($type->deviceParameters[0]->pivot->order);
         $settings = DeviceSettings::all();
         return view('admin.device_types.add_default_values',compact('type','parameters','settings'));
     }
@@ -89,6 +92,26 @@ class DevicTypeController extends Controller
                 $typeSet->value = 0;
             }
             $typeSet->save();
+        }
+        foreach ($type->deviceParameters as $parameter){
+            $typePara = DeviceTypeParameter::where('device_parameters_id',$parameter->id)->where('device_type_id',$id)->first();
+//            dd($typePara);
+            if ($request[$parameter->code] != null){
+                $typePara->order = $request[$parameter->code];
+            }else{
+                $typePara->order = 0;
+            }
+            if ($request[$parameter->code.'_length'] != null){
+                $typePara->length = $request[$parameter->code.'_length'];
+            }else{
+                $typePara->length = 4;
+            }
+            if ($request[$parameter->code.'_rate'] != null){
+                $typePara->rate = $request[$parameter->code.'_rate'];
+            }else{
+                $typePara->rate = 4;
+            }
+            $typePara->save();
         }
         return redirect()->route('admin.device_types')->with('success', 'Data updated successfully');
 
@@ -116,8 +139,8 @@ class DevicTypeController extends Controller
     {
         $type = DeviceType::findOrFail($id);
         $parameters = DeviceParameters::all();
-        $settings = DeviceSettings::all();
-        return view('admin.device_types.edit',compact('type','parameters','settings'));
+        $devSettings = DeviceSettings::all();
+        return view('admin.device_types.edit',compact('type','parameters','devSettings'));
     }
 
     /**

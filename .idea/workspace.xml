@@ -21,18 +21,19 @@
   <component name="ChangeListManager">
     <list default="true" id="4b9c3d3c-a351-4ab6-90ca-e38cb16d2c4d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Exports/ParametersDataExport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exports/ParametersDataExport.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DevicTypeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DevicTypeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceApiController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceParametersController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceParametersController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/GeneralController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/GeneralController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/DeviceParametersRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/DeviceParametersRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/DeviceParameters.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/DeviceParameters.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/DeviceType.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/DeviceType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/lang/en/message.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/en/message.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/admin/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/dashboard.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/admin/device/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device/show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_parameters/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_parameters/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_parameters/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_parameters/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_parameters/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_parameters/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_types/add_default_values.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_types/add_default_values.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_types/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_types/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_types/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_types/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -196,17 +197,19 @@
     <property name="php.override.implement.member.chooser.php.doc" value="NONE" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\projects\DodotikDevice\database\migrations" />
+      <recent name="D:\projects\DodotikDevice\database\seeders" />
+      <recent name="D:\projects\DodotikDevice\public" />
+      <recent name="D:\lastAnapat\resources" />
+      <recent name="D:\lastAnapat\database\migrations" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\projects\DodotikDevice\resources\views\admin\device" />
       <recent name="D:\projects\DodotikDevice\resources\views\vendor" />
       <recent name="D:\projects\DodotikDevice\app\Providers" />
       <recent name="D:\projects\DodotikDevice\app\Http" />
       <recent name="D:\projects\DodotikDevice\vendor\laravel\framework\src\Illuminate\Validation\Rules" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\projects\DodotikDevice\public" />
-      <recent name="D:\lastAnapat\resources" />
-      <recent name="D:\lastAnapat\database\migrations" />
     </key>
   </component>
   <component name="RunManager">
@@ -289,7 +292,11 @@
       <workItem from="1653567655733" duration="4656000" />
       <workItem from="1653734269827" duration="3597000" />
       <workItem from="1653809947090" duration="12208000" />
-      <workItem from="1653915987835" duration="40312000" />
+      <workItem from="1653915987835" duration="45699000" />
+      <workItem from="1654174577195" duration="1214000" />
+      <workItem from="1654409745005" duration="6000" />
+      <workItem from="1655108223360" duration="4763000" />
+      <workItem from="1655114556396" duration="4958000" />
     </task>
     <servers />
   </component>

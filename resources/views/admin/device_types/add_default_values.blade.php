@@ -12,21 +12,151 @@
         @csrf
 
         <div class="form-groups">
-            @foreach($type->deviceSettings as $set)
-            <div class="form-group ml-5">
-                <label for="{{$set->name}}" class="col-sm-2 col-form-label">{{$set->name}} </label>
-                <div class="col-sm-9">
-                    {{-- <input type="text" class="form-control" id="title" placeholder="Title"> --}}
+            <div class="col-lg-12 col-xxl-12 order-1 order-xxl-1 mb-4">
+                <div class="card card-custom mb-4">
+                    <div class="card-header border-0 pt-5">
+                        <h3 class="card-title align-items-start flex-column">
+                            <span
+                                class="card-label font-weight-bolder text-dark">{{__('message.Device Settings')}}</span>
+                        </h3>
 
-                    <input type="text" name="{{$set->name}}" placeholder="{{ $set->value}}" id="{{$set->name}}"
-                           class="form-control "
-                           value="{{ $set->pivot->value}}">
-{{--                    <div class="invalid-feedback">--}}
-{{--                        {{ $errors->first('name') }}--}}
-{{--                    </div>--}}
+
+                    </div>
+
+
+                    <div class="card-body pt-2" style="position: relative;">
+                        <div class="col-md-12 ">
+                            @foreach($type->deviceSettings as $set)
+                                <div class="form-group ml-5">
+                                    <label for="{{$set->name}}" class="col-sm-2 col-form-label">{{$set->name}} </label>
+                                    <div class="col-sm-9">
+                                        {{-- <input type="text" class="form-control" id="title" placeholder="Title"> --}}
+
+                                        <input type="text" name="{{$set->name}}" placeholder="{{ $set->value}}"
+                                               id="{{$set->name}}"
+                                               class="form-control "
+                                               value="{{ $set->pivot->value}}">
+                                        {{--                    <div class="invalid-feedback">--}}
+                                        {{--                        {{ $errors->first('name') }}--}}
+                                        {{--                    </div>--}}
+                                    </div>
+                                </div>
+                            @endforeach
+
+                        </div>
+                    </div>
                 </div>
             </div>
-            @endforeach
+            <div class="row">
+                <div class="col-lg-6 col-xxl-6 order-1 order-xxl-1 mb-4">
+                    <div class="card card-custom mb-4">
+                        <div class="card-header border-0 pt-5">
+                            <h3 class="card-title align-items-start flex-column">
+                            <span
+                                class="card-label font-weight-bolder text-dark">{{__('message.Device Parameters Order')}}</span>
+                            </h3>
+
+
+                        </div>
+
+
+                        <div class="card-body pt-2" style="position: relative;">
+                            <div class="col-md-12 ">
+                                @foreach($type->deviceParameters as $para)
+                                    <div class="form-group ml-5">
+                                        <label for="{{$para->code}}"
+                                               class="col-sm-8 col-form-label">{{$para->name}} </label>
+                                        <div class="col-sm-9">
+                                            {{-- <input type="text" class="form-control" id="title" placeholder="Title"> --}}
+
+                                            <input type="text" name="{{$para->code}}" placeholder="{{ $para->value}}"
+                                                   id="{{$para->code}}"
+                                                   class="form-control "
+                                                   value="{{ $para->pivot->order}}">
+                                            {{--                    <div class="invalid-feedback">--}}
+                                            {{--                        {{ $errors->first('name') }}--}}
+                                            {{--                    </div>--}}
+                                        </div>
+                                    </div>
+                                @endforeach
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xxl-6 order-1 order-xxl-1 mb-4">
+                    <div class="card card-custom mb-4">
+                        <div class="card-header border-0 pt-5">
+                            <h3 class="card-title align-items-start flex-column">
+                            <span
+                                class="card-label font-weight-bolder text-dark">{{__('message.Device Parameters Length')}}</span>
+                            </h3>
+
+
+                        </div>
+
+
+                        <div class="card-body pt-2" style="position: relative;">
+                            <div class="col-md-12 ">
+                                @foreach($type->deviceParameters as $para)
+                                    <div class="form-group ml-5">
+                                        <label for="{{$para->code}}"
+                                               class="col-sm-8 col-form-label">{{$para->name}} </label>
+                                        <div class="col-sm-9">
+                                            {{-- <input type="text" class="form-control" id="title" placeholder="Title"> --}}
+
+                                            <input type="text" name="{{$para->code}}_length"
+                                                   placeholder="{{ $para->value}}" id="{{$para->code}}"
+                                                   class="form-control "
+                                                   value="{{ $para->pivot->length}}">
+                                            {{--                    <div class="invalid-feedback">--}}
+                                            {{--                        {{ $errors->first('name') }}--}}
+                                            {{--                    </div>--}}
+                                        </div>
+                                    </div>
+                                @endforeach
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xxl-6 order-1 order-xxl-1 mb-4">
+                    <div class="card card-custom mb-4">
+                        <div class="card-header border-0 pt-5">
+                            <h3 class="card-title align-items-start flex-column">
+                            <span
+                                class="card-label font-weight-bolder text-dark">{{__('message.Device Parameters Rate')}}</span>
+                            </h3>
+
+
+                        </div>
+
+
+                        <div class="card-body pt-2" style="position: relative;">
+                            <div class="col-md-12 ">
+                                @foreach($type->deviceParameters as $para)
+                                    <div class="form-group ml-5">
+                                        <label for="{{$para->code}}"
+                                               class="col-sm-8 col-form-label">{{$para->name}} </label>
+                                        <div class="col-sm-9">
+                                            {{-- <input type="text" class="form-control" id="title" placeholder="Title"> --}}
+
+                                            <input type="text" name="{{$para->code}}_rate"
+                                                   placeholder="{{ $para->value}}" id="{{$para->code}}"
+                                                   class="form-control "
+                                                   value="{{ $para->pivot->rate}}">
+                                            {{--                    <div class="invalid-feedback">--}}
+                                            {{--                        {{ $errors->first('name') }}--}}
+                                            {{--                    </div>--}}
+                                        </div>
+                                    </div>
+                                @endforeach
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="form-group col-md-12">
             <div class="col-sm-3">

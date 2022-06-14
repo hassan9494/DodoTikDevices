@@ -298,7 +298,7 @@
                                             @foreach($device->deviceType->deviceParameters as $key=>$parameter)
                                                 <div><p style=""></p>
                                                     <span style="color: {{$dangerColor[$key]}}">{{$parameter->name}}</span>
-                                                    :<span style="color: {{$dangerColor[$key]}}">{{$paraValues[$key][count($paraValues[$key]) - 1]}}</span>
+                                                    :<span style="color: {{$dangerColor[$key]}}">{{$paraValues[$key][count($paraValues[$key]) - 1]}}  ({{$parameter->unit}})</span>
                                                 </div>
                                             @endforeach
                                         </div>

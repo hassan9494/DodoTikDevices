@@ -124,8 +124,7 @@ class DeviceController extends Controller
         $xValues = [];
         $yValues = [];
         $paraValues = [];
-        $lastMinDanger = [];
-        $lastMaxDanger = [];
+        $dangerColor = [];
         $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
         if (count($parameters) > 0) {
             if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i <= $device->time_between_two_read) {
@@ -137,7 +136,6 @@ class DeviceController extends Controller
                 if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0) {
                     array_push($xValues, date(DATE_ISO8601, strtotime($parameter->time_of_read)));
                 }
-
             }
             $warning = 1;
             $dangerColor = [];
@@ -166,14 +164,13 @@ class DeviceController extends Controller
                 }
             }
 
-
             $label = 1;
         } else {
             $warning = 1;
             $status = "Offline";
             $label = 1;
         }
-//dd($dangerColor);
+//        dd($dangerColor);
         return view('admin.device.show', compact( 'device','dangerColor', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
     }
 
