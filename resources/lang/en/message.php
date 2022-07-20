@@ -83,6 +83,7 @@ return [
     'Device Settings' => 'Device Settings',
     'Device Parameters Order' => 'Device Parameters Order',
     'Device Parameters Length' => 'Device Parameters Length',
-    'Device Parameters Rate' => 'Device Parameters Rate'
+    'Device Parameters Rate' => 'Device Parameters Rate',
+    'user' => 'user'
 
 ];
