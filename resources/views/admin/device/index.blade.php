@@ -45,6 +45,8 @@
 
                         <th>{{__('message.type')}}</th>
 
+                        <th>{{__('message.user')}}</th>
+
                         <th>{{__('message.Option')}}</th>
 
                     </tr>
@@ -70,6 +72,8 @@
                             {{ $device->deviceType->name }}
                             @endif
                         </td>
+
+                        <td>{{ $device->user->name }}</td>
                         <td>
                             <a title="Edit" href="{{route('admin.devices.edit', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-edit"></i> </a>
                             @if(count($device->deviceType->deviceSettings) > 0 )

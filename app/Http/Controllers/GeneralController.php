@@ -44,18 +44,24 @@ class GeneralController extends Controller
                 } else {
                     $status = "Offline";
                 }
+            }else{
+                $status = "Offline";
             }
             array_push($state,$status );
             foreach ($device->deviceType->deviceParameters as $key2=>$tPara) {
                         if (isset($device->limitValues)) {
                             if ($device->limitValues->min_warning == 1) {
+//                                dd(json_decode($device->deviceParameters->last()->parameters, true)[$tPara->code] );
+                                if ($device->deviceParameters->last() != null)
                                 if (json_decode($device->deviceParameters->last()->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
+
                                     $warning[$key] += 1;
                                     $lastMinDanger[$key] = $device->deviceParameters->last();
                                     $lastdangerRead[$key][$key2] = "red";
                                 }
                             }
                             if ($device->limitValues->max_warning == 1) {
+                                if ($device->deviceParameters->last() != null)
                                 if (json_decode($device->deviceParameters->last()->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]) {
                                     $warning[$key] += 1;
                                     $lastMinDanger[$key] = $device->deviceParameters->last();
@@ -65,8 +71,11 @@ class GeneralController extends Controller
                         }
             }
         }
-        $long = $long / count($devices);
-        $lat = $lat / count($devices);
+        if (count($devices) > 0){
+            $long = $long / count($devices);
+            $lat = $lat / count($devices);
+        }
+
         return view('admin.dashboard', compact('admin','long','lat','lastdangerRead', 'devices','state','warning','lastMinDanger'));
     }
 

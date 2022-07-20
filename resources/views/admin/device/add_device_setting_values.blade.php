@@ -31,7 +31,7 @@
                         <div class="col-sm-9">
                             <input type="text" name="{{$set->name}}" placeholder="{{ $set->value}}" id="{{$set->name}}"
                                    class="form-control "
-                                   value="{{json_decode($device->deviceSetting->settings,true)[$set->name] }}">
+                                   value="{{json_decode($device->deviceSetting->settings,true)[$set->code] }}">
                             {{--                    <div class="invalid-feedback">--}}
                             {{--                        {{ $errors->first('name') }}--}}
                             {{--                    </div>--}}

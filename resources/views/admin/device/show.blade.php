@@ -242,7 +242,7 @@
                                                     @endforeach
                                                 @else
                                                     @foreach($device->deviceType->deviceSettings as $setting)
-                                                        <td>{{json_decode($device->deviceSetting->settings,true)[$setting->name] }}</td>
+                                                        <td>{{json_decode($device->deviceSetting->settings,true)[$setting->code] }}</td>
                                                     @endforeach
                                                 @endif
                                                 <td>
@@ -295,12 +295,14 @@
                                     @if(count($xValues) > 0)
                                         <div id="state-legend" class="legend" style="display: none">
                                             <h4>{{__('message.Last Read')}}</h4>
+                                            @if($paraValues[0] != null)
                                             @foreach($device->deviceType->deviceParameters as $key=>$parameter)
                                                 <div><p style=""></p>
                                                     <span style="color: {{$dangerColor[$key]}}">{{$parameter->name}}</span>
                                                     :<span style="color: {{$dangerColor[$key]}}">{{$paraValues[$key][count($paraValues[$key]) - 1]}}  ({{$parameter->unit}})</span>
                                                 </div>
                                             @endforeach
+                                            @endif
                                         </div>
                                     @endif
                                 </div>

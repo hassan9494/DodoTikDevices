@@ -63,7 +63,7 @@ class DeviceApiController extends Controller
         }
     }
 
-    public function read( Request $request)
+    public function read1( Request $request)
     {
 
         $para = $request->getContent();
@@ -140,7 +140,7 @@ class DeviceApiController extends Controller
         }
     }
 
-    public function read1( Request $request)
+    public function read( Request $request)
     {
 
         $para = $request->getContent();
