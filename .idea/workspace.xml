@@ -21,13 +21,25 @@
   <component name="ChangeListManager">
     <list default="true" id="4b9c3d3c-a351-4ab6-90ca-e38cb16d2c4d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceApiController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/ForgotPasswordController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/ForgotPasswordController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/GeneralController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/GeneralController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Device.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Device.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2022_04_13_074214_update_devices_table2.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/test/2022_04_13_074214_update_devices_table2.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2022_04_30_210635_create_test_apis_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/test/2022_04_30_210635_create_test_apis_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2022_05_15_110148_create_limit_values_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/test/2022_05_15_110148_create_limit_values_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2022_05_16_101540_update_limit_values_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/test/2022_05_16_101540_update_limit_values_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2022_05_16_103026_update_device_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/test/2022_05_16_103026_update_device_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2022_06_01_082147_update_device_parameters_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/test/2022_06_01_082147_update_device_parameters_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2022_06_13_084337_edit_device_parameter_device_type.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/test/2022_06_13_084337_edit_device_parameter_device_type.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2022_06_13_091312_create_device_type_parameters_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/test/2022_06_13_091312_create_device_type_parameters_table.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/lang/en/message.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/en/message.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/device/add_device_setting_values.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device/add_device_setting_values.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/dashboard.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/device/get_devices.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device/get_devices.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/admin/device/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/device/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/auth/login.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/auth/login.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -186,24 +198,24 @@
     <property name="DefaultHtmlFileTemplate" value="XHTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/admin/device" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/admin/device_components" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="php.override.implement.member.chooser.php.doc" value="NONE" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\projects\DodotikDevice\database\migrations\test" />
       <recent name="D:\projects\DodotikDevice\database\migrations" />
       <recent name="D:\projects\DodotikDevice\database\seeders" />
       <recent name="D:\projects\DodotikDevice\public" />
       <recent name="D:\lastAnapat\resources" />
-      <recent name="D:\lastAnapat\database\migrations" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\projects\DodotikDevice\resources\views\admin\device_components" />
+      <recent name="D:\projects\DodotikDevice\resources\views\admin\component" />
+      <recent name="D:\projects\DodotikDevice\resources\views\admin\components" />
       <recent name="D:\projects\DodotikDevice\resources\views\admin\device" />
       <recent name="D:\projects\DodotikDevice\resources\views\vendor" />
-      <recent name="D:\projects\DodotikDevice\app\Providers" />
-      <recent name="D:\projects\DodotikDevice\app\Http" />
-      <recent name="D:\projects\DodotikDevice\vendor\laravel\framework\src\Illuminate\Validation\Rules" />
     </key>
   </component>
   <component name="RunManager">
@@ -299,7 +311,11 @@
       <workItem from="1656330052469" duration="690000" />
       <workItem from="1656355174846" duration="16000" />
       <workItem from="1658226150951" duration="3497000" />
-      <workItem from="1658299465724" duration="745000" />
+      <workItem from="1658299465724" duration="15621000" />
+      <workItem from="1659423104994" duration="27511000" />
+      <workItem from="1659860582261" duration="6556000" />
+      <workItem from="1660049000876" duration="1856000" />
+      <workItem from="1660061790435" duration="3813000" />
     </task>
     <servers />
   </component>
@@ -319,30 +335,28 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1746" y="58" key="#Inspections" timestamp="1648377730393">
-      <screen x="1366" y="0" width="1680" height="1010" />
-    </state>
-    <state x="1746" y="58" key="#Inspections/0.0.1366.728/1366.0.1680.1010@1366.0.1680.1010" timestamp="1648377730393" />
     <state x="488" y="45" key="#com.intellij.ide.util.MemberChooser" timestamp="1653818519535">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="488" y="45" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1653818519535" />
-    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1652960309731">
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1660067780739">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="1874" y="164" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728/1366.0.1680.1010@1366.0.1680.1010" timestamp="1648373123254" />
-    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1652960309731" />
-    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1648151484678" />
-    <state x="463" y="118" key="FileChooserDialogImpl" timestamp="1653246016670">
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1659531421740" />
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1660067780739" />
+    <state x="463" y="118" key="FileChooserDialogImpl" timestamp="1659510619623">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1653224144344" />
+    <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1659510619623" />
     <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1653246016670" />
-    <state x="389" y="97" width="587" height="534" key="find.popup" timestamp="1655982401644">
+    <state x="517" y="287" key="NewPhpFileDialog" timestamp="1659527258857">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="389" y="97" width="587" height="534" key="find.popup/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1655982401644" />
-    <state x="389" y="97" width="587" height="534" key="find.popup/0.0.1366.728@0.0.1366.728" timestamp="1648060073403" />
+    <state x="517" y="287" key="NewPhpFileDialog/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1659527258857" />
+    <state x="389" y="97" width="587" height="534" key="find.popup" timestamp="1658315457523">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="389" y="97" width="587" height="534" key="find.popup/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1658315457523" />
     <state x="339" y="162" key="run.anything.popup" timestamp="1654001977684">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

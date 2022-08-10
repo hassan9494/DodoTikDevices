@@ -39,7 +39,7 @@ class GeneralController extends Controller
             $parameters = $device->deviceParameters;
             $lastPara = DeviceParametersValues::where('device_id', $device->id)->orderBy('id', 'desc')->first();
             if (count($parameters) > 0) {
-                if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i < $device->time_between_two_read) {
+                if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->m == 0 &&$now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->d == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i < $device->time_between_two_read) {
                     $status = "Online";
                 } else {
                     $status = "Offline";
@@ -48,28 +48,31 @@ class GeneralController extends Controller
                 $status = "Offline";
             }
             array_push($state,$status );
-            foreach ($device->deviceType->deviceParameters as $key2=>$tPara) {
-                        if (isset($device->limitValues)) {
-                            if ($device->limitValues->min_warning == 1) {
+            if($device->deviceType != null){
+                foreach ($device->deviceType->deviceParameters as $key2=>$tPara) {
+                    if (isset($device->limitValues)) {
+                        if ($device->limitValues->min_warning == 1) {
 //                                dd(json_decode($device->deviceParameters->last()->parameters, true)[$tPara->code] );
-                                if ($device->deviceParameters->last() != null)
+                            if ($device->deviceParameters->last() != null)
                                 if (json_decode($device->deviceParameters->last()->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
 
                                     $warning[$key] += 1;
                                     $lastMinDanger[$key] = $device->deviceParameters->last();
                                     $lastdangerRead[$key][$key2] = "red";
                                 }
-                            }
-                            if ($device->limitValues->max_warning == 1) {
-                                if ($device->deviceParameters->last() != null)
+                        }
+                        if ($device->limitValues->max_warning == 1) {
+                            if ($device->deviceParameters->last() != null)
                                 if (json_decode($device->deviceParameters->last()->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]) {
                                     $warning[$key] += 1;
                                     $lastMinDanger[$key] = $device->deviceParameters->last();
                                     $lastdangerRead[$key][$key2] = "red";
                                 }
-                            }
                         }
+                    }
+                }
             }
+
         }
         if (count($devices) > 0){
             $long = $long / count($devices);

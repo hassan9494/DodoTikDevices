@@ -32,6 +32,11 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
     {{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>--}}
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://unpkg.com/gojs@2.2.14/release/go.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 
     @yield('styles')
 
@@ -91,6 +96,19 @@
                 <a class="nav-link" href="{{ route('admin.devices') }}">
                     <i class="fas fa-fw fa-satellite-dish"></i>
                     <span>{{__('message.devices')}}</span></a>
+            </li>
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ route('admin.components.index') }}">
+                    <i class="fas fa-fw fa-satellite-dish"></i>
+                    <span>{{__('message.Components')}}</span></a>
+            </li>
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ route('admin.device_components.index') }}">
+                    <i class="fas fa-fw fa-satellite-dish"></i>
+                    <span>{{__('message.Device_Components')}}</span></a>
             </li>
     @endcan
     <!-- Nav Item - Dashboard -->

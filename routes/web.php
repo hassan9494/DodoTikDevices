@@ -2,7 +2,10 @@
 
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{DeviceController,
+use App\Http\Controllers\{Auth\ForgotPasswordController,
+    ComponentController,
+    DeviceComponentController,
+    DeviceController,
     DeviceParametersController,
     DeviceSettingController,
     DevicTypeController,
@@ -27,6 +30,12 @@ use App\Http\Controllers\{DeviceController,
 Route::get('/', [FrontController::class, 'home'])->name('homepage');
 Route::post('/', [FrontController::class, 'subscribe'])->name('subscribe');
 Route::get('about-us', [FrontController::class, 'about'])->name('about');
+
+Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
+Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
+Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
+Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
+
 
 
 
@@ -117,7 +126,15 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth','middleware'
     Route::get('devices/export/{id}',[DeviceController::class, 'export'])->middleware('can:isAdminOrUser')->name('devices.export');
     Route::post('devices/exportToDatasheet', [DeviceController::class, 'exportToDatasheet'])->middleware('can:isAdminOrUser')->name('devices.exportToDatasheet');
 //    Route::post('devices/setLocation', [DeviceController::class, 'setLocation'])->middleware('can:isAdminOrUser')->name('devices.setLocation');
+    Route::get('devices/getColumnChartData/{id}', [DeviceController::class, 'getColumnChartData'])->middleware('can:isAdminOrUser')->name('devices.getColumnChartData');
+    Route::get('devices/getGaugeWithBandsData/{id}', [DeviceController::class, 'getGaugeWithBandsData'])->middleware('can:isAdminOrUser')->name('devices.getGaugeWithBandsData');
 
 
+    Route::resource('components',ComponentController::class);
+    Route::post('components/edit/{id}', [ComponentController::class, 'update'])->name('components.update');
+
+
+    Route::resource('device_components',DeviceComponentController::class);
+    Route::post('device_components/edit/{id}', [DeviceComponentController::class, 'update'])->name('device_components.update');
 
 });

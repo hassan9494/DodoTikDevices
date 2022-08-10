@@ -68,6 +68,15 @@
 
                         <span class="button__text">Login</span>
                     </button>
+                    <div class="form-group row">
+                        <div class="col-md-6 offset-md-4">
+                            <div class="checkbox">
+                                <label>
+                                    <a href="{{ route('forget.password.get') }}">Reset Password</a>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </form>
 {{--                <div class="">--}}
                   <h5 style="color: #0b2e13"><a  href="{{ route('register') }}" class="button login__submit">create new account</a></h5>

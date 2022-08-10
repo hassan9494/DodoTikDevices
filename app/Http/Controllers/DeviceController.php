@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\ParametersDataExport;
 use App\Http\Requests\DeviceRequest;
+use App\Models\Component;
 use App\Models\Device;
 use App\Models\DeviceParametersValues;
 use App\Models\DeviceSettingPerDevice;
@@ -117,7 +118,12 @@ class DeviceController extends Controller
      */
     public function show($id)
     {
+
         $device = Device::findOrFail($id);
+        if ($device->deviceComponent == null){
+            $components = Component::all();
+            return view ('admin.device_components.init',compact('components','device'));
+        }
         $device_type = $device->deviceType;
         $now = Carbon::now();
         $parameters = $device->deviceParameters;
@@ -127,19 +133,19 @@ class DeviceController extends Controller
         $dangerColor = [];
         $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
         if (count($parameters) > 0) {
-            if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i <= $device->time_between_two_read) {
+            if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->m == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->d == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i <= $device->time_between_two_read) {
                 $status = "Online";
             } else {
                 $status = "Offline";
             }
             foreach ($parameters as $parameter) {
-                if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0) {
+                if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
                     array_push($xValues, date(DATE_ISO8601, strtotime($parameter->time_of_read)));
                 }
             }
             $warning = 1;
             $dangerColor = [];
-            foreach ($device_type->deviceParameters as $index=>$tPara) {
+            foreach ($device_type->deviceParameters as $index => $tPara) {
                 $dangerColor[$index] = '#000000';
                 foreach ($parameters as $parameter) {
                     if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
@@ -171,8 +177,8 @@ class DeviceController extends Controller
             $label = 1;
         }
 
-//        dd($dangerColor);
-        return view('admin.device.show', compact( 'device','dangerColor', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
+//        dd($status);
+        return view('admin.device.custom_show', compact('device', 'dangerColor', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
     }
 
 
@@ -203,7 +209,7 @@ class DeviceController extends Controller
                 $status = "Offline";
             }
             foreach ($parameters as $parameter) {
-                if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d <= $from && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d >= $to  && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
+                if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d <= $from && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d >= $to && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
                     array_push($xValues, date(DATE_ISO8601, strtotime($parameter->time_of_read)));
                 }
             }
@@ -235,6 +241,89 @@ class DeviceController extends Controller
             $label = 1;
         }
         return array($paraValues, $xValues, $device, $warning, $status, $label);
+    }
+
+
+    public function getColumnChartData($id)
+    {
+        $device = Device::findOrFail($id);
+        $device_type = $device->deviceType;
+        $parameters = $device->deviceParameters;
+        $xValues = [];
+        $yValues = [];
+        $paraValues = [];
+
+        $now = Carbon::now();
+        $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
+        if (count($parameters) > 0) {
+
+
+            foreach ($device_type->deviceParameters as $index => $tPara) {
+
+                foreach ($parameters as $parameter) {
+                    if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
+                        array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                    }
+                }
+                $sum = 0;
+                foreach ($yValues as $yValue) {
+                    $sum += $yValue;
+                }
+                if (count($yValues) != 0){
+                    array_push($paraValues, round($sum / count($yValues)));
+                }
+
+
+                $yValues = [];
+            }
+        } else {
+
+        }
+        return array($paraValues);
+    }
+
+
+    public function getGaugeWithBandsData($id)
+    {
+        $device = Device::findOrFail($id);
+        $device_type = $device->deviceType;
+        $parameters = $device->deviceParameters;
+        $yValues = [];
+        $paraValues = [];
+
+        $now = Carbon::now();
+        $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
+        if (count($parameters) > 0) {
+
+
+            foreach ($device_type->deviceParameters as $index => $tPara) {
+                if ($tPara->code == "Temperature") {
+                    foreach ($parameters as $parameter) {
+
+                        if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
+                            array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+//                        dd($tPara->code);
+                        }
+                    }
+                    $sum = 0;
+                    foreach ($yValues as $yValue) {
+                        $sum += $yValue;
+                    }
+                    if (count($yValues) != 0) {
+                        array_push($paraValues, round($sum / count($yValues)));
+                    }
+
+
+                    $yValues = [];
+                }
+
+
+            }
+        } else {
+
+        }
+//        dd($paraValues);
+        return array($paraValues);
     }
 
     /**
