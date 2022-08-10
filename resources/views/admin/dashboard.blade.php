@@ -77,30 +77,35 @@
                     <div class="card-body pt-2" style="position: relative;">
                         <div class="row">
                             @foreach($devices as $key=>$device)
-                            <div class="col-md-4 " style="margin-top: 15px;margin-bottom: 15px">
-                                <div class="card card-custom mb-4">
-                                    <div class="card-header border-0 pt-5" style="padding-top: 1rem!important;">
-                                        <h3 class="card-title align-items-start flex-column"><span
-                                                class="card-label font-weight-bolder text-dark">{{$device->name}}</span></h3>
-                                        <div class="card-toolbar">
-                                            <ul class="nav nav-pills nav-pills-sm nav-dark-75 nav nav-test" role="tablist">
-                                                <li class="nav-item nav-item">
-                                                    <a title="Show" id="d_{{$device->id}}" href="{{route('admin.devices.show', [$device->id])}}" class="btn btn-sm"> <i class="fas fa-eye"></i> </a>
-{{--                                                    <a title="Edit" href="{{route('admin.devices.edit', [$device->id])}}" class="btn btn-sm"> <i class="fas fa-edit"></i> </a>--}}
-{{--                                                    <a href="{{route('admin.devices.add_device_setting_values', [$device->id])}}" class="btn btn-sm"> <i class="fas fa-cogs"></i> </a>--}}
-{{--                                                    <a href="{{route('admin.devices.add_device_limit_values', [$device->id])}}" class="btn btn-sm"> <i class="fas fa-chart-line"></i> </a>--}}
-{{--                                                    <a title="Edit Location" href="{{route('admin.devices.location', [$device->id])}}" class="btn btn-sm"> <i class="fas fa-location-arrow"></i> </a>--}}
-                                                <li class="nav-item nav-item">
-                                            </ul>
+                                <div class="col-md-4 " style="margin-top: 15px;margin-bottom: 15px">
+                                    <div class="card card-custom mb-4">
+                                        <div class="card-header border-0 pt-5" style="padding-top: 1rem!important;">
+                                            <h3 class="card-title align-items-start flex-column"><span
+                                                    class="card-label font-weight-bolder text-dark">{{$device->name}}</span>
+                                            </h3>
+                                            <div class="card-toolbar">
+                                                <ul class="nav nav-pills nav-pills-sm nav-dark-75 nav nav-test"
+                                                    role="tablist">
+                                                    <li class="nav-item nav-item">
+                                                        <a title="Show" id="d_{{$device->id}}"
+                                                           href="{{route('admin.devices.show', [$device->id])}}"
+                                                           class="btn btn-sm"> <i class="fas fa-eye"></i> </a>
+                                                    {{--                                                    <a title="Edit" href="{{route('admin.devices.edit', [$device->id])}}" class="btn btn-sm"> <i class="fas fa-edit"></i> </a>--}}
+                                                    {{--                                                    <a href="{{route('admin.devices.add_device_setting_values', [$device->id])}}" class="btn btn-sm"> <i class="fas fa-cogs"></i> </a>--}}
+                                                    {{--                                                    <a href="{{route('admin.devices.add_device_limit_values', [$device->id])}}" class="btn btn-sm"> <i class="fas fa-chart-line"></i> </a>--}}
+                                                    {{--                                                    <a title="Edit Location" href="{{route('admin.devices.location', [$device->id])}}" class="btn btn-sm"> <i class="fas fa-location-arrow"></i> </a>--}}
+                                                    <li class="nav-item nav-item">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="card-body  pt-2"
+                                             style="background-color: {{$state[$key] == 'Offline' ? '#ff6464' : '#00989d'}} ;    padding-top: 2rem!important;">
+                                            <h4 class="device-status" style="color: #FFFFFF">{{$state[$key]}} </h4><i
+                                                class="fas {{$state[$key] == "Offline" ? 'fa-times' : 'fa-check'  }}"
+                                                style="font-size: 25px; color:{{$state[$key] == "Offline" ? 'red' : 'green'  }} "></i>
                                         </div>
                                     </div>
-                                    <div class="card-body  pt-2" style="background-color: {{$state[$key] == 'Offline' ? '#ff6464' : '#00989d'}} ;    padding-top: 2rem!important;">
-                                        <h4 class="device-status" style="color: #FFFFFF">{{$state[$key]}} </h4><i
-                                            class="fas {{$state[$key] == "Offline" ? 'fa-times' : 'fa-check'  }}"
-                                            style="font-size: 25px; color:{{$state[$key] == "Offline" ? 'red' : 'green'  }} "></i>
-                                    </div>
                                 </div>
-                            </div>
                             @endforeach
                         </div>
                     </div>
@@ -117,19 +122,19 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
     <script>
         var countOfDevice = {{count($devices)}}
-            console.log(countOfDevice)
+        console.log(countOfDevice)
 
         mapboxgl.accessToken = 'pk.eyJ1Ijoic2FoYWIyMiIsImEiOiJja3Zud2NjeG03cGk1MnBxd3NrMm5kaDd4In0.vsQXgdGOH8KQ91g4rHkvUA';
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
-            center:  [{{$long}},{{$lat}}],
-            zoom: 8
+            center: [{{$long}},{{$lat}}],
+            zoom: 3
         });
 
         map.on('load', () => {
             @foreach($devices as $key=>$device)
-                var warning = {{$warning[$key]}};
+            var warning = {{$warning[$key]}};
             map.addSource('places_{{$device->id}}', {
                 'type': 'geojson',
                 'data': {
@@ -139,24 +144,28 @@
                         {
                             'type': 'Feature',
                             'properties': {
-                                'description':warning == 0 ?
+                                'description': warning == 0 ?
                                     '<div id="state-legend" class="legend">' +
-                                    '<h4 style="color : #000000">{{__('message.Last Read')}}</h4>'+
-                                    '<h5>{{$device->name}}</h5>'+
-                                    @foreach($device->deviceType->deviceParameters as $key1=>$parameter)
-                                    '<div><span ></span>{{$parameter->name}}'+
-                                    ':{{count($device->deviceParameters) > 0 ? json_decode($device->deviceParameters->last()->parameters, true)[$parameter->code]. " (". $parameter->unit .") " : "No Data"}}'+
-                                     '</div>' +
-                                    @endforeach
-                                    '</div>' :
-                                    '<div>' +
-                                    '<h4 style="color : #000000">{{__('message.Last Read')}}</h4>'+
-                                    '<h5>{{$device->name}}</h5>'+
-                                    @foreach($device->deviceType->deviceParameters as $key2=>$parameter)
-                                        '<div><span style ="color:{{$lastdangerRead[$key][$key2]}}!important">{{$parameter->name}}</span>'+
-                                    ':<span style ="color:{{$lastdangerRead[$key][$key2]}}!important">{{$lastMinDanger[$key] != null ? json_decode($lastMinDanger[$key]->parameters, true)[$parameter->code]. " (". $parameter->unit .") " : "No Data"}}</span>'+
+                                    '<h4 style="color : #000000">{{__('message.Last Read')}}</h4>' +
+                                    '<h5>{{$device->name}}</h5>' +
+                                    @if($device->deviceType != null)
+                                        @foreach($device->deviceType->deviceParameters as $key1=>$parameter)
+                                        '<div><span ></span>{{$parameter->name}}' +
+                                    ':{{count($device->deviceParameters) > 0 ? json_decode($device->deviceParameters->last()->parameters, true)[$parameter->code]. " (". $parameter->unit .") " : "No Data"}}' +
                                     '</div>' +
                                     @endforeach
+                                        @endif
+                                        '</div>' :
+                                    '<div>' +
+                                    '<h4 style="color : #000000">{{__('message.Last Read')}}</h4>' +
+                                    '<h5>{{$device->name}}</h5>' +
+                                    @if($device->deviceType != null)
+                                        @foreach($device->deviceType->deviceParameters as $key2=>$parameter)
+                                        '<div><span style ="color:{{$lastdangerRead[$key][$key2]}}!important">{{$parameter->name}}</span>' +
+                                    ':<span style ="color:{{$lastdangerRead[$key][$key2]}}!important">{{$lastMinDanger[$key] != null ? json_decode($lastMinDanger[$key]->parameters, true)[$parameter->code]. " (". $parameter->unit .") " : "No Data"}}</span>' +
+                                    '</div>' +
+                                    @endforeach
+                                        @endif
                                         '</div>'
                             },
                             'geometry': {

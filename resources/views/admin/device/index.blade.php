@@ -45,7 +45,7 @@
 
                         <th>{{__('message.type')}}</th>
 
-                        <th>{{__('message.user')}}</th>
+                        <th>{{__('message.user email')}}</th>
 
                         <th>{{__('message.Option')}}</th>
 
@@ -73,11 +73,17 @@
                             @endif
                         </td>
 
-                        <td>{{ $device->user->name }}</td>
+                        <td>
+                            @if($device->user != null)
+                            {{ $device->user->email }}
+                            @endif
+                        </td>
                         <td>
                             <a title="Edit" href="{{route('admin.devices.edit', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-edit"></i> </a>
+                            @if($device->deviceType != null)
                             @if(count($device->deviceType->deviceSettings) > 0 )
                             <a href="{{route('admin.devices.add_device_setting_values', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-cogs"></i> </a>
+                            @endif
                             @endif
                             <a href="{{route('admin.devices.add_device_limit_values', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-chart-line"></i> </a>
                             <a title="Edit Location" href="{{route('admin.devices.location', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-location-arrow"></i> </a>
