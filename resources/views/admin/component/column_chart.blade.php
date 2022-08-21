@@ -52,7 +52,7 @@
                         series: [{
                             name: "AVG",
                             data: [
-                                    @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+                                    @foreach($testParaColumn as $key=>$parameter)
 
                                 {
                                     x: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
