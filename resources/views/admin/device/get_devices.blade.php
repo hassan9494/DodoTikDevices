@@ -68,7 +68,7 @@
                             <a title="Edit Location" href="{{route('admin.devices.location', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-location-arrow"></i> </a>
                             <a href="{{route('admin.devices.show', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-eye"></i> </a>
                             <a title="Export" id="d_{{$device->id}}" href="{{route('admin.devices.export', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-file-export"></i> </a>
-                            <a href="{{route('admin.device_components.edit', [$device->deviceComponent->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-images"></i> </a>
+                            <a href="{{route('admin.device_components.editDisplay', [$device->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-images"></i> </a>
                             <form method="POST" action="{{route('admin.devices.remove_device', [$device->id])}}" class="d-inline" onsubmit="return confirm('{{__("message.are you want to remove this device from you")}}')">
 
                                 @csrf

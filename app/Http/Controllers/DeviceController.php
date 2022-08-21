@@ -122,15 +122,15 @@ class DeviceController extends Controller
     {
 
         $device = Device::findOrFail($id);
-        $parametersFromSetting = DevicesComponents::where('device_id' , $id)->get();
+        $parametersFromSetting = DevicesComponents::where('device_id', $id)->get();
 //dd(json_decode($parametersFromSetting->settings)->parameters);
 //        dd($device->deviceComponent);
-        if (count($parametersFromSetting) == 0){
+        if (count($parametersFromSetting) == 0) {
 
             $components = Component::all();
 //            $deviceComponent = $parametersFromSetting;
 //            dd($deviceComponent);
-            return view ('admin.device_components.init',compact('components','device'));
+            return view('admin.device_components.init', compact('components', 'device'));
         }
         $device_type = $device->deviceType;
 //        dd($device_type->deviceParameters);
@@ -141,9 +141,18 @@ class DeviceController extends Controller
         $paraValues = [];
         $dangerColor = [];
         $testPara = [];
-        $deviceComponent = DevicesComponents::where('device_id',$id)->where('component_id',9)->first();
-        foreach (json_decode($deviceComponent->settings)->parameters as $key=>$test){
-            $testPara[$key] = DeviceParameters::findOrFail((int)$test);
+        $deviceComponent = DevicesComponents::where('device_id', $id)->where('component_id', 9)->first();
+        $testParaColumn = [];
+        $deviceComponentColumn = DevicesComponents::where('device_id', $id)->where('component_id', 6)->first();
+        if ($deviceComponentColumn != null) {
+            foreach (json_decode($deviceComponentColumn->settings)->parameters as $key => $test) {
+                $testParaColumn[$key] = DeviceParameters::findOrFail((int)$test);
+            }
+        }
+        if ($deviceComponent != null) {
+            foreach (json_decode($deviceComponent->settings)->parameters as $key => $test) {
+                $testPara[$key] = DeviceParameters::findOrFail((int)$test);
+            }
         }
         $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
         if (count($parameters) > 0) {
@@ -190,11 +199,11 @@ class DeviceController extends Controller
             $status = "Offline";
             $label = 1;
         }
-        $deviceComponents = DevicesComponents::where('device_id',$device->id)->orderBy('order','asc')->get();
+        $deviceComponents = DevicesComponents::where('device_id', $device->id)->orderBy('order', 'asc')->get();
 //        dd($testPara);
 
 //        dd(json_decode($device->deviceComponent->settings));
-        return view('admin.device.custom_show', compact('testPara','device','deviceComponents', 'dangerColor', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
+        return view('admin.device.custom_show', compact('testParaColumn', 'testPara', 'device', 'deviceComponents', 'dangerColor', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
     }
 
 
@@ -266,15 +275,15 @@ class DeviceController extends Controller
         $device_type = $device->deviceType;
         $parameters = $device->deviceParameters;
         $testPara = [];
-        $deviceComponent = DevicesComponents::where('device_id',$id)->where('component_id',6)->first();
-        foreach (json_decode($deviceComponent->settings)->parameters as $key=>$test){
+        $deviceComponent = DevicesComponents::where('device_id', $id)->where('component_id', 6)->first();
+        foreach (json_decode($deviceComponent->settings)->parameters as $key => $test) {
             $testPara[$key] = DeviceParameters::findOrFail((int)$test);
         }
 //        dd($parameters);
         $xValues = [];
         $yValues = [];
         $paraValues = [];
-        $parametersFromSetting = DevicesComponents::where('device_id' , $id)->where('component_id',6)->get();
+        $parametersFromSetting = DevicesComponents::where('device_id', $id)->where('component_id', 6)->get();
         $now = Carbon::now();
         $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
         if (count($parameters) > 0) {
@@ -291,7 +300,7 @@ class DeviceController extends Controller
                 foreach ($yValues as $yValue) {
                     $sum += $yValue;
                 }
-                if (count($yValues) != 0){
+                if (count($yValues) != 0) {
                     array_push($paraValues, round($sum / count($yValues)));
                 }
 

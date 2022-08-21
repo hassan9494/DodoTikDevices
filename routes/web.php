@@ -137,6 +137,8 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth','middleware'
 
     Route::resource('device_components',DeviceComponentController::class);
     Route::post('device_components/edit/{id}', [DeviceComponentController::class, 'update'])->name('device_components.update');
+    Route::get('device_components/editDisplay/{id}', [DeviceComponentController::class, 'editDisplay'])->name('device_components.editDisplay');
+    Route::post('device_components/updateDisplay/{id}', [DeviceComponentController::class, 'updateDisplay'])->name('device_components.updateDisplay');
 
 
     Route::get('component_settings', [ComponentSettingsController::class, 'index'])->middleware('can:isAdmin')->name('component_settings');

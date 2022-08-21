@@ -101,9 +101,15 @@
         <div class="form-group ml-5">
             <label for="width" class="col-sm-6 col-form-label">{{__('message.Width')}} </label>
             <div class="col-sm-9">
-                <input type="number" name="width" placeholder="width this component" id="width"
-                       class="form-control {{$errors->first('width') ? "is-invalid" : "" }} "
-                       value="{{old('width') ? old('width') : $deviceComponent->width}}">
+                <select name="width" class="form-control {{$errors->first('width') ? "is-invalid" : "" }} ">
+                    <option disabled>choose one</option>
+                    @for($i=1 ; $i <=12 ; $i++)
+                    <option value="{{$i}}" {{$i == $deviceComponent->width ? "selected" : ""}}>{{$i}}/12</option>
+                    @endfor
+                </select>
+{{--                <input type="number" name="width" placeholder="width this component" id="width"--}}
+{{--                       class="form-control {{$errors->first('width') ? "is-invalid" : "" }} "--}}
+{{--                       value="{{old('width') ? old('width') : $deviceComponent->width}}">--}}
                 <div class="invalid-feedback">
                     {{ $errors->first('width') }}
                 </div>
