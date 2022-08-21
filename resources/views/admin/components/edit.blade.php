@@ -74,8 +74,6 @@
 
         </div>
 
-        </div>
-
         <div class="form-group ml-5">
             <label for="name" class="col-sm-2 col-form-label">{{__('message.Name')}}</label>
             <div class="col-sm-7">
@@ -97,6 +95,23 @@
                 </div>
             </div>
 
+        <div class="form-group ml-5">
+            <label for="settings" class="col-sm-4 col-form-label">{{__('message.settings')}}</label>
+            <div class="col-sm-9">
+                <select name='settings[]' class="form-control {{$errors->first('settings') ? "is-invalid" : "" }} select2" id="settings" multiple>
+                    @foreach ($component->componentSettings as $param)
+                        <option selected value="{{ $param->id }}">{{ $param->name }}</option>
+                    @endforeach
+                    @foreach ($component_settings as $component_setting)
+                        <option value="{{ $component_setting->id }}">{{ $component_setting->name }}</option>
+                    @endforeach
+                </select>
+                <div class="invalid-feedback">
+                    {{ $errors->first('settings') }}
+                </div>
+            </div>
+        </div>
+
         {{--    <div class="form-group ml-5">--}}
         {{--        <label for="link" class="col-sm-2 col-form-label">Link</label>--}}
         {{--        <div class="col-sm-7">--}}
@@ -109,13 +124,23 @@
 
         <div class="form-group ml-5">
             <div class="col-sm-3">
-                <button type="submit" class="btn btn-primary">{{__('message.Create')}}</button>
+                <button type="submit" class="btn btn-primary">{{__('message.Update')}}</button>
             </div>
         </div>
     </form>
 @endsection
 
 @push('scripts')
+    <script>
+        $(document).ready(function () {
+            $('#settings').select2({
+                placeholder: "Choose Some parameters"
+            });
+        });
+        $(function () {
+            $('.selectpicker').selectpicker();
+        });
+    </script>
     <script>
         // Prepare the preview for profile picture
         $("#wizard-picture").change(function () {

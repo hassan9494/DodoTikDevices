@@ -365,3 +365,7 @@ input:checked + .slider:before {
 .device-status {
     text-align: center;
 }
+
+.settings {
+    margin-top: 10px;
+}

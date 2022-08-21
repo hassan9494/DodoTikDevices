@@ -10,7 +10,7 @@
                     <div id="columnChart">
 
                     </div>
-                    <div class="spinner-border  text-success" role="status" id="spinner">
+                    <div class="spinner-border  text-success" role="status" id="spinner1">
                         <span class="sr-only">Loading...</span>
                     </div>
                     <div class="resize-triggers">
@@ -56,7 +56,7 @@
 
                                 {
                                     x: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
-                                    y: data[0][{{$key}}]
+                                    y: data[0]['paravalues'][{{$key}}]
                                 },
                                 @endforeach
                                 ],

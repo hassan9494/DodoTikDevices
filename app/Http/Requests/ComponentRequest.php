@@ -28,7 +28,6 @@ class ComponentRequest extends FormRequest
         return [
             'name' => 'required|'.Rule::unique('components')->ignore($this->id),
             'desc' => 'required',
-            'image' => 'required',
         ];
     }
 }

@@ -10,7 +10,7 @@
 
 <!-- Page Heading -->
 
-<h1 class="h3 mb-2 text-gray-800">{{__('message.Components')}}</h1>
+<h1 class="h3 mb-2 text-gray-800">{{__('message.Components_Settings')}}</h1>
 
 @if (session('success'))
 
@@ -27,7 +27,7 @@
 <div class="card shadow mb-4">
 @can('isAdmin')
 {{--    <div class="card-header py-3">--}}
-{{--        <a href="{{ route('admin.components.create') }}" class="btn btn-pass">{{__('message.add_new')}}</a>--}}
+{{--        <a href="{{ route('admin.component_settings.create') }}" class="btn btn-pass">{{__('message.add_new')}}</a>--}}
 {{--    </div>--}}
 @endcan
     <div class="card-body">
@@ -41,9 +41,9 @@
 
                         <th>{{__('message.Name')}}</th>
 
-                        <th>{{__('message.Description')}}</th>
+                        <th>{{__('message.Slug')}}</th>
 
-                        <th>{{__('message.Image')}}</th>
+                        <th>{{__('message.Settings')}}</th>
 
                         <th>{{__('message.Option')}}</th>
 
@@ -59,19 +59,17 @@
 
                 @endphp
 
-                @foreach ($components as $component)
+                @foreach ($componentSetting as $component)
                 @if(auth()->user()->role=='Administrator')
                     <tr>
                         <td>{{ ++$no }}</td>
                         <td>{{ $component->name }}</td>
-                        <td>{{ $component->desc }}</td>
+                        <td>{{ $component->slug }}</td>
+                        <td>{{ $component->settings }}</td>
                         <td>
-                            <img src="{{ asset('storage/'.$component->image) }}" width="300px"></td>
-                        <td>
+                            <a href="{{route('admin.component_settings.edit', [$component->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-edit"></i> </a>
 
-                            <a href="{{route('admin.components.edit', [$component->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-edit"></i> </a>
-
-                            <form method="POST" action="{{route('admin.components.destroy', [$component->id])}}" class="d-inline" onsubmit="return confirm('{{__("message.Delete this type permanently?")}}')">
+                            <form method="POST" action="{{route('admin.component_settings.destroy', [$component->id])}}" class="d-inline" onsubmit="return confirm('{{__("message.Delete this type permanently?")}}')">
 
                                 @csrf
 

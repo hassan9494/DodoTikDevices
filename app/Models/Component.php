@@ -20,4 +20,14 @@ class Component extends Model
 
     protected $guarded=[];
     protected $table = 'components';
+
+    public function deviceComponents()
+    {
+        return $this->hasMany(DevicesComponents::class,'component_id');
+    }
+
+    public function componentSettings()
+    {
+        return $this->belongsToMany(ComponentSettings::class);
+    }
 }
