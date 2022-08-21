@@ -110,6 +110,14 @@
                     <i class="fas fa-fw fa-satellite-dish"></i>
                     <span>{{__('message.Device_Components')}}</span></a>
             </li>
+
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ route('admin.component_settings') }}">
+                    <i class="fas fa-fw fa-satellite-dish"></i>
+                    <span>{{__('message.Components_Settings')}}</span></a>
+            </li>
     @endcan
     <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
@@ -141,18 +149,18 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
         @can('isAdmin')
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
-               aria-expanded="true" aria-controls="collapseOne">
-                <i class="fas fa-fw fa-table"></i>
-                <span>{{__('message.Management')}}</span>
-            </a>
-            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="{{ route('admin.users.index') }}">{{__('message.users')}}</a>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
+                   aria-expanded="true" aria-controls="collapseOne">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>{{__('message.Management')}}</span>
+                </a>
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{{ route('admin.users.index') }}">{{__('message.users')}}</a>
+                    </div>
                 </div>
-            </div>
-        </li>
+            </li>
         @endcan
         {{--        @can('isAdmin')--}}
         {{--        <!-- Nav Item - Utilities Collapse Menu -->--}}
@@ -285,7 +293,7 @@
 <script>
     $(document).ready(function () {
         $('.select2').select2({
-            placeholder: "Choose Some Tags"
+            placeholder: "Choose Some"
         });
     });
     // $(function () {

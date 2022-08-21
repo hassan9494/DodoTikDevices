@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ComponentRequest;
 use App\Models\Component;
+use App\Models\ComponentSettings;
 use Illuminate\Http\Request;
 
 class ComponentController extends Controller
@@ -27,7 +28,8 @@ class ComponentController extends Controller
     public function create()
     {
 
-        return view ('admin.components.create');
+        $component_settings = ComponentSettings::all();
+        return view ('admin.components.create',compact('component_settings'));
     }
 
     /**
@@ -40,6 +42,7 @@ class ComponentController extends Controller
     {
         $component = new Component();
         $component->name = $request->name;
+        $component->slug = \Str::slug($request->name);
         $component->desc = $request->desc;
         $image = $request->file('image');
         if($image){
@@ -47,6 +50,7 @@ class ComponentController extends Controller
             $component->image = $image_path;
         }
         if ($component->save()) {
+            $component->componentSettings()->attach(request('settings'));
             return redirect()->route('admin.components.index')->with('success', 'Data added successfully');
         }else {
 
@@ -75,7 +79,8 @@ class ComponentController extends Controller
     public function edit($id)
     {
         $component = Component::findOrFail($id);
-        return view('admin.components.edit',compact('component'));
+        $component_settings = ComponentSettings::all();
+        return view('admin.components.edit',compact('component','component_settings'));
     }
 
     /**
@@ -96,6 +101,8 @@ class ComponentController extends Controller
             $component->image = $image_path;
         }
         if ($component->save()) {
+
+            $component->componentSettings()->sync(request('settings'));
             return redirect()->route('admin.components.index')->with('success', 'Data added successfully');
         }else {
 
@@ -113,7 +120,10 @@ class ComponentController extends Controller
     public function destroy($id)
     {
         $component = Component::findOrFail($id);
+        $component->componentSettings()->detach();
         $component->delete();
+
+
 
         return redirect()->route('admin.components.index')->with('success', 'Data deleted successfully');
     }

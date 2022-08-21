@@ -55,6 +55,11 @@ class Device extends Model
     {
         return $this->hasOne(DeviceComponent::class,'device_id');
     }
+
+    public function deviceComponents()
+    {
+        return $this->hasMany(DevicesComponents::class,'device_id');
+    }
 }
 
 

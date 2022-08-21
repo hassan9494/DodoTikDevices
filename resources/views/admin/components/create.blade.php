@@ -88,25 +88,59 @@
             </div>
         </div>
 
-            <div class="form-group ml-5">
-                <label for="desc" class="col-sm-2 col-form-label">Desc</label>
-                <div class="col-sm-7">
-                  <textarea name="desc" id="desc" cols="30" rows="10" class="form-control {{$errors->first('desc') ? "is-invalid" : "" }} " id="summernote">{{old('desc')}}</textarea>
-                  <div class="invalid-feedback">
+        <div class="form-group ml-5">
+            <label for="desc" class="col-sm-2 col-form-label">Desc</label>
+            <div class="col-sm-7">
+                <textarea name="desc" id="desc" cols="30" rows="10"
+                          class="form-control {{$errors->first('desc') ? "is-invalid" : "" }} "
+                          id="summernote">{{old('desc')}}</textarea>
+                <div class="invalid-feedback">
                     {{ $errors->first('desc') }}
                 </div>
+            </div>
+        </div>
+
+        <div class="form-group ml-5">
+            <label for="settings" class="col-sm-2 col-form-label">{{__('message.settings')}}</label>
+            <div class="col-sm-9">
+                <select name='settings[]' class="form-control {{$errors->first('settings') ? "is-invalid" : "" }} select2" id="settings" multiple>
+                    @foreach ($component_settings as $setting)
+                        <option value="{{ $setting->id }}">{{ $setting->name }}</option>
+                    @endforeach
+                </select>
+                <div class="invalid-feedback">
+                    {{ $errors->first('settings') }}
                 </div>
             </div>
+        </div>
 
-        {{--    <div class="form-group ml-5">--}}
-        {{--        <label for="link" class="col-sm-2 col-form-label">Link</label>--}}
-        {{--        <div class="col-sm-7">--}}
-        {{--          <input type="text" name='link' class="form-control {{$errors->first('link') ? "is-invalid" : "" }} " value="{{old('link')}}" id="link" placeholder="Link">--}}
-        {{--          <div class="invalid-feedback">--}}
-        {{--            {{ $errors->first('link') }}--}}
-        {{--        </div>--}}
-        {{--        </div>--}}
-        {{--      </div>--}}
+{{--        <div class="form-group ml-5">--}}
+{{--            <div class="row" style="text-align: -webkit-center;">--}}
+{{--                <div class="col-lg-12 col-xxl-12 order-1 order-xxl-1 mb-4">--}}
+{{--                    <div class="card card-custom mb-4">--}}
+{{--                        <div class="card-header border-0 pt-5">--}}
+{{--                            <h3 class="card-title align-items-start flex-column">--}}
+{{--                                <span class="card-label font-weight-bolder text-dark" style="font-size: 1rem;">{{__('message.Settings')}} :  </span>--}}
+{{--                            </h3>--}}
+{{--                            <div class="card-toolbar">--}}
+{{--                                <ul class="nav nav-pills nav-pills-sm nav-dark-75 nav nav-test" role="tablist">--}}
+{{--                                </ul>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="card-body pt-2" style="position: relative;">--}}
+
+
+{{--                            <div class="resize-triggers">--}}
+{{--                                <div class="expand-trigger">--}}
+{{--                                    <div style="width: 1291px; height: 399px;"></div>--}}
+{{--                                </div>--}}
+{{--                                <div class="contract-trigger"></div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
 
         <div class="form-group ml-5">
             <div class="col-sm-3">
@@ -117,6 +151,16 @@
 @endsection
 
 @push('scripts')
+    <script>
+        $(document).ready(function () {
+            $('#settings').select2({
+                placeholder: "Choose Some settings"
+            });
+        });
+        $(function () {
+            $('.selectpicker').selectpicker();
+        });
+    </script>
     <script>
         // Prepare the preview for profile picture
         $("#wizard-picture").change(function () {

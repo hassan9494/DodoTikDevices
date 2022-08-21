@@ -6,7 +6,9 @@ use App\Exports\ParametersDataExport;
 use App\Http\Requests\DeviceRequest;
 use App\Models\Component;
 use App\Models\Device;
+use App\Models\DeviceParameters;
 use App\Models\DeviceParametersValues;
+use App\Models\DevicesComponents;
 use App\Models\DeviceSettingPerDevice;
 use App\Models\DeviceType;
 use App\Models\LimitValues;
@@ -120,17 +122,29 @@ class DeviceController extends Controller
     {
 
         $device = Device::findOrFail($id);
-        if ($device->deviceComponent == null){
+        $parametersFromSetting = DevicesComponents::where('device_id' , $id)->get();
+//dd(json_decode($parametersFromSetting->settings)->parameters);
+//        dd($device->deviceComponent);
+        if (count($parametersFromSetting) == 0){
+
             $components = Component::all();
+//            $deviceComponent = $parametersFromSetting;
+//            dd($deviceComponent);
             return view ('admin.device_components.init',compact('components','device'));
         }
         $device_type = $device->deviceType;
+//        dd($device_type->deviceParameters);
         $now = Carbon::now();
         $parameters = $device->deviceParameters;
         $xValues = [];
         $yValues = [];
         $paraValues = [];
         $dangerColor = [];
+        $testPara = [];
+        $deviceComponent = DevicesComponents::where('device_id',$id)->where('component_id',9)->first();
+        foreach (json_decode($deviceComponent->settings)->parameters as $key=>$test){
+            $testPara[$key] = DeviceParameters::findOrFail((int)$test);
+        }
         $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
         if (count($parameters) > 0) {
             if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->m == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->d == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i <= $device->time_between_two_read) {
@@ -145,7 +159,7 @@ class DeviceController extends Controller
             }
             $warning = 1;
             $dangerColor = [];
-            foreach ($device_type->deviceParameters as $index => $tPara) {
+            foreach ($testPara as $index => $tPara) {
                 $dangerColor[$index] = '#000000';
                 foreach ($parameters as $parameter) {
                     if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
@@ -176,9 +190,11 @@ class DeviceController extends Controller
             $status = "Offline";
             $label = 1;
         }
+        $deviceComponents = DevicesComponents::where('device_id',$device->id)->orderBy('order','asc')->get();
+//        dd($testPara);
 
-//        dd($status);
-        return view('admin.device.custom_show', compact('device', 'dangerColor', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
+//        dd(json_decode($device->deviceComponent->settings));
+        return view('admin.device.custom_show', compact('testPara','device','deviceComponents', 'dangerColor', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
     }
 
 
@@ -249,16 +265,22 @@ class DeviceController extends Controller
         $device = Device::findOrFail($id);
         $device_type = $device->deviceType;
         $parameters = $device->deviceParameters;
+        $testPara = [];
+        $deviceComponent = DevicesComponents::where('device_id',$id)->where('component_id',6)->first();
+        foreach (json_decode($deviceComponent->settings)->parameters as $key=>$test){
+            $testPara[$key] = DeviceParameters::findOrFail((int)$test);
+        }
+//        dd($parameters);
         $xValues = [];
         $yValues = [];
         $paraValues = [];
-
+        $parametersFromSetting = DevicesComponents::where('device_id' , $id)->where('component_id',6)->get();
         $now = Carbon::now();
         $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
         if (count($parameters) > 0) {
 
 
-            foreach ($device_type->deviceParameters as $index => $tPara) {
+            foreach ($testPara as $index => $tPara) {
 
                 foreach ($parameters as $parameter) {
                     if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
@@ -279,7 +301,10 @@ class DeviceController extends Controller
         } else {
 
         }
-        return array($paraValues);
+        $test1['paravalues'] = $paraValues;
+        $test1['para'] = $testPara;
+//        dd($test1);
+        return array($test1);
     }
 
 
@@ -322,7 +347,7 @@ class DeviceController extends Controller
         } else {
 
         }
-//        dd($paraValues);
+
         return array($paraValues);
     }
 

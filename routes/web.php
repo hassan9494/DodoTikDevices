@@ -4,6 +4,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{Auth\ForgotPasswordController,
     ComponentController,
+    ComponentSettingsController,
     DeviceComponentController,
     DeviceController,
     DeviceParametersController,
@@ -136,5 +137,15 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth','middleware'
 
     Route::resource('device_components',DeviceComponentController::class);
     Route::post('device_components/edit/{id}', [DeviceComponentController::class, 'update'])->name('device_components.update');
+
+
+    Route::get('component_settings', [ComponentSettingsController::class, 'index'])->middleware('can:isAdmin')->name('component_settings');
+    Route::get('component_settings/create', [ComponentSettingsController::class, 'create'])->middleware('can:isAdmin')->name('component_settings.create');
+    Route::post('component_settings/store', [ComponentSettingsController::class, 'store'])->middleware('can:isAdminOrUser')->name('component_settings.store');
+    Route::get('component_settings/edit/{id}', [ComponentSettingsController::class, 'edit'])->middleware('can:isAdmin')->name('component_settings.edit');
+    Route::get('component_settings/show/{id}', [ComponentSettingsController::class, 'show'])->middleware('can:isAdmin')->name('component_settings.show');
+    Route::post('component_settings/edit/{id}', [ComponentSettingsController::class, 'update'])->middleware('can:isAdmin')->name('component_settings.update');
+    Route::delete('component_settings/destroy/{id}',[ComponentSettingsController::class, 'destroy'])->middleware('can:isAdmin')->name('component_settings.destroy');
+
 
 });

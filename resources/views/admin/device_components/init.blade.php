@@ -57,13 +57,13 @@
 
         <input type="hidden" name="device_id" value="{{$device->id}}">
         <div class="row">
-            @foreach($components as $component)
-
-                <div class="col-lg-6 col-xxl-12 order-1 order-xxl-1 mb-4">
+            @foreach($components as $key=>$component)
+                <div class="col-lg-12 col-xxl-12 order-1 order-xxl-1 mb-4">
                     <div class="card card-custom mb-4">
                         <div class="card-header border-0 pt-5">
                             <h3 class="card-title align-items-start flex-column">
-                                <span class="card-label font-weight-bolder text-dark" style="font-size: 1rem;">{{$component->name}} </span>
+                                <span class="card-label font-weight-bolder text-dark"
+                                      style="font-size: 1rem;">{{$component->name}} </span>
 
                             </h3>
 
@@ -74,7 +74,7 @@
                                             <label class="switch">
                                                 <input type="hidden" name="component_{{$component->id}}" value="0">
                                                 <input type="checkbox" name="component_{{$component->id}}">
-                                                <span class="slider round" ></span>
+                                                <span class="slider round"></span>
                                             </label>
                                         </div>
                                     </li>
@@ -86,17 +86,87 @@
                         <div class="card-body pt-2" style="position: relative;">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <img src="{{ asset('storage/'.$component->image) }}" width="430px" height="300px">
+                                    <div class="card card-custom">
+                                        <div class="card-header">
+                                            component
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <img src="{{ asset('storage/'.$component->image) }}" width="430px"
+                                                         height="300px">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p class="text-center">
+                                                        {{$component->desc}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <p class="text-center">
-                                        {{$component->desc}}
-                                    </p>
+                                    <div class="card card-custom">
+                                        <div class="card-header">
+                                            Setting
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-groups">
+                                                <div class="form-group ml-6">
+                                                    <label for="order_{{$component->id}}"
+                                                           class="col-sm-6 col-form-label">{{__('message.Order')}} </label>
+                                                    <div class="col-sm-6">
+                                                        <input type="number" name="order_{{$component->id}}"
+                                                               placeholder="order this component"
+                                                               id="order_{{$component->id}}"
+                                                               class="form-control {{$errors->first('order_'.$component->id) ? "is-invalid" : "" }} "
+                                                               value="{{old('order_'.$component->id)}}">
+                                                        <div class="invalid-feedback">
+                                                            {{ $errors->first('order_'.$component->id) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group ml-6">
+                                                    <label for="width_{{$component->id}}"
+                                                           class="col-sm-6 col-form-label">{{__('message.Width')}} </label>
+                                                    <div class="col-sm-6">
+                                                        <input type="number" name="width_{{$component->id}}"
+                                                               placeholder="width this component"
+                                                               id="width_{{$component->id}}"
+                                                               class="form-control {{$errors->first('width_'.$component->id) ? "is-invalid" : "" }} "
+                                                               value="{{old('width_'.$component->id)}}">
+                                                        <div class="invalid-feedback">
+                                                            {{ $errors->first('width_'.$component->id) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @if($device->deviceType != null)
+                                                    @if($component->componentSettings != null)
+                                                        @foreach($component->componentSettings as $comsetting)
+                                                            <div class="form-group ml-6">
+                                                                @include('admin.component.settings.'.json_decode($comsetting->settings)->type, [
+                                                                       'name' => json_decode($comsetting->settings)->name."_".$component->id,
+                                                                       'title' => json_decode($comsetting->settings)->title ,
+                                                                       'id' => json_decode($comsetting->settings)->name . $key,
+                                                                       'options' =>$comsetting->name == "parametrs" ? $device->deviceType->deviceParameters : $device->deviceType->deviceSettings,
+                                                                       'choosen' => null,
+                                                                       ])
+                                                            </div>
+                                                        @endforeach
+                                                    @endif
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
+
                         </div>
                     </div>
                 </div>
+
+
 
 
             @endforeach

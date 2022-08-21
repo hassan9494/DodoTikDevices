@@ -133,7 +133,7 @@
                         chart.updateOptions({
 
                             series: [
-                                    @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+                                    @foreach($testPara as $key=>$parameter)
 
                                 {
                                     name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
@@ -195,7 +195,7 @@
                     success: function (data) {
                         chart.updateOptions({
                             series: [
-                                    @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+                                    @foreach($testPara as $key=>$parameter)
 
                                 {
                                     name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
@@ -243,7 +243,7 @@
         var labels = {{$label}}
         var options = {
             series: [
-                    @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+                    @foreach($testPara as $key=>$parameter)
 
                 {
                     name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",

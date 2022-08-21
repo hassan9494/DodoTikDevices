@@ -26,9 +26,9 @@
 
 <div class="card shadow mb-4">
 @can('isAdmin')
-    <div class="card-header py-3">
-        <a href="{{ route('admin.device_components.create') }}" class="btn btn-pass">{{__('message.add_new')}}</a>
-    </div>
+{{--    <div class="card-header py-3">--}}
+{{--        <a href="{{ route('admin.device_components.create') }}" class="btn btn-pass">{{__('message.add_new')}}</a>--}}
+{{--    </div>--}}
 @endcan
     <div class="card-body">
 
@@ -43,7 +43,11 @@
 
                         <th>{{__('message.Components')}}</th>
 
-                        <th>{{__('message.settings')}}</th>
+                        <th>{{__('message.Order')}}</th>
+
+                        <th>{{__('message.width')}}</th>
+
+                        <th width="25%">{{__('message.settings')}}</th>
 
                         <th>{{__('message.Option')}}</th>
 
@@ -64,7 +68,9 @@
                     <tr>
                         <td>{{ ++$no }}</td>
                         <td>{{ $component->device->name }}</td>
-                        <td>{{ $component->components }}</td>
+                        <td>{{ $component->component->name }}</td>
+                        <td>{{ $component->order }}</td>
+                        <td>{{ $component->width }}</td>
                         <td>{{ $component->settings }}</td>
                         <td>
                             <a href="{{route('admin.device_components.edit', [$component->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-edit"></i> </a>

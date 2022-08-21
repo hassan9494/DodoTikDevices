@@ -25,7 +25,7 @@ class DeviceComponentRequest extends FormRequest
     public function rules()
     {
         return [
-            'device_id' => 'required|'.Rule::unique('device_components')->ignore($this->id),
+            'device_id' => 'required|',
         ];
     }
 }
