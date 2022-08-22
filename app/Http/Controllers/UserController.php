@@ -40,7 +40,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-//        dd($request);
         \Validator::make($request->all(), [
             "username" => "required|unique:users",
             "role" => "required",
@@ -49,18 +48,12 @@ class UserController extends Controller
         ])->validate();
 
         $user = new User();
-//        dd($user);
         $user->username = $request->username;
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->role=$request->role;
         $user->remember_token = $request->_token;
-
-
-
-
-//dd($user);
 
         if ($user->save()) {
             return redirect()->route('admin.users.index')->with('success', 'Data added successfully');

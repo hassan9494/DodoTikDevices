@@ -32,7 +32,6 @@ class DevicTypeController extends Controller
     {
         $parameters = DeviceParameters::all();
         $devSettings = DeviceSettings::all();
-//        dd($settings);
         return view ('admin.device_types.create',compact('parameters','devSettings'));
     }
 
@@ -69,7 +68,6 @@ class DevicTypeController extends Controller
     {
         $type = DeviceType::findOrFail($typeid);
         $parameters = DeviceParameters::all();
-//        dd($type->deviceParameters[0]->pivot->order);
         $settings = DeviceSettings::all();
         return view('admin.device_types.add_default_values',compact('type','parameters','settings'));
     }
@@ -95,7 +93,6 @@ class DevicTypeController extends Controller
         }
         foreach ($type->deviceParameters as $parameter){
             $typePara = DeviceTypeParameter::where('device_parameters_id',$parameter->id)->where('device_type_id',$id)->first();
-//            dd($typePara);
             if ($request[$parameter->code] != null){
                 $typePara->order = $request[$parameter->code];
             }else{

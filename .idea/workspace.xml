@@ -21,13 +21,13 @@
   <component name="ChangeListManager">
     <list default="true" id="4b9c3d3c-a351-4ab6-90ca-e38cb16d2c4d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ComponentSettingsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ComponentSettingsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DevicTypeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DevicTypeController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceComponentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceComponentController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/column_chart.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/column_chart.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/device/get_devices.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device/get_devices.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/device/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_components/edit1.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_components/edit1.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_components/init.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_components/init.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/FrontController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/FrontController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/device/custom_show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device/custom_show.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -187,15 +187,15 @@
     <property name="DefaultHtmlFileTemplate" value="XHTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/admin/device_components" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/admin/component" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="php.override.implement.member.chooser.php.doc" value="NONE" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\projects\DodotikDevice\resources\views\admin\component" />
       <recent name="D:\projects\DodotikDevice\resources\views\admin\device_components" />
       <recent name="D:\projects\DodotikDevice\resources\views\admin\component_settings" />
-      <recent name="D:\projects\DodotikDevice\resources\views\admin\component" />
       <recent name="D:\projects\DodotikDevice\resources\views\admin\components" />
       <recent name="D:\projects\DodotikDevice\resources\views\admin\device" />
     </key>
@@ -305,7 +305,7 @@
       <workItem from="1659860582261" duration="6556000" />
       <workItem from="1660049000876" duration="1856000" />
       <workItem from="1660061790435" duration="11231000" />
-      <workItem from="1660212771940" duration="46907000" />
+      <workItem from="1660212771940" duration="57046000" />
     </task>
     <servers />
   </component>

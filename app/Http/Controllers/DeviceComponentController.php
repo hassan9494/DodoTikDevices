@@ -111,7 +111,6 @@ class DeviceComponentController extends Controller
     {
         $device = Device::findOrFail($id);
         $deviceComponents = DevicesComponents::where('device_id', $id)->get();
-//dd($device->deviceComponents[0]->component);
         $components = Component::all();
         return view('admin.device_components.editDisplay', compact('components', 'device', 'deviceComponents'));
 
@@ -126,7 +125,6 @@ class DeviceComponentController extends Controller
      */
     public function updateDisplay(DeviceComponentRequest $request, $id)
     {
-//        dd($request);
         $components = Component::all();
         $componentsOfDevices = [];
         $componentIds = [];
@@ -151,7 +149,6 @@ class DeviceComponentController extends Controller
                     }
 
                     $deviceComponents->settings = json_encode($setting);
-//                    dd($deviceComponents);
                 } else {
                     $deviceComponents->settings = null;
                 }
@@ -165,10 +162,6 @@ class DeviceComponentController extends Controller
         foreach ($thisDeviceComponent as $comdev) {
             $comdev->delete();
         }
-//        dd($thisDeviceComponent);
-//        foreach ($thisDeviceComponent as $key=>$devcom){
-//
-//        }
         return redirect()->route('admin.devices.show', [$request['device_id']]);
     }
 
@@ -193,7 +186,6 @@ class DeviceComponentController extends Controller
     {
         $deviceComponent = DevicesComponents::findOrFail($id);
         $components = Component::all();
-//        dd(json_decode($deviceComponent->settings)->parameters);
         $devices = Device::all();
         return view('admin.device_components.edit1', compact('components', 'devices', 'deviceComponent'));
     }
@@ -215,7 +207,6 @@ class DeviceComponentController extends Controller
         $deviceComponent->order = $request['order'];
         $deviceComponent->width = $request['width'];
         $setting[json_decode($deviceComponent->component->componentSettings[0]->settings)->name] = $request['parameters'];
-//        dd($setting);
         $deviceComponent->settings = json_encode($setting);
 
         $deviceComponent->save();

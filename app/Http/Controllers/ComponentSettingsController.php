@@ -36,7 +36,6 @@ class ComponentSettingsController extends Controller
      */
     public function store(Request $request)
     {
-//        dd($request);
         $componentSetting = new ComponentSettings();
         $keyValues = [];
         $componentSetting->name = $request['name'];
@@ -80,7 +79,6 @@ class ComponentSettingsController extends Controller
         foreach ($lastKeys as $key=>$lastKey){
             $latestKey = $key;
         }
-//        dd($latestKey);
         return view('admin.component_settings.edit',compact('component_setting','latestKey'));
     }
 
@@ -93,11 +91,9 @@ class ComponentSettingsController extends Controller
      */
     public function update(Request $request, $id)
     {
-//        dd($request);
         $componentSetting = ComponentSettings::findOrFail($id);
         $keyValues = [];
         $componentSetting->name = $request['name'];
-//        $componentSetting->slug = \Str::slug($request['name']);
         foreach ($request['key'] as $key=>$keyname){
             if ($request['value'][$key] != null && $keyname != null)
             $keyValues[$keyname] = $request['value'][$key];
