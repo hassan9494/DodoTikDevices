@@ -123,17 +123,12 @@ class DeviceController extends Controller
 
         $device = Device::findOrFail($id);
         $parametersFromSetting = DevicesComponents::where('device_id', $id)->get();
-//dd(json_decode($parametersFromSetting->settings)->parameters);
-//        dd($device->deviceComponent);
         if (count($parametersFromSetting) == 0) {
 
             $components = Component::all();
-//            $deviceComponent = $parametersFromSetting;
-//            dd($deviceComponent);
             return view('admin.device_components.init', compact('components', 'device'));
         }
         $device_type = $device->deviceType;
-//        dd($device_type->deviceParameters);
         $now = Carbon::now();
         $parameters = $device->deviceParameters;
         $xValues = [];
@@ -200,18 +195,14 @@ class DeviceController extends Controller
             $label = 1;
         }
         $deviceComponents = DevicesComponents::where('device_id', $device->id)->orderBy('order', 'asc')->get();
-//        dd($testPara);
 
-//        dd(json_decode($device->deviceComponent->settings));
         return view('admin.device.custom_show', compact('testParaColumn', 'testPara', 'device', 'deviceComponents', 'dangerColor', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
     }
 
 
     public function showWithDate($id, $from, $to)
     {
-
         $device = Device::findOrFail($id);
-
         $device_type = $device->deviceType;
         $now = Carbon::now();
         if ($from == 7 && $to == 0) {
@@ -226,7 +217,6 @@ class DeviceController extends Controller
         $yValues = [];
         $paraValues = [];
         $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
-
         if (count($parameters) > 0) {
             if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i < $device->time_between_two_read) {
                 $status = "Online";
@@ -279,7 +269,6 @@ class DeviceController extends Controller
         foreach (json_decode($deviceComponent->settings)->parameters as $key => $test) {
             $testPara[$key] = DeviceParameters::findOrFail((int)$test);
         }
-//        dd($parameters);
         $xValues = [];
         $yValues = [];
         $paraValues = [];
@@ -312,8 +301,48 @@ class DeviceController extends Controller
         }
         $test1['paravalues'] = $paraValues;
         $test1['para'] = $testPara;
-//        dd($test1);
         return array($test1);
+    }
+
+
+    public function getMultiAxisChartData($id)
+    {
+        $device = Device::findOrFail($id);
+        $device_type = $device->deviceType;
+        $parameters = $device->deviceParameters;
+        $days = [];
+        $xValues = [];
+        $yValues = [];
+        $paraValues = [];
+        $now = Carbon::now();
+        if (count($parameters) > 0) {
+            foreach ($device_type->deviceParameters as $index => $tPara) {
+                $days = [];
+                for ($i = 7; $i > 0; $i--) {
+                    foreach ($parameters as $parameter) {
+                        if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == $i && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
+                            $day = date("m/d", strtotime($parameter->time_of_read));
+                            array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                        }
+                    }
+                    $sum = 0;
+                    foreach ($yValues as $yValue) {
+                        $sum += $yValue;
+                    }
+                    if (count($yValues) != 0) {
+                        $test = round($sum / count($yValues));
+                    }
+                    array_push($days, $day);
+                    array_push($paraValues, $test);
+                }
+                array_push($xValues, $paraValues);
+                $paraValues = [];
+                $yValues = [];
+            }
+        } else {
+
+        }
+        return array($xValues,$days);
     }
 
 
@@ -324,19 +353,14 @@ class DeviceController extends Controller
         $parameters = $device->deviceParameters;
         $yValues = [];
         $paraValues = [];
-
         $now = Carbon::now();
         $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
         if (count($parameters) > 0) {
-
-
             foreach ($device_type->deviceParameters as $index => $tPara) {
                 if ($tPara->code == "Temperature") {
                     foreach ($parameters as $parameter) {
-
                         if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
                             array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
-//                        dd($tPara->code);
                         }
                     }
                     $sum = 0;
@@ -346,17 +370,12 @@ class DeviceController extends Controller
                     if (count($yValues) != 0) {
                         array_push($paraValues, round($sum / count($yValues)));
                     }
-
-
                     $yValues = [];
                 }
-
-
             }
         } else {
 
         }
-
         return array($paraValues);
     }
 

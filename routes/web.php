@@ -129,6 +129,7 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth','middleware'
 //    Route::post('devices/setLocation', [DeviceController::class, 'setLocation'])->middleware('can:isAdminOrUser')->name('devices.setLocation');
     Route::get('devices/getColumnChartData/{id}', [DeviceController::class, 'getColumnChartData'])->middleware('can:isAdminOrUser')->name('devices.getColumnChartData');
     Route::get('devices/getGaugeWithBandsData/{id}', [DeviceController::class, 'getGaugeWithBandsData'])->middleware('can:isAdminOrUser')->name('devices.getGaugeWithBandsData');
+    Route::get('devices/getMultiAxisChartData/{id}', [DeviceController::class, 'getMultiAxisChartData'])->middleware('can:isAdminOrUser')->name('devices.getMultiAxisChartData');
 
 
     Route::resource('components',ComponentController::class);

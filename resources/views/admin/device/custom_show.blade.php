@@ -134,52 +134,14 @@
 
     <div class="container-fluid">
         <div class="row">
-
             @if(count($deviceComponents) > 0)
                 @foreach($deviceComponents as $component)
-
-
-
                     <div class="col-md-{{$component->width}}">
-
                         @include('admin.component.'.$component->component->slug)
-
                     </div>
-
                     @endforeach
-{{--                @if(in_array(6,json_decode($device->deviceComponent->components)))--}}
-{{--                    <div class="col-md-6">--}}
-{{--                        @include('admin.component.column_chart')--}}
-{{--                    </div>--}}
-{{--                @endif--}}
-{{--                @if(in_array(7,json_decode($device->deviceComponent->components)))--}}
-{{--                    <div class="col-md-6">--}}
-{{--                        @include('admin.component.map')--}}
-{{--                    </div>--}}
-{{--                @endif--}}
-{{--                @if(in_array(8,json_decode($device->deviceComponent->components)))--}}
-{{--                    <div class="col-md-6">--}}
-{{--                        @include('admin.component.setting_table')--}}
-{{--                    </div>--}}
-{{--                @endif--}}
-{{--                @if(in_array(10,json_decode($device->deviceComponent->components)))--}}
-{{--                    <div class="col-md-6">--}}
-
-{{--                        @include('admin.component.gauge_with_bands')--}}
-
-{{--                    </div>--}}
-{{--                @endif--}}
-{{--                @if(in_array(11,json_decode($device->deviceComponent->components)))--}}
-{{--                    <div class="col-md-6">--}}
-
-{{--                        @include('admin.component.sampleGauge')--}}
-
-{{--                    </div>--}}
-{{--                @endif--}}
             @endif
         </div>
-
-
     </div>
 @endsection
 
