@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DeviceParametersRequest;
 use App\Models\DeviceParameters;
-use Illuminate\Http\Request;
 
 class DeviceParametersController extends Controller
 {

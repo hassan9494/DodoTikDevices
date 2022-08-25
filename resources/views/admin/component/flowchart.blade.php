@@ -1,7 +1,6 @@
 
 
     <section class="box-fancy section-fullwidth text-light p-b-0">
-{{--        <div class="row">--}}
             <div class="row" style="text-align: -webkit-center;">
                 <div class="col-lg-12 col-xxl-12 order-1 order-xxl-1 mb-4">
                     <div class="card card-custom mb-4">
@@ -91,9 +90,7 @@
                     </div>
                 </div>
             </div>
-{{--        </div>--}}
     </section>
-{{--    @include('admin.component.flowchart')--}}
 
 @push('scripts')
     <script>
@@ -133,13 +130,24 @@
                         chart.updateOptions({
 
                             series: [
+                                @if(count($testPara) > 0 )
                                     @foreach($testPara as $key=>$parameter)
 
                                 {
                                     name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
                                     data: data[0][{{$key}}]
                                 },
-                                @endforeach],
+                                @endforeach
+                                @else
+                                    @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+
+                                {
+                                    name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
+                                    data: data[0][{{$key}}]
+                                },
+                                @endforeach
+                                @endif
+                            ],
                             chart: {
                                 height: 500,
                                 width: "100%",
@@ -195,13 +203,24 @@
                     success: function (data) {
                         chart.updateOptions({
                             series: [
+                                @if(count($testPara) > 0)
                                     @foreach($testPara as $key=>$parameter)
 
                                 {
                                     name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
                                     data: data[0][{{$key}}]
                                 },
-                                @endforeach],
+                                @endforeach
+                                @else
+                                    @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+
+                                {
+                                    name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
+                                    data: data[0][{{$key}}]
+                                },
+                                @endforeach
+                                @endif
+                            ],
                             chart: {
                                 height: 500,
                                 width: "100%",
@@ -243,13 +262,25 @@
         var labels = {{$label}}
         var options = {
             series: [
+                @if(count($testPara) > 0)
                     @foreach($testPara as $key=>$parameter)
 
                 {
                     name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
                     data: yValues[{{$key}}]
                 },
-                @endforeach ],
+                @endforeach
+                @else
+                    @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+
+                {
+                    name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
+                    data: yValues[{{$key}}]
+                },
+                @endforeach
+                @endif
+
+            ],
             chart: {
                 height: 500,
                 width: "100%",

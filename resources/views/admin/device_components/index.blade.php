@@ -68,7 +68,9 @@
                     <tr>
                         <td>{{ ++$no }}</td>
                         <td>{{ $component->device->name }}</td>
-                        <td>{{ $component->component->name }}</td>
+                        <td>{{ $component->component->name }}<br>
+                            <img src="{{ asset('storage/'.$component->component->image) }}" width="200px"></td>
+                        </td>
                         <td>{{ $component->order }}</td>
                         <td>{{ $component->width }}</td>
                         <td>{{ $component->settings }}</td>

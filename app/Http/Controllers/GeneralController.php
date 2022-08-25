@@ -8,7 +8,8 @@ use App\Models\{About,
     Device,
     DeviceParametersValues,
     General,
-    User};
+    User
+};
 
 class GeneralController extends Controller
 {
@@ -30,29 +31,28 @@ class GeneralController extends Controller
         $lastdangerRead = [];
         $long = 0;
         $lat = 0;
-        foreach ($devices as $key=>$device){
+        foreach ($devices as $key => $device) {
             $long += $device->longitude;
             $lat += $device->latitude;
             $warning[$key] = 0;
             $lastMinDanger[$key] = null;
-            $lastdangerRead[$key] = ["#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000",];
+            $lastdangerRead[$key] = ["#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000",];
             $parameters = $device->deviceParameters;
             $lastPara = DeviceParametersValues::where('device_id', $device->id)->orderBy('id', 'desc')->first();
             if (count($parameters) > 0) {
-                if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->m == 0 &&$now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->d == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i < $device->time_between_two_read) {
+                if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->m == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->d == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i < $device->time_between_two_read) {
                     $status = "Online";
                 } else {
                     $status = "Offline";
                 }
-            }else{
+            } else {
                 $status = "Offline";
             }
-            array_push($state,$status );
-            if($device->deviceType != null){
-                foreach ($device->deviceType->deviceParameters as $key2=>$tPara) {
+            array_push($state, $status);
+            if ($device->deviceType != null) {
+                foreach ($device->deviceType->deviceParameters as $key2 => $tPara) {
                     if (isset($device->limitValues)) {
                         if ($device->limitValues->min_warning == 1) {
-//                                dd(json_decode($device->deviceParameters->last()->parameters, true)[$tPara->code] );
                             if ($device->deviceParameters->last() != null)
                                 if (json_decode($device->deviceParameters->last()->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
 
@@ -74,12 +74,12 @@ class GeneralController extends Controller
             }
 
         }
-        if (count($devices) > 0){
+        if (count($devices) > 0) {
             $long = $long / count($devices);
             $lat = $lat / count($devices);
         }
 
-        return view('admin.dashboard', compact('admin','long','lat','lastdangerRead', 'devices','state','warning','lastMinDanger'));
+        return view('admin.dashboard', compact('admin', 'long', 'lat', 'lastdangerRead', 'devices', 'state', 'warning', 'lastMinDanger'));
     }
 
     public function general()

@@ -89,8 +89,8 @@
                                 <ul class="nav nav-pills nav-pills-sm nav-dark-75 nav nav-test" role="tablist">
                                     <li class="nav-item nav-item">
                                         <span onclick="addKeyValue()" style="cursor: pointer"
-                                           class="nav-link py-2 px-4   nav-link active"
-                                           id="custom">{{__('message.Add')}}</span></li>
+                                              class="nav-link py-2 px-4   nav-link active"
+                                              id="custom">{{__('message.Add')}}</span></li>
                                 </ul>
                             </div>
                         </div>
@@ -102,7 +102,7 @@
                                         <div class="col-sm-9" id="keyDiv">
                                             <input type="text" name="key[]" placeholder="key" id="key"
                                                    class="form-control {{$errors->first('key') ? "is-invalid" : "" }} "
-                                                   >
+                                            >
                                             <div class="invalid-feedback">
                                                 {{ $errors->first('key') }}
                                             </div>

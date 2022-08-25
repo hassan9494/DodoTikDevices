@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DeviceSettingRequest;
 use App\Models\DeviceSettings;
-use Illuminate\Http\Request;
 
 class DeviceSettingController extends Controller
 {

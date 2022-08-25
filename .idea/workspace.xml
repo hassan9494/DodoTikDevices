@@ -21,14 +21,26 @@
   <component name="ChangeListManager">
     <list default="true" id="4b9c3d3c-a351-4ab6-90ca-e38cb16d2c4d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ComponentSettingsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ComponentSettingsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DevicTypeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DevicTypeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ComponentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ComponentController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceApiController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceComponentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceComponentController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/FrontController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/FrontController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceParametersController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceParametersController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceSettingController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceSettingController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/GeneralController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/GeneralController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/View/Composers/GlobalComposer.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/View/Composers/GlobalComposer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/column_chart.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/column_chart.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/flowchart.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/flowchart.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/gauge_with_bands.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/gauge_with_bands.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/map.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/map.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/multi_axis_chart.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/multi_axis_chart.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/sampleGauge.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/sampleGauge.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/component_settings/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component_settings/create.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/admin/device/custom_show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device/custom_show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_components/edit1.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_components/edit1.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_components/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_components/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -305,7 +317,7 @@
       <workItem from="1659860582261" duration="6556000" />
       <workItem from="1660049000876" duration="1856000" />
       <workItem from="1660061790435" duration="11231000" />
-      <workItem from="1660212771940" duration="57046000" />
+      <workItem from="1660212771940" duration="68713000" />
     </task>
     <servers />
   </component>

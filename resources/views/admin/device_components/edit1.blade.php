@@ -122,7 +122,7 @@
                    'name' => json_decode($comsetting->settings)->name,
                    'title' => json_decode($comsetting->settings)->title,
                    'options' => $deviceComponent->device->deviceType->deviceParameters,
-                   'choosen' => json_decode($deviceComponent->settings)->parameters
+                   'choosen' => json_decode($deviceComponent->settings) != null ? json_decode($deviceComponent->settings)->parameters : null
                    ])
         </div>
             @endforeach
