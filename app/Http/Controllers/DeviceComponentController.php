@@ -5,10 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DeviceComponentRequest;
 use App\Models\Component;
 use App\Models\Device;
-use App\Models\DeviceComponent;
 use App\Models\DevicesComponents;
-use Illuminate\Http\Request;
-use phpDocumentor\Reflection\Element;
 
 class DeviceComponentController extends Controller
 {
@@ -48,13 +45,10 @@ class DeviceComponentController extends Controller
      */
     public function store(DeviceComponentRequest $request)
     {
-//        dd($request);
         $components = Component::all();
         $componentsOfDevice = [];
         $componentsOfDevices = [];
         $settingsOfDevice = [];
-//        $deviceComponent = new DeviceComponent();
-//        $deviceComponent->device_id = $request['device_id'];
         foreach ($components as $key => $component) {
             $setting = [];
             if ($request['component_' . $component->id] == "on") {
@@ -63,7 +57,6 @@ class DeviceComponentController extends Controller
                 $deviceComponents->component_id = $component->id;
                 $deviceComponents->order = (int)$request['order_' . $component->id];
                 $deviceComponents->width = (int)$request['width_' . $component->id];
-//                dd(count(json_decode($components[$key]->componentSettings)));
                 if (count(json_decode($components[$key]->componentSettings)) > 0) {
                     if (json_decode($component->componentSettings[0]->settings)->name == "parameters") {
                         $setting[json_decode($component->componentSettings[0]->settings)->name] = $request['parameters_' . $component->id];
@@ -72,33 +65,16 @@ class DeviceComponentController extends Controller
                     }
 
                     $deviceComponents->settings = json_encode($setting);
-//                    dd($deviceComponents);
                 } else {
                     $deviceComponents->settings = null;
                 }
-
-//        dd($setting);
-
-
-//                array_push($componentsOfDevice,$component->id);
-//                $settings['component'] = $component->id;
-//                $settings['order'] = (int)$request['order_'.$component->id];
-//                $settings['width'] = (int)$request['width_'.$component->id];
-//
-//                array_push($settingsOfDevice,$settings);
-//                $deviceComponents->settings = json_encode($settingsOfDevice);
                 array_push($componentsOfDevices, $deviceComponents);
             }
         }
-//        dd($componentsOfDevices);
-//        $deviceComponent->components = json_encode($componentsOfDevice);
-//        $deviceComponent->settings = json_encode($settingsOfDevice);
-//        $deviceComponent->save();
         foreach ($componentsOfDevices as $componentsOfDevicee) {
             $componentsOfDevicee->save();
         }
         return redirect()->route('admin.devices.show', [$request['device_id']]);
-//        dd($componentsOfDevice);
     }
 
     /**

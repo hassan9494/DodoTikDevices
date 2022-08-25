@@ -1,6 +1,5 @@
 
 <section class="box-fancy section-fullwidth text-light p-b-0">
-    {{--        <div class="row">--}}
     <div class="row" style="text-align: -webkit-center;">
         <div class="col-lg-12 col-xxl-12 order-1 order-xxl-1 mb-4">
             <div class="card card-custom mb-4">
@@ -21,7 +20,6 @@
             </div>
         </div>
     </div>
-    {{--        </div>--}}
 </section>
 
 

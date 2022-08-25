@@ -108,61 +108,70 @@
 
 @endsection
 <section class="box-fancy section-fullwidth text-light p-b-0">
-{{--    <div class="row">--}}
-        <div class="row" style="text-align: -webkit-center;">
-            <div class="col-lg-12 col-xxl-12 order-1 order-xxl-1 mb-4">
-                <div class="card card-custom mb-4">
-                    <div class="card-header border-0 pt-5">
-                        <h3 class="card-title align-items-start flex-column">
+    <div class="row" style="text-align: -webkit-center;">
+        <div class="col-lg-12 col-xxl-12 order-1 order-xxl-1 mb-4">
+            <div class="card card-custom mb-4">
+                <div class="card-header border-0 pt-5">
+                    <h3 class="card-title align-items-start flex-column">
                             <span
                                 class="card-label font-weight-bolder text-dark">{{__('message.Device Location')}}</span>
-                        </h3>
+                    </h3>
 
-                        <div class="card-toolbar">
-                            <ul class="nav nav-pills nav-pills-sm nav-dark-75 nav nav-test" role="tablist">
+                    <div class="card-toolbar">
+                        <ul class="nav nav-pills nav-pills-sm nav-dark-75 nav nav-test" role="tablist">
 
-                                <li class="nav-item nav-item">
-                                    <a href="{{route('admin.devices.location', [$device->id])}}" role="tab"
-                                       data-rb-event-key="Location"
-                                       aria-selected="true"
-                                       class="nav-link py-2 px-4  nav-link active ">{{__('message.Edit Location')}}</a></li>
-                            </ul>
-                        </div>
-
+                            <li class="nav-item nav-item">
+                                <a href="{{route('admin.devices.location', [$device->id])}}" role="tab"
+                                   data-rb-event-key="Location"
+                                   aria-selected="true"
+                                   class="nav-link py-2 px-4  nav-link active ">{{__('message.Edit Location')}}</a></li>
+                        </ul>
                     </div>
 
-
-                    <div class="card-body pt-2" style="position: relative;">
-                        <div class="col-md-12 ">
+                </div>
 
 
-                            <div class="row">
-                                <div class="col-md-12" style="margin-top: 15px;margin-bottom: 15px">
-                                    <div id="map"></div>
-                                    <pre id="coordinates" class="coordinates"></pre>
-                                    @if(count($xValues) > 0)
-                                        <div id="state-legend" class="legend" style="display: none">
-                                            <h4>{{__('message.Last Read')}}</h4>
-                                            @if($paraValues[0] != null)
+                <div class="card-body pt-2" style="position: relative;">
+                    <div class="col-md-12 ">
+
+
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top: 15px;margin-bottom: 15px">
+                                <div id="map"></div>
+                                <pre id="coordinates" class="coordinates"></pre>
+                                @if(count($xValues) > 0)
+                                    <div id="state-legend" class="legend" style="display: none">
+                                        <h4>{{__('message.Last Read')}}</h4>
+                                        @if($paraValues[0] != null)
+                                            @if(count($testPara) > 0)
                                                 @foreach($testPara as $key=>$parameter)
                                                     <div><p style=""></p>
-                                                        <span style="color: {{$dangerColor[$key]}}">{{$parameter->name}}</span>
+                                                        <span
+                                                            style="color: {{$dangerColor[$key]}}">{{$parameter->name}}</span>
+                                                        :<span style="color: {{$dangerColor[$key]}}">{{$paraValues[$key][count($paraValues[$key]) - 1]}}  ({{$parameter->unit}})</span>
+                                                    </div>
+                                                @endforeach
+                                            @else
+                                                @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+                                                    <div><p style=""></p>
+                                                        <span
+                                                            style="color: {{$dangerColor[$key]}}">{{$parameter->name}}</span>
                                                         :<span style="color: {{$dangerColor[$key]}}">{{$paraValues[$key][count($paraValues[$key]) - 1]}}  ({{$parameter->unit}})</span>
                                                     </div>
                                                 @endforeach
                                             @endif
-                                        </div>
-                                    @endif
-                                </div>
+                                        @endif
+                                    </div>
+                                @endif
                             </div>
-
-
                         </div>
+
+
                     </div>
                 </div>
             </div>
         </div>
-{{--    </div>--}}
+    </div>
 </section>
 
 

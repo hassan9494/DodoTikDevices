@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ComponentRequest;
 use App\Models\Component;
 use App\Models\ComponentSettings;
-use Illuminate\Http\Request;
 
 class ComponentController extends Controller
 {

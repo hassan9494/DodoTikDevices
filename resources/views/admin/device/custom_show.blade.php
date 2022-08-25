@@ -121,6 +121,12 @@
             height: 500px;
         }
 
+        #chart-container {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
+
     </style>
 
 @endsection
@@ -134,6 +140,9 @@
 
     <div class="container-fluid">
         <div class="row">
+{{--            <div class="col-md-6">--}}
+{{--                @include('admin.component.temperatureGauge')--}}
+{{--            </div>--}}
             @if(count($deviceComponents) > 0)
                 @foreach($deviceComponents as $component)
                     <div class="col-md-{{$component->width}}">

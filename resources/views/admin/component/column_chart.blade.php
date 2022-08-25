@@ -1,6 +1,5 @@
 
 <section class="box-fancy section-fullwidth text-light p-b-0">
-    {{--        <div class="row">--}}
     <div class="row" style="text-align: -webkit-center;">
         <div class="col-lg-12 col-xxl-12 order-1 order-xxl-1 mb-4">
             <div class="card card-custom mb-4">
@@ -23,13 +22,11 @@
             </div>
         </div>
     </div>
-    {{--        </div>--}}
 </section>
 
 
 @push('scripts')
     <script>
-        // $(document).ready(function (){
             jQuery.ajax({
                 url: '/admin/devices/getColumnChartData/{{$device->id}}/',
                 type: 'GET',
@@ -52,6 +49,7 @@
                         series: [{
                             name: "AVG",
                             data: [
+                                @if(count($testParaColumn) > 0)
                                     @foreach($testParaColumn as $key=>$parameter)
 
                                 {
@@ -59,6 +57,15 @@
                                     y: data[0]['paravalues'][{{$key}}]
                                 },
                                 @endforeach
+                                @else
+                                    @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+
+                                {
+                                    x: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
+                                    y: data[0]['paravalues'][{{$key}}]
+                                },
+                                @endforeach
+                                @endif
                                 ],
                         }],
                     }
@@ -70,7 +77,6 @@
                     console.log("xhr=" + xhr + " b=" + b + " c=" + c);
                 }
             });
-        // })
 
     </script>
 @endpush

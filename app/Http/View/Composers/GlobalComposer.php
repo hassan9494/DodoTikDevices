@@ -52,7 +52,6 @@ class GlobalComposer
     {
         return Cache::remember('website',120, function (){
             $user = auth()->user();
-//            dd($user);
             if ($user != null){
                 if ($user->role == 'Administrator') {
                     $admin = User::orderBy('id', 'desc')->count();
@@ -61,7 +60,6 @@ class GlobalComposer
                     $admin = User::orderBy('id', 'desc')->count();
                     $all_devices = Device::where('user_id', $user->id)->get();
                 }
-//            dd($all_devices);
                 return compact('all_devices');
             }
 

@@ -42,7 +42,6 @@ class DeviceApiController extends Controller
                 $parameters->time_of_read = last($test);
             }
             $parameters->save();
-
             $response = '##';
             if ($device->deviceSetting != null) {
                 $x = json_decode($device->deviceSetting->settings, true);
@@ -170,15 +169,6 @@ class DeviceApiController extends Controller
                 foreach ($type->deviceParameters()->orderBy('order')->get() as $key1 => $parameter) {
                     $parameters = new DeviceParametersValues();
                     $jsonParameters[$parameter->code] = $last_paraRead[$key1];
-//                    if ($parameter->code == "Bat_v"){
-//                        $jsonParameters[$parameter->code] = $last_vol;
-//                    }elseif ($parameter->code == "Temperature"){
-//                        $jsonParameters[$parameter->code] = $last_temp;
-//                    }elseif ($parameter->code == "Humidity"){
-//                        $jsonParameters[$parameter->code] = $last_hum;
-//                    }elseif ($parameter->code == "Gas_Resistance"){
-//                        $jsonParameters[$parameter->code] = $last_gaz;
-//                    }
                     $parameters->parameters = json_encode($jsonParameters);
                     $parameters->device_id = $device->id;
                     $parameters->time_of_read = Carbon::now();
