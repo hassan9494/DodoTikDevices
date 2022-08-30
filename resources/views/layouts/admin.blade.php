@@ -192,11 +192,22 @@
         <!-- Main Content -->
         <div id="content">
             <!-- Topbar -->
-            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" id="myHeader">
                 <!-- Sidebar Toggle (Topbar) -->
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                     <i class="fa fa-bars"></i>
                 </button>
+                @if(isset($device) && isset($status))
+                <h3 class="card-title align-items-start flex-column" style="margin-top: 5px;margin-left: 10px">
+                                <span
+                                    class="card-label font-weight-bolder text-dark" style="font-size: 1rem;">{{__('message.device_Name')}} : {{$device->name}} </span>
+                    <br><span id="status"
+                          class="card-label font-weight-bolder text-dark"
+                          style="margin-top: 15px;font-size: 1rem;">{{__('message.status')}} : {{$status}}  <i
+                            class="fas {{$status == "Offline" ? 'fa-times' : 'fa-check'  }}"
+                            style="color:{{$status == "Offline" ? 'red' : 'green'  }} "></i> </span>
+                </h3>
+            @endif
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
                     <div class="topbar-divider d-none d-sm-block"></div>

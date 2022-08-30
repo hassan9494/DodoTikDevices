@@ -2,7 +2,7 @@
 $(document).ready(function() {
   $('#dataTable').DataTable({
       "language": {
-          "url": "//cdn.datatables.net/plug-ins/1.11.4/i18n/en_en.json"
+          "url": "//cdn.datatables.net/plug-ins/1.11.4/i18n/en-gb.json"
       }
   });
 });

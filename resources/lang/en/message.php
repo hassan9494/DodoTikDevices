@@ -100,9 +100,10 @@ return [
     'Key' => 'Key',
     'Value' => 'Value',
     'Add' => 'Add',
-    '' => '',
-    '' => '',
-    '' => '',
-    '' => '',
+    'Parameters' => 'Parameters',
+    'time of read' => 'Time Of Read',
+    'device_Name' => 'Device Name',
+    'Export To Data Sheet' => 'Export To Data Sheet',
+    'Flow Chart' => 'Flow Chart'
 
 ];

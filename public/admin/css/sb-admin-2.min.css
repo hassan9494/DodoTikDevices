@@ -369,3 +369,7 @@ input:checked + .slider:before {
 .settings {
     margin-top: 10px;
 }
+
+.apexcharts-menu-item{
+    color: #00989d ;
+}

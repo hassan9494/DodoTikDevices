@@ -141,7 +141,7 @@
                                 <pre id="coordinates" class="coordinates"></pre>
                                 @if(count($xValues) > 0)
                                     <div id="state-legend" class="legend" style="display: none">
-                                        <h4>{{__('message.Last Read')}}</h4>
+                                        <h4 style="color: #00989d ">{{__('message.Last Read')}}</h4>
                                         @if($paraValues[0] != null)
                                             @if(count($testPara) > 0)
                                                 @foreach($testPara as $key=>$parameter)
@@ -151,6 +151,7 @@
                                                         :<span style="color: {{$dangerColor[$key]}}">{{$paraValues[$key][count($paraValues[$key]) - 1]}}  ({{$parameter->unit}})</span>
                                                     </div>
                                                 @endforeach
+                                                    <span >{{$paraValues}}  </span>
                                             @else
                                                 @foreach($device->deviceType->deviceParameters as $key=>$parameter)
                                                     <div><p style=""></p>
@@ -159,6 +160,7 @@
                                                         :<span style="color: {{$dangerColor[$key]}}">{{$paraValues[$key][count($paraValues[$key]) - 1]}}  ({{$parameter->unit}})</span>
                                                     </div>
                                                 @endforeach
+                                                    <span style="color: #000000">{{date("d/m/Y H:i", strtotime($xValues[count($xValues) - 1]))}}  </span>
                                             @endif
                                         @endif
                                     </div>
