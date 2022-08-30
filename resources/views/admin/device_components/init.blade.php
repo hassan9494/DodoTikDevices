@@ -152,6 +152,8 @@
                                                                        'id' => json_decode($comsetting->settings)->name . $key,
                                                                        'options' =>$comsetting->name == "parametrs" ? $device->deviceType->deviceParameters : $device->deviceType->deviceSettings,
                                                                        'choosen' => null,
+                                                                       'type' => json_decode($comsetting->settings)->type,
+                                                                       'value' => null
                                                                        ])
                                                             </div>
                                                         @endforeach

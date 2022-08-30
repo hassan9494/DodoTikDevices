@@ -155,6 +155,8 @@
                                     '</div>' +
                                     @endforeach
                                         @endif
+
+                                        '<span>{{count($device->deviceParameters) > 0 ? $device->deviceParameters->last()->time_of_read : ""}}</span>' +
                                         '</div>' :
                                     '<div>' +
                                     '<h4 style="color : #000000">{{__('message.Last Read')}}</h4>' +
@@ -166,6 +168,8 @@
                                     '</div>' +
                                     @endforeach
                                         @endif
+
+                                        '<span>{{count($device->deviceParameters) > 0 ? $device->deviceParameters->last()->time_of_read : ""}}</span>' +
                                         '</div>'
                             },
                             'geometry': {

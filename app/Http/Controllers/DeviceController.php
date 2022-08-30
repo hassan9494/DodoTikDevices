@@ -139,9 +139,22 @@ class DeviceController extends Controller
         $deviceComponent = DevicesComponents::where('device_id', $id)->where('component_id', 9)->first();
         $testParaColumn = [];
         $deviceComponentColumn = DevicesComponents::where('device_id', $id)->where('component_id', 6)->first();
+        $parameterTableColumn = [];
+        $numberOfRow = 0;
+        $deviceComponentparameterTable = DevicesComponents::where('device_id', $id)->where('component_id', 13)->first();
         if ($deviceComponentColumn != null && json_decode($deviceComponentColumn->settings)->parameters != null) {
             foreach (json_decode($deviceComponentColumn->settings)->parameters as $key => $test) {
                 $testParaColumn[$key] = DeviceParameters::findOrFail((int)$test);
+            }
+        }
+//dd($deviceComponentparameterTable);
+        if ($deviceComponentparameterTable != null && json_decode($deviceComponentparameterTable->settings)->parameters != null) {
+            if (isset(json_decode($deviceComponentparameterTable->settings)->number_of_row)){
+                $numberOfRow = (int)json_decode($deviceComponentparameterTable->settings)->number_of_row;
+            }
+
+            foreach (json_decode($deviceComponentparameterTable->settings)->parameters as $key => $test) {
+                $parameterTableColumn[$key] = DeviceParameters::findOrFail((int)$test);
             }
         }
 //        dd(json_decode($deviceComponent->settings)->parameters);
@@ -229,8 +242,9 @@ class DeviceController extends Controller
             $label = 1;
         }
         $deviceComponents = DevicesComponents::where('device_id', $device->id)->orderBy('order', 'asc')->get();
-//dd($paraValues);
-        return view('admin.device.custom_show', compact('testParaColumn', 'testPara', 'device', 'deviceComponents', 'dangerColor', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
+//        dd($device->deviceParameters()->orderBy('id','desc')->latest()->get());
+//        dd($parameterTableColumn);
+        return view('admin.device.custom_show', compact('numberOfRow','parameterTableColumn','testParaColumn', 'testPara', 'device', 'deviceComponents', 'dangerColor', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
     }
 
 
@@ -333,7 +347,7 @@ class DeviceController extends Controller
 
                     $yValues = [];
                 }
-            }else{
+            } else {
                 foreach ($device_type->deviceParameters as $index => $tPara) {
 
                     foreach ($parameters as $parameter) {
@@ -376,11 +390,13 @@ class DeviceController extends Controller
         if (count($parameters) > 0) {
             foreach ($device_type->deviceParameters as $index => $tPara) {
                 $days = [];
+
                 for ($i = 7; $i >= 0; $i--) {
                     foreach ($parameters as $parameter) {
                         if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == $i && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
                             $day = date("m/d", strtotime($parameter->time_of_read));
                             array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+
                         }
                     }
                     $sum = 0;
@@ -390,6 +406,7 @@ class DeviceController extends Controller
                     if (count($yValues) != 0) {
                         $test = round($sum / count($yValues));
                     }
+
                     array_push($days, $day);
                     array_push($paraValues, $test);
                 }

@@ -101,6 +101,7 @@ class DeviceComponentController extends Controller
      */
     public function updateDisplay(DeviceComponentRequest $request, $id)
     {
+//        dd($request);
         $components = Component::all();
         $componentsOfDevices = [];
         $componentIds = [];
@@ -117,12 +118,20 @@ class DeviceComponentController extends Controller
                 $deviceComponents->component_id = $component->id;
                 $deviceComponents->order = (int)$request['order_' . $component->id];
                 $deviceComponents->width = (int)$request['width_' . $component->id];
+//                dd(json_decode($components[7]->componentSettings));
                 if (count(json_decode($components[$key]->componentSettings)) > 0) {
-                    if (json_decode($component->componentSettings[0]->settings)->name == "parameters") {
-                        $setting[json_decode($component->componentSettings[0]->settings)->name] = $request['parameters_' . $component->id];
-                    } elseif (json_decode($component->componentSettings[0]->settings)->name == "settings") {
-                        $setting[json_decode($component->componentSettings[0]->settings)->name] = $request['settings_' . $component->id];
+                    foreach (json_decode($component->componentSettings) as $key1=>$item){
+//                        dd(json_decode($components[7]->componentSettings[$key1+1]->settings)->name);
+                        if (json_decode($component->componentSettings[$key1]->settings)->name == "parameters") {
+                            $setting[json_decode($component->componentSettings[$key1]->settings)->name] = $request['parameters_' . $component->id];
+                        } elseif (json_decode($component->componentSettings[$key1]->settings)->name == "settings") {
+                            $setting[json_decode($component->componentSettings[$key1]->settings)->name] = $request['settings_' . $component->id];
+                        }elseif (json_decode($component->componentSettings[$key1]->settings)->name == "number_of_row"){
+//                            dd('1');
+                            $setting[json_decode($component->componentSettings[$key1]->settings)->name] = $request['number_of_row_' . $component->id];
+                        }
                     }
+
 
                     $deviceComponents->settings = json_encode($setting);
                 } else {

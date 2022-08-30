@@ -7,12 +7,12 @@
                         <div class="card-header border-0 pt-5">
                             <h3 class="card-title align-items-start flex-column">
                                 <span
-                                    class="card-label font-weight-bolder text-dark" style="font-size: 1rem;">{{__('message.device_id')}} : {{$device->device_id}} </span>
-                                <span id="status"
-                                      class="card-label font-weight-bolder text-dark"
-                                      style="margin-top: 15px;font-size: 1rem;">{{__('message.status')}} : {{$status}}  <i
-                                        class="fas {{$status == "Offline" ? 'fa-times' : 'fa-check'  }}"
-                                        style="color:{{$status == "Offline" ? 'red' : 'green'  }} "></i> </span>
+                                    class="card-label font-weight-bolder text-dark" style="font-size: 1rem;">{{__('message.Flow Chart')}}  </span>
+{{--                                <span id="status"--}}
+{{--                                      class="card-label font-weight-bolder text-dark"--}}
+{{--                                      style="margin-top: 15px;font-size: 1rem;">{{__('message.status')}} : {{$status}}  <i--}}
+{{--                                        class="fas {{$status == "Offline" ? 'fa-times' : 'fa-check'  }}"--}}
+{{--                                        style="color:{{$status == "Offline" ? 'red' : 'green'  }} "></i> </span>--}}
                             </h3>
 
                             <div class="card-toolbar">

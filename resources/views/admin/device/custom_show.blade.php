@@ -2,13 +2,29 @@
 @section('styles')
 
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet">
+    <link href="{{ asset('admin/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: Roboto, sans-serif;
         }
+        .sticky {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 999;
+        }
+        .sticky ul{
+            position: fixed;
+            top: 0;
+            right: 0;
+            z-index: 999;
+        }
 
+        /*.sticky + .content {*/
+        /*    padding-top: 102px;*/
+        /*}*/
         #chart {
             max-width: 100%;
             margin: 35px auto;
@@ -127,6 +143,21 @@
             overflow: hidden;
         }
 
+        .dataTables_length {
+            float: left;
+        }
+
+        .dataTables_length label {
+            color: #0b2e13;
+        }
+
+        /*.dataTables_filter {*/
+        /*     float: left;*/
+        /* }*/
+        .dataTables_filter label {
+            color: #0b2e13;
+        }
+
     </style>
 
 @endsection
@@ -137,18 +168,38 @@
             {{ session('error') }}
         </div>
     @endif
+{{--    <div class="row">--}}
+{{--        <div class="col-md-2"></div>--}}
+{{--        <div class="col-md-12">--}}
+{{--            <div class="card card-custom">--}}
+{{--                <div class="card-body">--}}
+{{--                    <h3 class="card-title align-items-start flex-column">--}}
+{{--                                <span--}}
+{{--                                    class="card-label font-weight-bolder text-dark" style="font-size: 1rem;">{{__('message.device_Name')}} : {{$device->name}} </span>--}}
+{{--                       <br> <span id="status"--}}
+{{--                              class="card-label font-weight-bolder text-dark"--}}
+{{--                              style="margin-top: 15px;font-size: 1rem;">{{__('message.status')}} : {{$status}}  <i--}}
+{{--                                class="fas {{$status == "Offline" ? 'fa-times' : 'fa-check'  }}"--}}
+{{--                                style="color:{{$status == "Offline" ? 'red' : 'green'  }} "></i> </span>--}}
+{{--                    </h3>--}}
+{{--                </div>--}}
+
+{{--            </div>--}}
+{{--        </div>--}}
+{{--        <div class="col-md-2"></div>--}}
+{{--    </div>--}}
 
     <div class="container-fluid">
         <div class="row">
-{{--            <div class="col-md-6">--}}
-{{--                @include('admin.component.temperatureGauge')--}}
-{{--            </div>--}}
+            {{--            <div class="col-md-12">--}}
+            {{--                @include('admin.component.parameters_table')--}}
+            {{--            </div>--}}
             @if(count($deviceComponents) > 0)
                 @foreach($deviceComponents as $component)
                     <div class="col-md-{{$component->width}}">
                         @include('admin.component.'.$component->component->slug)
                     </div>
-                    @endforeach
+                @endforeach
             @endif
         </div>
     </div>
@@ -157,8 +208,25 @@
 
 @push('scripts')
 
+    <script>
+        window.onscroll = function() {myFunction()};
 
+        var header = document.getElementById("myHeader");
+        var sticky = header.offsetTop;
 
+        function myFunction() {
+            if (window.pageYOffset > sticky) {
+                header.classList.add("sticky");
+            } else {
+                header.classList.remove("sticky");
+            }
+        }
+    </script>
+    <script src="{{ asset('admin/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+
+    <script src="{{ asset('admin/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+
+    <script src="{{ asset('admin/js/demo/datatables-demo.js') }}"></script>
 
 
 @endpush
