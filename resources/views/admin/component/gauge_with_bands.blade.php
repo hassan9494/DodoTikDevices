@@ -7,7 +7,7 @@
 
                 <div class="card-body pt-2" style="position: relative;">
                     <div id="chartdiv"></div>
-                    <div class="spinner-border  text-success" role="status" id="spinner">
+                    <div class="spinner-border  text-success" role="status" id="gauge_with_bands_spinner">
                         <span class="sr-only">Loading...</span>
                     </div>
                     <div class="resize-triggers">
@@ -68,8 +68,8 @@
 
                     var xAxis = chart.xAxes.push(am5xy.ValueAxis.new(root, {
                         maxDeviation: 0,
-                        min: -15,
-                        max: 60,
+                        min: -20,
+                        max: 80,
                         strictMinMax: true,
                         renderer: axisRenderer
                     }));
@@ -134,28 +134,28 @@
                     var bandsData = [{
                         title: "Very Low",
                         color: "#ee1f25",
-                        lowScore: -15,
+                        lowScore: -20,
                         highScore: 0
                     }, {
                         title: "Low",
-                        color: "#f04922",
+                        color: "#fdae19",
                         lowScore: 0,
-                        highScore: 15
+                        highScore: 20
                     }, {
                         title: "Medium",
-                        color: "#fdae19",
-                        lowScore: 15,
-                        highScore: 30
+                        color: "#f3eb0c",
+                        lowScore: 20,
+                        highScore: 40
                     }, {
                         title: "High",
-                        color: "#f3eb0c",
-                        lowScore: 30,
-                        highScore: 45
+                        color: "#b0d136",
+                        lowScore: 40,
+                        highScore: 60
                     }, {
                         title: "Very High",
-                        color: "#b0d136",
-                        lowScore: 45,
-                        highScore: 60
+                        color: "#0f9747",
+                        lowScore: 60,
+                        highScore: 80
                     }];
 
                     am5.array.each(bandsData, function (data) {

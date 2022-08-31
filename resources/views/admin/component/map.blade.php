@@ -151,7 +151,8 @@
                                                         :<span style="color: {{$dangerColor[$key]}}">{{$paraValues[$key][count($paraValues[$key]) - 1]}}  ({{$parameter->unit}})</span>
                                                     </div>
                                                 @endforeach
-                                                    <span >{{$paraValues}}  </span>
+                                                <span
+                                                    style="color: #000000">{{\Carbon\Carbon::parse($xValues[count($xValues) - 1])->setTimezone('Asia/Damascus')->format('Y-d-m h:i a')}}  </span>
                                             @else
                                                 @foreach($device->deviceType->deviceParameters as $key=>$parameter)
                                                     <div><p style=""></p>
@@ -160,8 +161,26 @@
                                                         :<span style="color: {{$dangerColor[$key]}}">{{$paraValues[$key][count($paraValues[$key]) - 1]}}  ({{$parameter->unit}})</span>
                                                     </div>
                                                 @endforeach
-                                                    <span style="color: #000000">{{date("d/m/Y H:i", strtotime($xValues[count($xValues) - 1]))}}  </span>
+                                                <span
+                                                    style="color: #000000">{{\Carbon\Carbon::parse($xValues[count($xValues) - 1])->setTimezone('Asia/Damascus')->format('Y-d-m h:i a')}}  </span>
                                             @endif
+                                        @endif
+                                    </div>
+                                @else
+                                    <div id="state-legend" class="legend" style="display: none">
+                                        <h4 style="color: #00989d ">{{__('message.Last Read')}}</h4>
+                                        @if($device->deviceParameters()->orderBy('id','desc')->first() != null)
+
+                                            @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+                                                <div><p style=""></p>
+                                                    <span
+                                                        style="color: {{$dangerColor[$key]}}">{{$parameter->name}}</span>
+                                                    :<span style="color: {{$dangerColor[$key]}}">{{json_decode($device->deviceParameters()->orderBy('id','desc')->first()->parameters,true)[$parameter->code]}}  ({{$parameter->unit}})</span>
+                                                </div>
+                                            @endforeach
+                                            <span
+                                                style="color: #000000">{{\Carbon\Carbon::parse($device->deviceParameters()->orderBy('id','desc')->first()->time_of_read)->setTimezone('Asia/Damascus')->format('Y-d-m h:i a')}}  </span>
+
                                         @endif
                                     </div>
                                 @endif

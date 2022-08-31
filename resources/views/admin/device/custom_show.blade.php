@@ -191,9 +191,9 @@
 
     <div class="container-fluid">
         <div class="row">
-            {{--            <div class="col-md-12">--}}
-            {{--                @include('admin.component.parameters_table')--}}
-            {{--            </div>--}}
+{{--                        <div class="col-md-12">--}}
+{{--                            @include('admin.component.temperatureGauge')--}}
+{{--                        </div>--}}
             @if(count($deviceComponents) > 0)
                 @foreach($deviceComponents as $component)
                     <div class="col-md-{{$component->width}}">

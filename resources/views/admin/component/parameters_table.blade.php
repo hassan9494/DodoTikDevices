@@ -6,10 +6,13 @@
                     <div class="card-header border-0 pt-5">
                         <h3 class="card-title align-items-start flex-column">
                                     <span
-                                        class="card-label font-weight-bolder text-dark" style="float: left;margin-bottom: 10px;">{{__('message.Parameters')}} </span>
+                                        class="card-label font-weight-bolder text-dark"
+                                        style="float: left;margin-bottom: 10px;">{{__('message.Parameters')}} </span>
                         </h3>
 
-                        <a title="Export" id="d_{{$device->id}}" href="{{route('admin.devices.export', [$device->id])}}" class="btn btn-edit btn-sm" style="float: right;background-color: #00989d!important;"> {{__('message.Export To Data Sheet')}} </a>
+                        <a title="Export" id="d_{{$device->id}}" href="{{route('admin.devices.export', [$device->id])}}"
+                           class="btn btn-edit btn-sm"
+                           style="float: right;background-color: #00989d!important;"> {{__('message.Export To Data Sheet')}} </a>
                     </div>
 
 
@@ -27,9 +30,9 @@
                                                         <th>{{$parameter->name}}</th>
                                                     @endforeach
                                                 @else
-                                                @foreach($device->deviceType->deviceParameters as $parameter)
-                                                    <th>{{$parameter->name}}</th>
-                                                @endforeach
+                                                    @foreach($device->deviceType->deviceParameters as $parameter)
+                                                        <th>{{$parameter->name}}</th>
+                                                    @endforeach
                                                 @endif
                                                 <th>{{__('message.time of read')}}</th>
                                             </tr>
@@ -54,7 +57,9 @@
                                                     @endif
 
                                                     <td>
-                                                        {{$deviceParameter->time_of_read}}
+                                                        {{\Carbon\Carbon::parse($deviceParameter->time_of_read)->setTimezone('Asia/Damascus')->format('Y-d-m h:i a')}}
+{{--                                                        <br>--}}
+{{--                                                        {{$deviceParameter->time_of_read}}--}}
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -71,3 +76,10 @@
     @endif
 
 </section>
+@push('scripts')
+    <script>
+        function test(x) {
+            return x.toLocaleString()
+        }
+    </script>
+@endpush
