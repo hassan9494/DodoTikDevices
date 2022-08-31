@@ -156,7 +156,7 @@
                                     @endforeach
                                         @endif
 
-                                        '<span>{{count($device->deviceParameters) > 0 ? $device->deviceParameters->last()->time_of_read : ""}}</span>' +
+                                        '<span>{{count($device->deviceParameters) > 0 ? \Carbon\Carbon::parse($device->deviceParameters->last()->time_of_read)->setTimezone('Asia/Damascus')->format('Y-d-m h:i a') : ""}}</span>' +
                                         '</div>' :
                                     '<div>' +
                                     '<h4 style="color : #000000">{{__('message.Last Read')}}</h4>' +
@@ -169,7 +169,7 @@
                                     @endforeach
                                         @endif
 
-                                        '<span>{{count($device->deviceParameters) > 0 ? $device->deviceParameters->last()->time_of_read : ""}}</span>' +
+                                        '<span>{{count($device->deviceParameters) > 0 ? \Carbon\Carbon::parse($device->deviceParameters->last()->time_of_read)->setTimezone('Asia/Damascus')->format('Y-d-m h:i a') : ""}}</span>' +
                                         '</div>'
                             },
                             'geometry': {

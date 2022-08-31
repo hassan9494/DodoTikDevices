@@ -243,7 +243,7 @@ class DeviceController extends Controller
         }
         $deviceComponents = DevicesComponents::where('device_id', $device->id)->orderBy('order', 'asc')->get();
 //        dd($device->deviceParameters()->orderBy('id','desc')->latest()->get());
-//        dd($parameterTableColumn);
+//        dd($device->deviceParameters()->orderBy('id','desc')->first());
         return view('admin.device.custom_show', compact('numberOfRow','parameterTableColumn','testParaColumn', 'testPara', 'device', 'deviceComponents', 'dangerColor', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
     }
 
@@ -434,7 +434,7 @@ class DeviceController extends Controller
             foreach ($device_type->deviceParameters as $index => $tPara) {
                 if ($tPara->code == "Temperature") {
                     foreach ($parameters as $parameter) {
-                        if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
+                        if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
                             array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
                         }
                     }
