@@ -155,21 +155,23 @@
                                                             @foreach($component->componentSettings as $comsetting)
                                                                 <div class="form-group ml-6">
                                                                     @if($comsetting->name == "parametrs" || $comsetting->name == "settings")
-                                                                    @include('admin.component.settings.'.json_decode($comsetting->settings)->type, [
-                                                                           'name' => json_decode($comsetting->settings)->name."_".$component->id,
-                                                                           'title' => json_decode($comsetting->settings)->title ,
-                                                                           'type' => json_decode($comsetting->settings)->type,
-                                                                           'id' => json_decode($comsetting->settings)->name . $key,
-                                                                           'options' =>$comsetting->name == "parametrs" ? $device->deviceType->deviceParameters : $device->deviceType->deviceSettings,
-                                                                           'choosen' =>$comsetting->name == "parametrs" ? json_decode($deviceComponents->where('component_id',$component->id)->first()->settings)->parameters : json_decode($deviceComponents->where('component_id',$component->id)->first()->settings)->settings,
-                                                                           ])
+                                                                        @include('admin.component.settings.'.json_decode($comsetting->settings)->type, [
+                                                                               'name' => json_decode($comsetting->settings)->name."_".$component->id,
+                                                                               'title' => json_decode($comsetting->settings)->title ,
+                                                                               'type' => json_decode($comsetting->settings)->type,
+                                                                               'id' => json_decode($comsetting->settings)->name . $key,
+                                                                               'options' =>$comsetting->name == "parametrs" ? $device->deviceType->deviceParameters : $device->deviceType->deviceSettings,
+                                                                               'choosen' =>$comsetting->name == "parametrs"  ? isset(json_decode($deviceComponents->where('component_id',$component->id)->first()->settings)->parameters) ? json_decode($deviceComponents->where('component_id',$component->id)->first()->settings)->parameters : null  : json_decode($deviceComponents->where('component_id',$component->id)->first()->settings)->settings,
+                                                                               ])
                                                                     @elseif($comsetting->name == "Number Of Row")
+
+                                                                        {{--                                                                    {{dd(json_decode($deviceComponents->where('component_id',$component->id)->first()->settings))}}--}}
                                                                         @include('admin.component.settings.'.json_decode($comsetting->settings)->type, [
                                                                            'name' => json_decode($comsetting->settings)->name."_".$component->id,
                                                                            'title' => json_decode($comsetting->settings)->title ,
                                                                            'type' => json_decode($comsetting->settings)->type,
                                                                            'id' => json_decode($comsetting->settings)->name . $key,
-                                                                           'value' => json_decode($deviceComponents->where('component_id',$component->id)->first()->settings)->number_of_row,
+                                                                           'value' => isset(json_decode($deviceComponents->where('component_id',$component->id)->first()->settings)->number_of_row) ? json_decode($deviceComponents->where('component_id',$component->id)->first()->settings)->number_of_row : null,
                                                                            ])
                                                                     @endif
                                                                 </div>
