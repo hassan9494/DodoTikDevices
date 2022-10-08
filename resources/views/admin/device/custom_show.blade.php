@@ -168,26 +168,6 @@
             {{ session('error') }}
         </div>
     @endif
-{{--    <div class="row">--}}
-{{--        <div class="col-md-2"></div>--}}
-{{--        <div class="col-md-12">--}}
-{{--            <div class="card card-custom">--}}
-{{--                <div class="card-body">--}}
-{{--                    <h3 class="card-title align-items-start flex-column">--}}
-{{--                                <span--}}
-{{--                                    class="card-label font-weight-bolder text-dark" style="font-size: 1rem;">{{__('message.device_Name')}} : {{$device->name}} </span>--}}
-{{--                       <br> <span id="status"--}}
-{{--                              class="card-label font-weight-bolder text-dark"--}}
-{{--                              style="margin-top: 15px;font-size: 1rem;">{{__('message.status')}} : {{$status}}  <i--}}
-{{--                                class="fas {{$status == "Offline" ? 'fa-times' : 'fa-check'  }}"--}}
-{{--                                style="color:{{$status == "Offline" ? 'red' : 'green'  }} "></i> </span>--}}
-{{--                    </h3>--}}
-{{--                </div>--}}
-
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="col-md-2"></div>--}}
-{{--    </div>--}}
 
     <div class="container-fluid">
         <div class="row">

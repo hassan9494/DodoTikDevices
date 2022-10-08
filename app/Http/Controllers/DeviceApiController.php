@@ -29,17 +29,23 @@ class DeviceApiController extends Controller
         $para = $request->getContent();
         $testsApi = new TestApi();
         $testsApi->settings = json_encode($para);
-//        $testsApi->save();
+        $testsApi->save();
         $test = explode(',', $para);
         $device = Device::where('device_id', $test[0])->first();
         if ($device != null) {
             $type = $device->deviceType;
             foreach ($type->deviceParameters as $key => $parameter) {
+//                dd(count($type->deviceParameters));
                 $parameters = new DeviceParametersValues();
                 $jsonParameters[$parameter->code] = $test[$key + 1];
                 $parameters->parameters = json_encode($jsonParameters);
                 $parameters->device_id = $device->id;
-                $parameters->time_of_read = last($test);
+                if (count($test) == count($type->deviceParameters) + 2){
+                    $parameters->time_of_read = last($test);
+                }else{
+                    $parameters->time_of_read = Carbon::now();
+                }
+
             }
             $parameters->save();
             $response = '##';
@@ -50,13 +56,15 @@ class DeviceApiController extends Controller
                     $response = $response . '' . $setting->name . '=' . $x[$setting->name] . ',';
                 }
                 $response = $response . '' . 'time=' . $x['time'];
-            } else {
-                foreach ($device->deviceType->deviceSettings as $setting) {
-                    $response = $response . '' . $setting->name . '=' . $setting->pivot->value . ',';
-                }
-                $response = $response . '' . 'time=' . gmdate("Y-m-dTH:i:s");
+                return response()->json($response, 201);
             }
-            return response()->json($response, 201);
+//            else {
+//                foreach ($device->deviceType->deviceSettings as $setting) {
+//                    $response = $response . '' . $setting->name . '=' . $setting->pivot->value . ',';
+//                }
+//                $response = $response . '' . 'time=' . gmdate("Y-m-dTH:i:s");
+//            }
+
         } else {
             return response()->json('device id is not exist', 404);
         }

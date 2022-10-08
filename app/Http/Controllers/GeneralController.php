@@ -36,7 +36,7 @@ class GeneralController extends Controller
             $lat += $device->latitude;
             $warning[$key] = 0;
             $lastMinDanger[$key] = null;
-            $lastdangerRead[$key] = ["#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000",];
+            $lastdangerRead[$key] = ["#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000",];
             $parameters = $device->deviceParameters;
             $lastPara = DeviceParametersValues::where('device_id', $device->id)->orderBy('id', 'desc')->first();
             if (count($parameters) > 0) {
@@ -78,7 +78,7 @@ class GeneralController extends Controller
             $long = $long / count($devices);
             $lat = $lat / count($devices);
         }
-//dd();
+//        dd($lastdangerRead);
         return view('admin.dashboard', compact('admin', 'long', 'lat', 'lastdangerRead', 'devices', 'state', 'warning', 'lastMinDanger'));
     }
 

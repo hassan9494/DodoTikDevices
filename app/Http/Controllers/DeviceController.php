@@ -147,7 +147,6 @@ class DeviceController extends Controller
                 $testParaColumn[$key] = DeviceParameters::findOrFail((int)$test);
             }
         }
-//dd($deviceComponentparameterTable);
         if ($deviceComponentparameterTable != null && json_decode($deviceComponentparameterTable->settings)->parameters != null) {
             if (isset(json_decode($deviceComponentparameterTable->settings)->number_of_row)){
                 $numberOfRow = (int)json_decode($deviceComponentparameterTable->settings)->number_of_row;
@@ -157,15 +156,11 @@ class DeviceController extends Controller
                 $parameterTableColumn[$key] = DeviceParameters::findOrFail((int)$test);
             }
         }
-//        dd(json_decode($deviceComponent->settings)->parameters);
         if ($deviceComponent != null && json_decode($deviceComponent->settings)->parameters != null) {
             foreach (json_decode($deviceComponent->settings)->parameters as $key => $test) {
                 $testPara[$key] = DeviceParameters::findOrFail((int)$test);
             }
         } else {
-//            foreach ($device_type->deviceParameters as $key => $test) {
-//                $testPara[$key] = DeviceParameters::findOrFail((int)$test);
-//            }
         }
         $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
         if (count($parameters) > 0) {
@@ -181,7 +176,6 @@ class DeviceController extends Controller
             }
             $warning = 1;
             $dangerColor = [];
-//            dd(count($testPara));
             if (count($testPara) > 0) {
                 foreach ($testPara as $index => $tPara) {
                     $dangerColor[$index] = '#000000';
@@ -242,8 +236,6 @@ class DeviceController extends Controller
             $label = 1;
         }
         $deviceComponents = DevicesComponents::where('device_id', $device->id)->orderBy('order', 'asc')->get();
-//        dd($device->deviceParameters()->orderBy('id','desc')->latest()->get());
-//        dd($device->deviceParameters()->orderBy('id','desc')->first());
         return view('admin.device.custom_show', compact('numberOfRow','parameterTableColumn','testParaColumn', 'testPara', 'device', 'deviceComponents', 'dangerColor', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
     }
 
@@ -371,9 +363,9 @@ class DeviceController extends Controller
         } else {
 
         }
-        $test1['paravalues'] = $paraValues;
-        $test1['para'] = $testPara;
-        return array($test1);
+        $data['paravalues'] = $paraValues;
+        $data['para'] = $testPara;
+        return array($data);
     }
 
 
@@ -478,27 +470,27 @@ class DeviceController extends Controller
     {
         $device = Device::findOrFail($id);
         $devSet = DeviceSettingPerDevice::where('device_id', $id)->first();
-        $test = [];
+        $settings = [];
         if ($devSet != null) {
             foreach ($device->deviceType->deviceSettings as $setting) {
                 if ($request[$setting->name] != null) {
-                    $test[$setting->code] = $request[$setting->name];
+                    $settings[$setting->code] = $request[$setting->name];
                 } else {
-                    $test[$setting->code] = "0";
+                    $settings[$setting->code] = "0";
                 }
             }
         } else {
             $devSet = new DeviceSettingPerDevice();
             foreach ($device->deviceType->deviceSettings as $setting) {
                 if ($request[$setting->name] != null) {
-                    $test[$setting->code] = $request[$setting->name];
+                    $settings[$setting->code] = $request[$setting->name];
                 } else {
-                    $test[$setting->code] = "0";
+                    $settings[$setting->code] = "0";
                 }
             }
             $devSet->device_id = $id;
         }
-        $devSet->settings = json_encode($test);
+        $devSet->settings = json_encode($settings);
         $devSet->save();
 
         return redirect()->route('admin.devices.show', $id)->with('success', 'Data updated successfully');

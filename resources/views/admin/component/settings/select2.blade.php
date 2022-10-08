@@ -1,5 +1,3 @@
-
-
 <label for="{{$name}}" class="col-sm-2 col-form-label">{{$title}}</label>
 
 <div class="col-sm-9">
@@ -7,11 +5,17 @@
     <select name='{{$name}}[]' class="form-control {{$errors->first($name) ? "is-invalid" : "" }} select2"
             id="{{isset($id) ? $id : $name}}" multiple>
         @if($choosen != null)
-        @foreach ($choosen as $param)
-            <option selected value="{{ (int)$param }}">{{ $options->where('id',(int)$param)->first()->name }}</option>
-        @endforeach
+
+            @foreach ($choosen as $param)
+                {{--                {{dd($options)}}--}}
+                @if(isset($options->where('id',(int)$param)->first()->name))
+                    <option selected
+                            value="{{ (int)$param }}">{{ $options->where('id',(int)$param)->first()->name }}</option>
+                @endif
+            @endforeach
         @endif
         @foreach ($options as $option)
+
             <option value="{{ $option->id }}">{{ $option->name }}</option>
         @endforeach
     </select>
