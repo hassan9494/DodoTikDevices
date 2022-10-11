@@ -147,6 +147,12 @@
             </li>
         @endcan
 
+{{--        <li class="nav-item active">--}}
+{{--            <a class="nav-link" href="{{ route('admin.documentaion') }}">--}}
+{{--                <i class="fas fa-fw fa-file"></i>--}}
+{{--                <span>{{__('message.Documentaion')}}</span></a>--}}
+{{--        </li>--}}
+
     <!-- Nav Item - Pages Collapse Menu -->
         @can('isAdmin')
             <li class="nav-item">

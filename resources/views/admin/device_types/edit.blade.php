@@ -59,6 +59,31 @@
                 </div>
             </div>
         </div>
+        <div class="form-group ml-5">
+            <label for="settings" class="col-sm-2 col-form-label">{{__('message.Is Gateway')}}</label>
+
+            <div class="col-md-2 d-flex flex-column justify-content-center">
+                <label class="switch">
+                    <input type="hidden" name="is_gateway" value="0">
+                    <input type="checkbox" name="is_gateway" {{$type->is_gateway == 1 ? 'checked' : ''}}>
+                    <span class="slider round"></span>
+                </label>
+
+            </div>
+        </div>
+
+        <div class="form-group ml-5">
+            <label for="settings" class="col-sm-2 col-form-label">{{__('message.Is Need Response')}}</label>
+
+            <div class="col-md-2 d-flex flex-column justify-content-center">
+                <label class="switch">
+                    <input type="hidden" name="is_need_response" value="0">
+                    <input type="checkbox" name="is_need_response" {{$type->is_need_response == 1 ? 'checked' : ''}}>
+                    <span class="slider round"></span>
+                </label>
+
+            </div>
+        </div>
         <div class="form-group col-md-12">
             <div class="col-sm-3">
                 <button type="submit" class="btn btn-info">{{__('message.Update')}}</button>

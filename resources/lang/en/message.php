@@ -104,6 +104,11 @@ return [
     'time of read' => 'Time Of Read',
     'device_Name' => 'Device Name',
     'Export To Data Sheet' => 'Export To Data Sheet',
-    'Flow Chart' => 'Flow Chart'
+    'Flow Chart' => 'Flow Chart',
+    'Documentaion' => 'Documentation',
+    'Lora Device' => 'Lora Device',
+    'Documentation' => 'Documentation',
+    'Is Gateway' => 'Is Gateway',
+    'Is Need Response' => 'Is Need Response'
 
 ];

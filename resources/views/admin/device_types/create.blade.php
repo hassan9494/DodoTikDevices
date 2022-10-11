@@ -79,7 +79,9 @@
             <div class="form-group ml-5">
                 <label for="parameters" class="col-sm-2 col-form-label">{{__('message.parameters')}}</label>
                 <div class="col-sm-9">
-                    <select name='parameters[]' class="form-control {{$errors->first('parameters') ? "is-invalid" : "" }} select2" id="parameters" multiple>
+                    <select name='parameters[]'
+                            class="form-control {{$errors->first('parameters') ? "is-invalid" : "" }} select2"
+                            id="parameters" multiple>
                         @foreach ($parameters as $parameter)
                             <option value="{{ $parameter->id }}">{{ $parameter->name }}</option>
                         @endforeach
@@ -92,7 +94,9 @@
             <div class="form-group ml-5">
                 <label for="settings" class="col-sm-2 col-form-label">{{__('message.settings')}}</label>
                 <div class="col-sm-9">
-                    <select name='settings[]' class="form-control {{$errors->first('settings') ? "is-invalid" : "" }} select2" id="settings" multiple>
+                    <select name='settings[]'
+                            class="form-control {{$errors->first('settings') ? "is-invalid" : "" }} select2"
+                            id="settings" multiple>
                         @foreach ($devSettings as $setting)
                             <option value="{{ $setting->id }}">{{ $setting->name }}</option>
                         @endforeach
@@ -100,6 +104,31 @@
                     <div class="invalid-feedback">
                         {{ $errors->first('settings') }}
                     </div>
+                </div>
+            </div>
+            <div class="form-group ml-5">
+                <label for="settings" class="col-sm-2 col-form-label">{{__('message.Is Gateway')}}</label>
+
+                <div class="col-md-2 d-flex flex-column justify-content-center">
+                    <label class="switch">
+                        <input type="hidden" name="is_gateway" value="0">
+                        <input type="checkbox" name="is_gateway" >
+                        <span class="slider round"></span>
+                    </label>
+
+                </div>
+            </div>
+
+            <div class="form-group ml-5">
+                <label for="settings" class="col-sm-2 col-form-label">{{__('message.Is Need Response')}}</label>
+
+                <div class="col-md-2 d-flex flex-column justify-content-center">
+                    <label class="switch">
+                        <input type="hidden" name="is_need_response" value="0">
+                        <input type="checkbox" name="is_need_response" >
+                        <span class="slider round"></span>
+                    </label>
+
                 </div>
             </div>
             <div class="form-group col-md-12">
@@ -114,7 +143,7 @@
 @push('scripts')
 
 
-        <script>
+    <script>
         $(document).ready(function () {
             $('#parameters').select2({
                 placeholder: "Choose Some parameters"
@@ -134,7 +163,7 @@
             $('.selectpicker').selectpicker();
         });
     </script>
-        <script>
+    <script>
         // Prepare the preview for profile picture
         $("#wizard-picture").change(function () {
             readURL(this);

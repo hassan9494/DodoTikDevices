@@ -21,14 +21,18 @@
   <component name="ChangeListManager">
     <list default="true" id="4b9c3d3c-a351-4ab6-90ca-e38cb16d2c4d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DevicTypeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DevicTypeController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceComponentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceComponentController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/GeneralController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/GeneralController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/settings/select2.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/settings/select2.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/device/custom_show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device/custom_show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_components/editDisplay.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_components/editDisplay.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/auth/forgetPassword.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/auth/forgetPassword.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/lang/en/message.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/en/message.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/flowchart.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/flowchart.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_types/add_default_values.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_types/add_default_values.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_types/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_types/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_types/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_types/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -187,24 +191,24 @@
     <property name="DefaultHtmlFileTemplate" value="XHTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../harddesk/2/laravel test/VAOS_Classic" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/admin" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="php.override.implement.member.chooser.php.doc" value="NONE" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\projects\DodotikDevice\resources\views\admin\component\settings" />
-      <recent name="D:\projects\DodotikDevice\resources\views\admin\component" />
-      <recent name="D:\projects\DodotikDevice\resources\views\admin\device_components" />
-      <recent name="D:\projects\DodotikDevice\resources\views\admin\component_settings" />
-      <recent name="D:\projects\DodotikDevice\resources\views\admin\components" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\projects\DodotikDevice\database\migrations\test" />
       <recent name="D:\projects\DodotikDevice\database\migrations" />
       <recent name="D:\projects\DodotikDevice\database\seeders" />
       <recent name="D:\projects\DodotikDevice\public" />
       <recent name="D:\lastAnapat\resources" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\projects\DodotikDevice\resources\views\admin" />
+      <recent name="D:\projects\DodotikDevice\resources\views\admin\component\settings" />
+      <recent name="D:\projects\DodotikDevice\resources\views\admin\component" />
+      <recent name="D:\projects\DodotikDevice\resources\views\admin\device_components" />
+      <recent name="D:\projects\DodotikDevice\resources\views\admin\component_settings" />
     </key>
   </component>
   <component name="RunManager">
@@ -313,7 +317,7 @@
       <workItem from="1662970026706" duration="652000" />
       <workItem from="1664046770134" duration="15000" />
       <workItem from="1665246124411" duration="1775000" />
-      <workItem from="1665247985133" duration="625000" />
+      <workItem from="1665247985133" duration="13042000" />
     </task>
     <servers />
   </component>

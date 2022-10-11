@@ -82,6 +82,11 @@ class GeneralController extends Controller
         return view('admin.dashboard', compact('admin', 'long', 'lat', 'lastdangerRead', 'devices', 'state', 'warning', 'lastMinDanger'));
     }
 
+    public function documentaion()
+    {
+        return view('admin.documentaion');
+    }
+
     public function general()
     {
         $general = General::find(1);

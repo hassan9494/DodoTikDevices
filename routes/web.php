@@ -151,4 +151,6 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth','middleware'
     Route::delete('component_settings/destroy/{id}',[ComponentSettingsController::class, 'destroy'])->middleware('can:isAdmin')->name('component_settings.destroy');
 
 
+    Route::get('documentaion', [GeneralController::class, 'documentaion'])->name('documentaion');
+
 });
