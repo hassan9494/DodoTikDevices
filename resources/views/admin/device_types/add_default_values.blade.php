@@ -108,7 +108,7 @@
                                             <input type="text" name="{{$para->code}}_length"
                                                    placeholder="{{ $para->value}}" id="{{$para->code}}"
                                                    class="form-control "
-                                                   value="{{ $para->pivot->length}}">
+                                                   value="{{ $para->pivot->length}}" {{$type->is_gateway == 0 ? 'readonly' : ''}}>
                                             {{--                    <div class="invalid-feedback">--}}
                                             {{--                        {{ $errors->first('name') }}--}}
                                             {{--                    </div>--}}
@@ -144,7 +144,7 @@
                                             <input type="text" name="{{$para->code}}_rate"
                                                    placeholder="{{ $para->value}}" id="{{$para->code}}"
                                                    class="form-control "
-                                                   value="{{ $para->pivot->rate}}">
+                                                   value="{{ $para->pivot->rate}}" {{$type->is_gateway == 0 ? 'readonly' : ''}}>
                                             {{--                    <div class="invalid-feedback">--}}
                                             {{--                        {{ $errors->first('name') }}--}}
                                             {{--                    </div>--}}

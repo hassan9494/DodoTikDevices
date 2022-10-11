@@ -43,8 +43,15 @@ class DevicTypeController extends Controller
      */
     public function store(DeviceTypesRequest $request)
     {
+
         $type = new DeviceType();
         $type->name = $request->name;
+        if ($request->is_gateway == 'on'){
+            $type->is_gateway = 1;
+        }
+        if ($request->is_need_response == 'on'){
+            $type->is_need_response = 1;
+        }
         if ($type->save()) {
 
             $type->deviceSettings()->attach(request('settings'));
@@ -149,8 +156,19 @@ class DevicTypeController extends Controller
      */
     public function update(DeviceTypesRequest $request, $id)
     {
+
         $type = DeviceType::findOrFail($id);
         $type->name = $request->name;
+        if ($request->is_gateway == 'on'){
+            $type->is_gateway = 1;
+        }else{
+            $type->is_gateway = 0;
+        }
+        if ($request->is_need_response == 'on'){
+            $type->is_need_response = 1;
+        }else{
+            $type->is_need_response = 0;
+        }
         if ( $type->save()) {
             $type->deviceSettings()->sync(request('settings'));
             $type->deviceParameters()->sync(request('parameters'));

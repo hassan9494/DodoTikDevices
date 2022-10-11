@@ -46,30 +46,36 @@
                             </div>
 
                         </div>
-                        <div class="custom-date" id="custom-date" style="display: {{$label == 2 ? "block" : "none"}}">
+                        <div class="custom-date row" id="custom-date" style="display: {{$label == 2 ? "block" : "none"}}">
 
                             <div class="col-md-2"></div>
                             <div class="col-md-8">
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <label for="from" class="form-label">{{__('message.From')}}</label>
+                                    <div class="col-md-5">
+                                        <label for="from" class="form-label" style="color: #00989d">{{__('message.From')}}</label>
                                         <input id="from" min="{{\Carbon\Carbon::now()->subMonth()->format("Y-m-d")}}"
                                                max="{{\Carbon\Carbon::now()->format("Y-m-d")}}" type="date" name="from"
                                                class="form-control"
                                                value="{{\Carbon\Carbon::now()->format("Y-m-01")}}">
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="to" class="form-label">{{__('message.To')}}</label>
+                                    <div class="col-md-5">
+                                        <label for="to" class="form-label" style="color: #00989d">{{__('message.To')}}</label>
                                         <input id="to" min="{{\Carbon\Carbon::now()->subMonth()->format("Y-m-d")}}"
                                                max="{{\Carbon\Carbon::now()->format("Y-m-d")}}" type="date" name="to"
                                                class="form-control"
                                                value="{{\Carbon\Carbon::now()->format("Y-m-d")}}">
                                     </div>
+                                    <div class="col-md-2">
+                                        <label for="to" class="form-label" style="color: #ffffff">get data</label>
+                                        <button class="btn btn-primary" onclick="getData()" style="color: #b5b5c3;background: #00989d;border-color: #00989d;">get data</button>
+                                    </div>
                                 </div>
 
 
                             </div>
-                            <div class="col-md-2"></div>
+                            <div class="col-md-2">
+{{--                                <button class="btn btn-primary" onclick="test()">get data</button>--}}
+                            </div>
 
                         </div>
 
@@ -94,6 +100,59 @@
 
 @push('scripts')
     <script>
+        var timer = {!! json_encode($device, JSON_HEX_TAG) !!};
+
+        console.log(timer['time_between_two_read'] * 1000 *60)
+         interval = setInterval(function() {
+            jQuery.ajax({
+                url: '/admin/devices/showWithDate/{{$device->id}}/' + 1 + '/' + 0,
+                type: 'GET',
+                success: function (data) {
+                    console.log('test')
+                    timer = 3000
+                    chart.updateOptions({
+
+                        series: [
+                                @if(count($testPara) > 0 )
+                                @foreach($testPara as $key=>$parameter)
+
+                            {
+                                name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
+                                data: data[0][{{$key}}]
+                            },
+                                @endforeach
+                                @else
+                                @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+
+                            {
+                                name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
+                                data: data[0][{{$key}}]
+                            },
+                            @endforeach
+                            @endif
+                        ],
+                        chart: {
+                            height: 500,
+                            width: "100%",
+                            type: 'area',
+                            animations: {
+                                enabled: data[1].length < 500 ? true : false,
+                            }
+                        },
+                        labels: data[1]
+
+
+                    })
+                },
+                error: function (xhr, b, c) {
+                    console.log("xhr=" + xhr + " b=" + b + " c=" + c);
+                }
+            });
+            // your code goes here...
+        }, timer['time_between_two_read'] *1000 * 60);
+
+    </script>
+    <script>
         var el = document.querySelectorAll('.nav-test li a');
         var fromm = -1;
         var too = -1;
@@ -108,12 +167,64 @@
                 if (el[i].getAttribute('tabindex') == 0) {
                     fromm = 1;
                     too = 0;
+                    interval = setInterval(function() {
+                        jQuery.ajax({
+                            url: '/admin/devices/showWithDate/{{$device->id}}/' + 1 + '/' + 0,
+                            type: 'GET',
+                            success: function (data) {
+                                console.log('test')
+
+                                chart.updateOptions({
+
+                                    series: [
+                                            @if(count($testPara) > 0 )
+                                            @foreach($testPara as $key=>$parameter)
+
+                                        {
+                                            name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
+                                            data: data[0][{{$key}}]
+                                        },
+                                            @endforeach
+                                            @else
+                                            @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+
+                                        {
+                                            name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
+                                            data: data[0][{{$key}}]
+                                        },
+                                        @endforeach
+                                        @endif
+                                    ],
+                                    chart: {
+                                        height: 500,
+                                        width: "100%",
+                                        type: 'area',
+                                        animations: {
+                                            enabled: data[1].length < 500 ? true : false,
+                                        }
+                                    },
+                                    labels: data[1]
+
+
+                                })
+                            },
+                            error: function (xhr, b, c) {
+                                console.log("xhr=" + xhr + " b=" + b + " c=" + c);
+                            }
+                        });
+                        console.log(timer['time_between_two_read'])
+                        // your code goes here...
+                    }, timer['time_between_two_read'] *1000 * 60);
                 } else if (el[i].getAttribute('tabindex') == 1) {
                     fromm = 7;
                     too = 0;
+                    console.log('dfdddddddddddd')
+                    clearInterval(interval);
                 } else if (el[i].getAttribute('tabindex') == 2) {
                     fromm = 30;
                     too = 0;
+                    console.log('dfdddddddddddd')
+                    clearInterval(interval);
                 }
 
             };
@@ -197,10 +308,13 @@
                 const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                 const diffTime1 = Math.abs(Date.parse(today) - Date.parse(from.value));
                 const diffDays1 = Math.ceil(diffTime1 / (1000 * 60 * 60 * 24));
+
                 jQuery.ajax({
                     url: '/admin/devices/showWithDate/{{$device->id}}/' + diffDays1 + '/' + diffDays,
                     type: 'GET',
                     success: function (data) {
+
+
                         chart.updateOptions({
                             series: [
                                 @if(count($testPara) > 0)
@@ -233,6 +347,7 @@
 
 
                         })
+
                     },
                     error: function (xhr, b, c) {
                         console.log("xhr=" + xhr + " b=" + b + " c=" + c);
@@ -240,6 +355,65 @@
                 });
             })
         });
+
+        function getData(){
+            var from = document.getElementById('from')
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+
+            today = yyyy + '-' + mm + '-' + dd;
+            const diffTime = Math.abs(Date.parse(today) - Date.parse($('#to').val()));
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            const diffTime1 = Math.abs(Date.parse(today) - Date.parse(from.value));
+            const diffDays1 = Math.ceil(diffTime1 / (1000 * 60 * 60 * 24));
+
+            jQuery.ajax({
+                url: '/admin/devices/showWithDate/{{$device->id}}/' + diffDays1 + '/' + diffDays,
+                type: 'GET',
+                success: function (data) {
+
+
+                    chart.updateOptions({
+                        series: [
+                                @if(count($testPara) > 0)
+                                @foreach($testPara as $key=>$parameter)
+
+                            {
+                                name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
+                                data: data[0][{{$key}}]
+                            },
+                                @endforeach
+                                @else
+                                @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+
+                            {
+                                name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
+                                data: data[0][{{$key}}]
+                            },
+                            @endforeach
+                            @endif
+                        ],
+                        chart: {
+                            height: 500,
+                            width: "100%",
+                            type: 'area',
+                            animations: {
+                                enabled: data[1].length < 500 ? true : false,
+                            }
+                        },
+                        labels: data[1]
+
+
+                    })
+
+                },
+                error: function (xhr, b, c) {
+                    console.log("xhr=" + xhr + " b=" + b + " c=" + c);
+                }
+            });
+        }
     </script>
     <script>
 
