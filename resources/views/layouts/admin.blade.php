@@ -146,12 +146,24 @@
                     <span>{{__('message.settings')}}</span></a>
             </li>
         @endcan
-
-{{--        <li class="nav-item active">--}}
-{{--            <a class="nav-link" href="{{ route('admin.documentaion') }}">--}}
-{{--                <i class="fas fa-fw fa-file"></i>--}}
-{{--                <span>{{__('message.Documentaion')}}</span></a>--}}
+{{--        <li class="nav-item">--}}
+{{--            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne1"--}}
+{{--               aria-expanded="true" aria-controls="collapseOne">--}}
+{{--                <i class="fas fa-fw fa-table"></i>--}}
+{{--                <span>{{__('message.Documentation')}}</span>--}}
+{{--            </a>--}}
+{{--            <div id="collapseOne1" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">--}}
+{{--                <div class="bg-white py-2 collapse-inner rounded">--}}
+{{--                    <a class="collapse-item" href="{{ route('admin.documentaion') }}">{{__('message.Gateway')}}</a>--}}
+{{--                </div>--}}
+{{--            </div>--}}
 {{--        </li>--}}
+
+        <li class="nav-item active">
+            <a class="nav-link" href="{{ route('admin.documentaion') }}" target="_blank">
+                <i class="fas fa-fw fa-file"></i>
+                <span>{{__('message.Documentaion')}}</span></a>
+        </li>
 
     <!-- Nav Item - Pages Collapse Menu -->
         @can('isAdmin')
