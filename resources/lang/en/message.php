@@ -109,6 +109,8 @@ return [
     'Lora Device' => 'Lora Device',
     'Documentation' => 'Documentation',
     'Is Gateway' => 'Is Gateway',
-    'Is Need Response' => 'Is Need Response'
+    'Is Need Response' => 'Is Need Response',
+    'Gateway' => 'Gateway',
+    'Delete this type permanently?' => 'Delete this type permanently?'
 
 ];

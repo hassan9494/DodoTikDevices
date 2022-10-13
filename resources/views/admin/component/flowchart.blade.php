@@ -506,8 +506,8 @@
                 horizontalAlign: 'left',
                 fontSize: "12px",
                 itemMargin: {
-                    horizontal: 25,
-                    vertical: 0
+                    horizontal: 10,
+                    vertical: 25
                 },
             },
         };

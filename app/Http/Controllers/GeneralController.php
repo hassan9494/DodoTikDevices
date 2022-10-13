@@ -84,7 +84,10 @@ class GeneralController extends Controller
 
     public function documentaion()
     {
-        return view('admin.documentaion');
+        $general = General::find(1);
+        $test = json_decode("{\"applicationID\":\"4\",\"applicationName\":\"Test_raed\",\"deviceName\":\"FireAlarm\",\"devEUI\":\"oNt\/d0mAth8=\",\"rxInfo\":[],\"txInfo\":{\"frequency\":867300000,\"modulation\":\"LORA\",\"loRaModulationInfo\":{\"bandwidth\":125,\"spreadingFactor\":9,\"codeRate\":\"4\/5\",\"polarizationInversion\":false}},\"adr\":false,\"dr\":3,\"fCnt\":1,\"fPort\":2,\"data\":\"AZUAAQwJCAAhARgBoQAAfCEt\",\"objectJSON\":\"{}\",\"tags\":{},\"confirmedUplink\":false,\"devAddr\":\"ALc9wg==\"}");
+
+        return view('admin.documentaion',compact('general','test'));
     }
 
     public function general()
