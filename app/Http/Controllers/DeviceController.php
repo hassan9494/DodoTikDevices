@@ -97,6 +97,7 @@ class DeviceController extends Controller
         $device->name = $request->name;
         $device->device_id = $request->device_id;
         $device->type_id = $request->type;
+        $device->tolerance = $request->tolerance;
         $device->time_between_two_read = $request->time_between_two_read;
         if ($device->save()) {
             if ($user->role == 'Administrator') {
@@ -164,7 +165,7 @@ class DeviceController extends Controller
         }
         $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
         if (count($parameters) > 0) {
-            if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->m == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->d == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i <= $device->time_between_two_read) {
+            if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->m == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->d == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i <= ($device->time_between_two_read + $device->tolerance) ) {
                 $status = "Online";
             } else {
                 $status = "Offline";
@@ -236,6 +237,7 @@ class DeviceController extends Controller
             $label = 1;
         }
         $deviceComponents = DevicesComponents::where('device_id', $device->id)->orderBy('order', 'asc')->get();
+//        dd($testPara);
         return view('admin.device.custom_show', compact('numberOfRow','parameterTableColumn','testParaColumn', 'testPara', 'device', 'deviceComponents', 'dangerColor', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
     }
 
@@ -258,7 +260,7 @@ class DeviceController extends Controller
         $paraValues = [];
         $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
         if (count($parameters) > 0) {
-            if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i < $device->time_between_two_read) {
+            if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i < ($device->time_between_two_read + $device->tolerance)) {
                 $status = "Online";
             } else {
                 $status = "Offline";
@@ -604,6 +606,8 @@ class DeviceController extends Controller
         $device->type_id = $request->type;
         $device->longitude = $request->longitude;
         $device->latitude = $request->latitude;
+
+        $device->tolerance = $request->tolerance;
         if ($device->save()) {
             if ($user->role == 'Administrator') {
 

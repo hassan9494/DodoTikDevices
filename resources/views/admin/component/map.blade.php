@@ -170,17 +170,32 @@
                                     <div id="state-legend" class="legend" style="display: none">
                                         <h4 style="color: #00989d ">{{__('message.Last Read')}}</h4>
                                         @if($device->deviceParameters()->orderBy('id','desc')->first() != null)
+                                            @if(count($testPara) == count($device->deviceType->deviceParameters))
+                                                @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+                                                    {{--                                                <h4>{{$key}}</h4>--}}
+                                                    <div><p style=""></p>
+                                                        {{--                                                    {{dd($dangerColor)}}--}}
+                                                        <span
+                                                            style="color: {{$dangerColor[$key]}}">{{$parameter->name}}</span>
+                                                        :<span style="color: {{$dangerColor[$key]}}">{{json_decode($device->deviceParameters()->orderBy('id','desc')->first()->parameters,true)[$parameter->code]}}  ({{$parameter->unit}})</span>
+                                                    </div>
+                                                @endforeach
+                                                <span
+                                                    style="color: #000000">{{\Carbon\Carbon::parse($device->deviceParameters()->orderBy('id','desc')->first()->time_of_read)->setTimezone('Asia/Damascus')->format('Y-d-m h:i a')}}  </span>
+                                            @else
+                                                @foreach($testPara as $key=>$parameter)
+                                                    {{--                                                <h4>{{$key}}</h4>--}}
+                                                    <div><p style=""></p>
+                                                        {{--                                                    {{dd($dangerColor)}}--}}
+                                                        <span
+                                                            style="color: {{$dangerColor[$key]}}">{{$parameter->name}}</span>
+                                                        :<span style="color: {{$dangerColor[$key]}}">{{json_decode($device->deviceParameters()->orderBy('id','desc')->first()->parameters,true)[$parameter->code]}}  ({{$parameter->unit}})</span>
+                                                    </div>
+                                                @endforeach
+                                                <span
+                                                    style="color: #000000">{{\Carbon\Carbon::parse($device->deviceParameters()->orderBy('id','desc')->first()->time_of_read)->setTimezone('Asia/Damascus')->format('Y-d-m h:i a')}}  </span>
 
-                                            @foreach($device->deviceType->deviceParameters as $key=>$parameter)
-                                                <div><p style=""></p>
-                                                    <span
-                                                        style="color: {{$dangerColor[$key]}}">{{$parameter->name}}</span>
-                                                    :<span style="color: {{$dangerColor[$key]}}">{{json_decode($device->deviceParameters()->orderBy('id','desc')->first()->parameters,true)[$parameter->code]}}  ({{$parameter->unit}})</span>
-                                                </div>
-                                            @endforeach
-                                            <span
-                                                style="color: #000000">{{\Carbon\Carbon::parse($device->deviceParameters()->orderBy('id','desc')->first()->time_of_read)->setTimezone('Asia/Damascus')->format('Y-d-m h:i a')}}  </span>
-
+                                            @endif
                                         @endif
                                     </div>
                                 @endif

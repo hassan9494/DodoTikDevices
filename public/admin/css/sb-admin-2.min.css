@@ -373,3 +373,16 @@ input:checked + .slider:before {
 .apexcharts-menu-item{
     color: #00989d ;
 }
+
+
+.device-types-name .nav-item span{
+    color: #00989d;
+}
+
+.device-types-name .active span{
+    color: #ffffff;
+}
+
+.device-types-name .active {
+    background-color: #00989d!important;
+}
