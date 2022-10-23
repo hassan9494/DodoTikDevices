@@ -96,6 +96,17 @@
             </div>
         </div>
         <div class="form-group ml-5">
+            <label for="tolerance" class="col-sm-2 col-form-label">{{__('message.tolerance')}} </label>
+            <div class="col-sm-9">
+                <input type="number" name="tolerance" placeholder="tolerance" id="tolerance"
+                       class="form-control {{$errors->first('tolerance') ? "is-invalid" : "" }} "
+                       value="{{old('tolerance') ? old('tolerance') : $device->tolerance}}">
+                <div class="invalid-feedback">
+                    {{ $errors->first('tolerance') }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group ml-5">
             <div id="map"></div>
             <pre id="coordinates" class="coordinates"></pre>
             <input type="hidden" name="longitude" id="longitude" value="{{$device->longitude}}">

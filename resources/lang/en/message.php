@@ -111,6 +111,8 @@ return [
     'Is Gateway' => 'Is Gateway',
     'Is Need Response' => 'Is Need Response',
     'Gateway' => 'Gateway',
-    'Delete this type permanently?' => 'Delete this type permanently?'
+    'Delete this type permanently?' => 'Delete this type permanently?',
+    'No Devices In This Type' => 'No Devices In This Type',
+    'tolerance' => 'Tolerance'
 
 ];

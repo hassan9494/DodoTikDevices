@@ -112,6 +112,17 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group ml-5">
+                <label for="tolerance" class="col-sm-2 col-form-label">{{__('message.tolerance')}} </label>
+                <div class="col-sm-9">
+                    <input type="number" name="tolerance" placeholder="tolerance" id="tolerance"
+                           class="form-control {{$errors->first('tolerance') ? "is-invalid" : "" }} "
+                           value="{{old('tolerance')}}">
+                    <div class="invalid-feedback">
+                        {{ $errors->first('tolerance') }}
+                    </div>
+                </div>
+            </div>
             <div class="form-group col-md-12">
                 <div class="col-sm-3">
                     <button type="submit" class="btn btn-info">{{__('message.Create')}}</button>

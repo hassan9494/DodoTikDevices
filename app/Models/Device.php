@@ -20,7 +20,7 @@ class Device extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'device_id','user_id','type_id'
+        'name', 'device_id','user_id','type_id','tolerance','longitude','latitude','time_between_two_read'
     ];
 
     protected $guarded=[];

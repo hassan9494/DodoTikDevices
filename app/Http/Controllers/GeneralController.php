@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Models\{About,
-    Device,
-    DeviceParametersValues,
-    General,
-    User
-};
+use App\Models\{About, Device, DeviceParametersValues, DeviceType, General, User};
+use PhpMqtt\Client\Facades\MQTT;
 
 class GeneralController extends Controller
 {
     public function dashboard()
     {
+//        $mqtt = MQTT::connection();
+//        $mqtt->publish('some/topic', 'foo', 1);
+//        $mqtt->publish('some/other/topic', 'bar', 2, true); // Retain the message
+////        $mqtt->loop(true);
+////        $x = MQTT::publish('some/topic', 'Hello World!', true, 'default');;
+//        dd($mqtt);
         $user = auth()->user();
         $now = Carbon::now();
         if ($user->role == 'Administrator') {
@@ -24,6 +26,7 @@ class GeneralController extends Controller
             $admin = User::orderBy('id', 'desc')->count();
             $devices = Device::where('user_id', $user->id)->get();
         }
+        $types = DeviceType::all();
         $state = [];
         $status = "Offline";
         $warning = [];
@@ -40,7 +43,7 @@ class GeneralController extends Controller
             $parameters = $device->deviceParameters;
             $lastPara = DeviceParametersValues::where('device_id', $device->id)->orderBy('id', 'desc')->first();
             if (count($parameters) > 0) {
-                if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->m == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->d == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i < $device->time_between_two_read) {
+                if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->m == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->d == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i < ($device->time_between_two_read + $device->tolerance)) {
                     $status = "Online";
                 } else {
                     $status = "Offline";
@@ -79,7 +82,43 @@ class GeneralController extends Controller
             $lat = $lat / count($devices);
         }
 //        dd($lastdangerRead);
-        return view('admin.dashboard', compact('admin', 'long', 'lat', 'lastdangerRead', 'devices', 'state', 'warning', 'lastMinDanger'));
+        return view('admin.dashboard', compact('types','admin', 'long', 'lat', 'lastdangerRead', 'devices', 'state', 'warning', 'lastMinDanger'));
+    }
+
+    public function device_status()
+    {
+
+        $user = auth()->user();
+        $now = Carbon::now();
+        if ($user->role == 'Administrator') {
+            $admin = User::orderBy('id', 'desc')->count();
+            $devices = Device::all();
+        } else {
+            $admin = User::orderBy('id', 'desc')->count();
+            $devices = Device::where('user_id', $user->id)->get();
+        }
+        $types = DeviceType::all();
+        $state = [];
+        $status = "Offline";
+        foreach ($devices as $key => $device) {
+           $parameters = $device->deviceParameters;
+            $lastPara = DeviceParametersValues::where('device_id', $device->id)->orderBy('id', 'desc')->first();
+            if (count($parameters) > 0) {
+                if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->m == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->d == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i < ($device->time_between_two_read + $device->tolerance)) {
+                    $status = "Online";
+                } else {
+                    $status = "Offline";
+                }
+            } else {
+                $status = "Offline";
+            }
+            array_push($state, $status,);
+
+        }
+
+        return array($state, $devices,$types);
+//        dd($lastdangerRead);
+        return view('admin.dashboard', compact('types','admin', 'long', 'lat', 'lastdangerRead', 'devices', 'state', 'warning', 'lastMinDanger'));
     }
 
     public function documentaion()
