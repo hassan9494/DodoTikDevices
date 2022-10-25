@@ -158,6 +158,10 @@
             color: #0b2e13;
         }
 
+        /*.flowchart-nav .active{*/
+        /*    pointer-events:none!important;*/
+        /*}*/
+
     </style>
 
 @endsection

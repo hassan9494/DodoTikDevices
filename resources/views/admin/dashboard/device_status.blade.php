@@ -84,6 +84,27 @@
 
                     @endforeach
                 </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+@push('scripts')
+    <script>
+
+    </script>
+@endpush
+
+
+
+
+
+
+
 {{--                @foreach($devices as $key=>$device)--}}
 {{--                    <div class="col-md-4 " style="margin-top: 15px;margin-bottom: 15px">--}}
 {{--                        <div class="card card-custom mb-4">--}}
@@ -115,8 +136,3 @@
 {{--                        </div>--}}
 {{--                    </div>--}}
 {{--                @endforeach--}}
-            </div>
-        </div>
-
-    </div>
-</div>

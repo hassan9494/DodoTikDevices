@@ -16,7 +16,7 @@
                             </h3>
 
                             <div class="card-toolbar">
-                                <ul class="nav nav-pills nav-pills-sm nav-dark-75 nav nav-test" role="tablist">
+                                <ul class="nav nav-pills nav-pills-sm nav-dark-75 nav nav-test flowchart-nav" role="tablist">
                                     <li class="nav-item nav-item">
                                         <a href="#" role="tab" data-rb-event-key="Custom"
                                            tabindex="3" aria-selected="false"
@@ -40,7 +40,7 @@
                                         <a href="#" role="tab"
                                            data-rb-event-key="ThisDay"
                                            aria-selected="true"
-                                           tabindex="0"
+                                           tabindex="0" id="thisDay"
                                            class="nav-link py-2 px-4  nav-link {{$label == 1 ? "active" : ""}} ">{{__('message.This Day')}}</a></li>
                                 </ul>
                             </div>
@@ -100,15 +100,15 @@
 
 @push('scripts')
     <script>
-        var timer = {!! json_encode($device, JSON_HEX_TAG) !!};
 
-        console.log(timer['time_between_two_read'] * 1000 *60)
+
+
+        var timer = {!! json_encode($device, JSON_HEX_TAG) !!};
          interval = setInterval(function() {
             jQuery.ajax({
                 url: '/admin/devices/showWithDate/{{$device->id}}/' + 1 + '/' + 0,
                 type: 'GET',
                 success: function (data) {
-                    console.log('test')
                     timer = 3000
                     chart.updateOptions({
 
@@ -149,7 +149,22 @@
                 }
             });
             // your code goes here...
-        }, timer['time_between_two_read'] *1000 * 60);
+             jQuery.ajax({
+                 url: '/admin/devices/getDeviceStatus/{{$device->id}}',
+                 type: 'GET',
+                 success: function (data) {
+                    if (data == 'Online'){
+                        document.getElementById('status').innerHTML = 'Status : Online  <i class="fas fa-check" style="color:green "></i> ';
+                    }else {
+                        document.getElementById('status').innerHTML ='Status : Offline  <i class="fas fa-times" style="color:red "></i> '
+                    }
+                    console.log(data)
+                 },
+                 error: function (xhr, b, c) {
+                     console.log("xhr=" + xhr + " b=" + b + " c=" + c);
+                 }
+             });
+        }, timer['time_between_two_read'] *1000 *60);
 
     </script>
     <script>
@@ -167,64 +182,71 @@
                 if (el[i].getAttribute('tabindex') == 0) {
                     fromm = 1;
                     too = 0;
-                    interval = setInterval(function() {
-                        jQuery.ajax({
-                            url: '/admin/devices/showWithDate/{{$device->id}}/' + 1 + '/' + 0,
-                            type: 'GET',
-                            success: function (data) {
-                                console.log('test')
+                    if (interval){
 
-                                chart.updateOptions({
+                    }else {
+                        interval = setInterval(function() {
+                            jQuery.ajax({
+                                url: '/admin/devices/showWithDate/{{$device->id}}/' + 1 + '/' + 0,
+                                type: 'GET',
+                                success: function (data) {
 
-                                    series: [
-                                            @if(count($testPara) > 0 )
-                                            @foreach($testPara as $key=>$parameter)
 
-                                        {
-                                            name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
-                                            data: data[0][{{$key}}]
-                                        },
+                                    chart.updateOptions({
+
+                                        series: [
+                                                @if(count($testPara) > 0 )
+                                                @foreach($testPara as $key=>$parameter)
+
+                                            {
+                                                name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
+                                                data: data[0][{{$key}}]
+                                            },
+                                                @endforeach
+                                                @else
+                                                @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+
+                                            {
+                                                name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
+                                                data: data[0][{{$key}}]
+                                            },
                                             @endforeach
-                                            @else
-                                            @foreach($device->deviceType->deviceParameters as $key=>$parameter)
-
-                                        {
-                                            name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
-                                            data: data[0][{{$key}}]
+                                            @endif
+                                        ],
+                                        chart: {
+                                            height: 500,
+                                            width: "100%",
+                                            type: 'area',
+                                            animations: {
+                                                enabled: data[1].length < 500 ? true : false,
+                                            }
                                         },
-                                        @endforeach
-                                        @endif
-                                    ],
-                                    chart: {
-                                        height: 500,
-                                        width: "100%",
-                                        type: 'area',
-                                        animations: {
-                                            enabled: data[1].length < 500 ? true : false,
-                                        }
-                                    },
-                                    labels: data[1]
+                                        labels: data[1]
 
 
-                                })
-                            },
-                            error: function (xhr, b, c) {
-                                console.log("xhr=" + xhr + " b=" + b + " c=" + c);
-                            }
-                        });
-                        console.log(timer['time_between_two_read'])
-                        // your code goes here...
-                    }, timer['time_between_two_read'] *1000 * 60);
+                                    })
+                                },
+                                error: function (xhr, b, c) {
+                                    console.log("xhr=" + xhr + " b=" + b + " c=" + c);
+                                }
+                            });
+                            // your code goes here...
+                        }, timer['time_between_two_read'] *1000 * 60);
+                    }
+
                 } else if (el[i].getAttribute('tabindex') == 1) {
                     fromm = 7;
                     too = 0;
-                    console.log('dfdddddddddddd')
                     clearInterval(interval);
+                    interval = false;
                 } else if (el[i].getAttribute('tabindex') == 2) {
                     fromm = 30;
                     too = 0;
-                    console.log('dfdddddddddddd')
                     clearInterval(interval);
+                    interval = false;
+                }else {
+                    clearInterval(interval);
+                    interval = false;
                 }
 
             };
