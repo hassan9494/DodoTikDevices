@@ -82,7 +82,7 @@ class GeneralController extends Controller
             $lat = $lat / count($devices);
         }
 //        dd($lastdangerRead);
-        return view('admin.dashboard', compact('types','admin', 'long', 'lat', 'lastdangerRead', 'devices', 'state', 'warning', 'lastMinDanger'));
+        return view('admin.dashboard', compact('types', 'admin', 'long', 'lat', 'lastdangerRead', 'devices', 'state', 'warning', 'lastMinDanger'));
     }
 
     public function device_status()
@@ -101,7 +101,7 @@ class GeneralController extends Controller
         $state = [];
         $status = "Offline";
         foreach ($devices as $key => $device) {
-           $parameters = $device->deviceParameters;
+            $parameters = $device->deviceParameters;
             $lastPara = DeviceParametersValues::where('device_id', $device->id)->orderBy('id', 'desc')->first();
             if (count($parameters) > 0) {
                 if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->m == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->d == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i < ($device->time_between_two_read + $device->tolerance)) {
@@ -116,17 +116,15 @@ class GeneralController extends Controller
 
         }
 
-        return array($state, $devices,$types);
-//        dd($lastdangerRead);
-        return view('admin.dashboard', compact('types','admin', 'long', 'lat', 'lastdangerRead', 'devices', 'state', 'warning', 'lastMinDanger'));
+        return array($state, $devices, $types);
     }
 
     public function documentaion()
     {
         $general = General::find(1);
-        $test = json_decode("{\"applicationID\":\"4\",\"applicationName\":\"Test_raed\",\"deviceName\":\"FireAlarm\",\"devEUI\":\"oNt\/d0mAth8=\",\"rxInfo\":[],\"txInfo\":{\"frequency\":867300000,\"modulation\":\"LORA\",\"loRaModulationInfo\":{\"bandwidth\":125,\"spreadingFactor\":9,\"codeRate\":\"4\/5\",\"polarizationInversion\":false}},\"adr\":false,\"dr\":3,\"fCnt\":1,\"fPort\":2,\"data\":\"AZUAAQwJCAAhARgBoQAAfCEt\",\"objectJSON\":\"{}\",\"tags\":{},\"confirmedUplink\":false,\"devAddr\":\"ALc9wg==\"}");
+//        $test = json_decode("{\"applicationID\":\"4\",\"applicationName\":\"Test_raed\",\"deviceName\":\"FireAlarm\",\"devEUI\":\"oNt\/d0mAth8=\",\"rxInfo\":[],\"txInfo\":{\"frequency\":867300000,\"modulation\":\"LORA\",\"loRaModulationInfo\":{\"bandwidth\":125,\"spreadingFactor\":9,\"codeRate\":\"4\/5\",\"polarizationInversion\":false}},\"adr\":false,\"dr\":3,\"fCnt\":1,\"fPort\":2,\"data\":\"AZUAAQwJCAAhARgBoQAAfCEt\",\"objectJSON\":\"{}\",\"tags\":{},\"confirmedUplink\":false,\"devAddr\":\"ALc9wg==\"}");
 
-        return view('admin.documentaion',compact('general','test'));
+        return view('admin.documentaion', compact('general'));
     }
 
     public function general()
