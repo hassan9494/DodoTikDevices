@@ -12,11 +12,16 @@ class GeneralController extends Controller
     public function dashboard()
     {
 //        $mqtt = MQTT::connection();
+//        $mqtt->subscribe('some/topic', function (string $topic, string $message) {
+//            echo sprintf('Received QoS level 1 message on topic [%s]: %s', $topic, $message);
+//        }, 1);
+//
+//        $mqtt = MQTT::connection();
 //        $mqtt->publish('some/topic', 'foo', 1);
 //        $mqtt->publish('some/other/topic', 'bar', 2, true); // Retain the message
 ////        $mqtt->loop(true);
-////        $x = MQTT::publish('some/topic', 'Hello World!', true, 'default');;
-//        dd($mqtt);
+//        $x = MQTT::publish('some/topic', 'Hello World!', true, 'default');
+//        dd($x);
         $user = auth()->user();
         $now = Carbon::now();
         if ($user->role == 'Administrator') {
