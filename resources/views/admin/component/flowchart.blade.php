@@ -442,6 +442,7 @@
 
         var xValues = {!! json_encode($xValues, JSON_HEX_TAG) !!};
         var yValues = {!! json_encode($paraValues, JSON_HEX_TAG) !!};
+        var colors = {!! json_encode($color, JSON_HEX_TAG) !!}
         var xVals = [];
         xValues.forEach(myFunction)
         var units = [];
@@ -477,6 +478,7 @@
                 @endif
 
             ],
+            colors:colors,
             chart: {
                 height: 500,
                 width: "100%",

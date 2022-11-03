@@ -210,6 +210,20 @@ class DeviceApiController extends Controller
         }
     }
 
+    public function test(){
+        $x = "QSAAAQACywEAAAAAAkIgMg==";
+
+        $data_ascii = base64_decode($x);
+        $finaldata = bin2hex($data_ascii);
+        $vol = substr($finaldata, 0, 8);
+//        dd($vol);
+//        $strHex = 41200000;
+        $hex = sscanf($vol, "%02x%02x%02x%02x%02x%02x%02x%02x");
+        $bin = implode('', array_map('chr', $hex));
+        $array = unpack("Gnum", $bin);
+        dd($array['num']);
+    }
+
     public function update(Request $request, $id)
     {
         $device = Device::findOrfail($id);

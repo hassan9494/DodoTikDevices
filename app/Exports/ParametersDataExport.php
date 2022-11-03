@@ -34,7 +34,14 @@ class ParametersDataExport implements FromCollection, WithHeadings
         foreach ($devPara as $para) {
             foreach ($device->deviceType->deviceParameters as $key => $type) {
                 $x = $type->code;
-                $para[$x] = json_decode($para->parameters, true)[$type->code];
+                if (isset(json_decode($para->parameters, true)[$type->code])){
+                    $para[$x] = json_decode($para->parameters, true)[$type->code];
+                }else if (json_decode($para->parameters, true)[$type->name]){
+                    $para[$x] = json_decode($para->parameters, true)[$type->name];
+                }else{
+                    $para[$x] = 0;
+                }
+
             }
             $para->parameters = $device->device_id;
         }

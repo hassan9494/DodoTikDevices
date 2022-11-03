@@ -18,7 +18,9 @@ class DevicTypeController extends Controller
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
+
     {
+//dd(hexdec('41200001'));
         $types = DeviceType::all();
         return view('admin.device_types.index',compact('types'));
     }
@@ -88,7 +90,9 @@ class DevicTypeController extends Controller
      */
     public function add_default(Request $request, $id)
     {
+//        dd($request);
         $type = DeviceType::findOrFail($id);
+//        dd($type->deviceParameters()->orderBy('order')->get());
         foreach ($type->deviceSettings as $setting){
             $typeSet = DeviceTypeSetting::where('device_settings_id',$setting->id)->where('device_type_id',$id)->first();
             if ($request[$setting->name] != null){
@@ -98,23 +102,32 @@ class DevicTypeController extends Controller
             }
             $typeSet->save();
         }
-        foreach ($type->deviceParameters as $parameter){
+        foreach ($type->deviceParameters()->orderBy('order')->get() as $key=>$parameter){
             $typePara = DeviceTypeParameter::where('device_parameters_id',$parameter->id)->where('device_type_id',$id)->first();
-            if ($request[$parameter->code] != null){
-                $typePara->order = $request[$parameter->code];
+//            dd($request['Humidity_0_color']);
+            if ($request[\Str::slug($parameter->code).'_'.$key] != null){
+                $typePara->order = $request[\Str::slug($parameter->code).'_'.$key];
             }else{
                 $typePara->order = 0;
             }
-            if ($request[$parameter->code.'_length'] != null){
-                $typePara->length = $request[$parameter->code.'_length'];
+            if ($request[\Str::slug($parameter->code).'_'.$key.'_length'] != null){
+                $typePara->length = $request[\Str::slug($parameter->code).'_'.$key.'_length'];
             }else{
                 $typePara->length = 4;
             }
-            if ($request[$parameter->code.'_rate'] != null){
-                $typePara->rate = $request[$parameter->code.'_rate'];
+            if ($request[\Str::slug($parameter->code).'_'.$key.'_rate'] != null){
+                $typePara->rate = $request[\Str::slug($parameter->code).'_'.$key.'_rate'];
             }else{
                 $typePara->rate = 4;
             }
+            if ($request[\Str::slug($parameter->code).'_'.$key.'_color'] != null){
+//                dd('1111111');
+                $typePara->color = $request[\Str::slug($parameter->code).'_'.$key.'_color'];
+            }else{
+                $typePara->color = '#000000';
+            }
+//            dd($request['PM2.5_color']);
+
             $typePara->save();
         }
         return redirect()->route('admin.device_types')->with('success', 'Data updated successfully');

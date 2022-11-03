@@ -138,6 +138,7 @@ class DeviceController extends Controller
         $paraValues = [];
         $dangerColor = [];
         $testPara = [];
+        $color = [];
         $deviceComponent = DevicesComponents::where('device_id', $id)->where('component_id', 9)->first();
         $testParaColumn = [];
         $deviceComponentColumn = DevicesComponents::where('device_id', $id)->where('component_id', 6)->first();
@@ -213,6 +214,7 @@ class DeviceController extends Controller
                 }
             } else {
                 foreach ($device_type->deviceParameters()->orderBy('order')->get() as $index => $tPara) {
+                    array_push($color,$tPara->pivot->color);
                     $dangerColor[$index] = '#000000';
 //                    dd($parameters);
                     foreach ($parameters as $parameter) {
@@ -220,7 +222,12 @@ class DeviceController extends Controller
                             array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
                         }
                         if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
-                            array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            if (isset(json_decode($parameter->parameters, true)[$tPara->code])){
+                                array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            }else{
+                                array_push($yValues, 0);
+                            }
+
                         }
                     }
                     array_push($paraValues, $yValues);
@@ -249,9 +256,9 @@ class DeviceController extends Controller
             $status = "Offline";
             $label = 1;
         }
-//        dd($paraValues);
+//        dd($color);
         $deviceComponents = DevicesComponents::where('device_id', $device->id)->orderBy('order', 'asc')->get();
-        return view('admin.device.custom_show', compact('numberOfRow','parameterTableColumn','testParaColumn', 'testPara', 'device', 'deviceComponents', 'dangerColor', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
+        return view('admin.device.custom_show', compact('numberOfRow','color','parameterTableColumn','testParaColumn', 'testPara', 'device', 'deviceComponents', 'dangerColor', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
     }
 
 
@@ -417,7 +424,7 @@ class DeviceController extends Controller
                     $yValues = [];
                 }
             } else {
-                foreach ($device_type->deviceParameters as $index => $tPara) {
+                foreach ($device_type->deviceParameters()->orderBy('order')->get() as $index => $tPara) {
 
                     foreach ($parameters as $parameter) {
                         if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
@@ -457,7 +464,7 @@ class DeviceController extends Controller
         $paraValues = [];
         $now = Carbon::now();
         if (count($parameters) > 0) {
-            foreach ($device_type->deviceParameters as $index => $tPara) {
+            foreach ($device_type->deviceParameters()->orderBy('order')->get() as $index => $tPara) {
                 $days = [];
 
                 for ($i = 7; $i >= 0; $i--) {
@@ -475,9 +482,11 @@ class DeviceController extends Controller
                     if (count($yValues) != 0) {
                         $test = round($sum / count($yValues));
                     }
+if (isset($day)){
+    array_push($days, $day);
+    array_push($paraValues, $test);
+}
 
-                    array_push($days, $day);
-                    array_push($paraValues, $test);
                 }
                 array_push($xValues, $paraValues);
                 $paraValues = [];
@@ -500,7 +509,7 @@ class DeviceController extends Controller
         $now = Carbon::now();
         $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
         if (count($parameters) > 0) {
-            foreach ($device_type->deviceParameters as $index => $tPara) {
+            foreach ($device_type->deviceParameters()->orderBy('order')->get() as $index => $tPara) {
                 if ($tPara->code == "Temperature") {
                     foreach ($parameters as $parameter) {
                         if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
