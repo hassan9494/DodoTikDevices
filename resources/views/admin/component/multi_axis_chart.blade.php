@@ -42,7 +42,7 @@
                     },
                     colors: ['#008ffb', '#00e396', '#feb019', '#ff4560'],
                     series: [
-                            @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+                            @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
                         {
                             name: '{{$parameter->name}} ({{$parameter->unit}})',
                             type: 'column',

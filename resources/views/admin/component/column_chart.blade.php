@@ -58,7 +58,7 @@
                                 },
                                 @endforeach
                                 @else
-                                    @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+                                    @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
 
                                 {
                                     x: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",

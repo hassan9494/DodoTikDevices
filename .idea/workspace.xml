@@ -20,7 +20,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b9c3d3c-a351-4ab6-90ca-e38cb16d2c4d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/public/.htaccess" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/column_chart.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/column_chart.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/map.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/map.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/multi_axis_chart.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/multi_axis_chart.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/parameters_table.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/parameters_table.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -314,7 +318,7 @@
       <workItem from="1666177854922" duration="19478000" />
       <workItem from="1666593603530" duration="16122000" />
       <workItem from="1666702130078" duration="319000" />
-      <workItem from="1666702904492" duration="44069000" />
+      <workItem from="1666702904492" duration="45464000" />
     </task>
     <servers />
   </component>
