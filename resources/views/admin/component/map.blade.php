@@ -154,7 +154,7 @@
                                                 <span
                                                     style="color: #000000">{{\Carbon\Carbon::parse($xValues[count($xValues) - 1])->setTimezone('Asia/Damascus')->format('Y-d-m h:i a')}}  </span>
                                             @else
-                                                @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+                                                @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
                                                     <div><p style=""></p>
                                                         <span
                                                             style="color: {{$dangerColor[$key]}}">{{$parameter->name}}</span>
@@ -171,7 +171,7 @@
                                         <h4 style="color: #00989d ">{{__('message.Last Read')}}</h4>
                                         @if($device->deviceParameters()->orderBy('id','desc')->first() != null)
                                             @if(count($testPara) == count($device->deviceType->deviceParameters))
-                                                @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+                                                @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
                                                     {{--                                                <h4>{{$key}}</h4>--}}
                                                     <div><p style=""></p>
                                                         {{--                                                    {{dd($dangerColor)}}--}}

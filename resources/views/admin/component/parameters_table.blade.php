@@ -30,7 +30,7 @@
                                                         <th>{{$parameter->name}}</th>
                                                     @endforeach
                                                 @else
-                                                    @foreach($device->deviceType->deviceParameters as $parameter)
+                                                    @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $parameter)
                                                         <th>{{$parameter->name}}</th>
                                                     @endforeach
                                                 @endif
@@ -51,7 +51,7 @@
                                                             <td>{{json_decode($deviceParameter->parameters,true)[$parameter->code]}}</td>
                                                         @endforeach
                                                     @else
-                                                        @foreach($device->deviceType->deviceParameters as $parameter)
+                                                        @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $parameter)
                                                             <td>{{json_decode($deviceParameter->parameters,true)[$parameter->code]}}</td>
                                                         @endforeach
                                                     @endif
