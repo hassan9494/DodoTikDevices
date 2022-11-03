@@ -52,7 +52,13 @@
                                                         @endforeach
                                                     @else
                                                         @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $parameter)
+                                                            @if(isset(json_decode($deviceParameter->parameters,true)[$parameter->code]))
                                                             <td>{{json_decode($deviceParameter->parameters,true)[$parameter->code]}}</td>
+                                                            @elseif(isset(json_decode($deviceParameter->parameters,true)[$parameter->name]))
+                                                                <td>{{json_decode($deviceParameter->parameters,true)[$parameter->name]}}</td>
+                                                            @else
+                                                                <td>0</td>
+                                                            @endif
                                                         @endforeach
                                                     @endif
 
