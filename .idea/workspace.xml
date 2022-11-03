@@ -20,30 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b9c3d3c-a351-4ab6-90ca-e38cb16d2c4d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Console/Commands/SendMailWhenBrokerFail.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/.htaccess" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/documentation/images/img/delcom.JPG" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/documentation/images/img/edicom.JPG" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/documentation/images/img/shocom.JPG" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/test1.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/test2.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/email/brokerStop.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/email/test.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/storage/app/public/images/components/2GcMAyYr83RILMJTBrZGj72fjC6m5qze2kZZhMhC.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/storage/app/public/images/components/IBK0dgwAQ5r2fWi91JZpr0KClSu3n5IQym3skm7b.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Console/Commands/BrokerSubscribe.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Console/Commands/BrokerSubscribe.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceComponentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceComponentController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/GeneralController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/GeneralController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/flowchart.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/flowchart.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/device/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/device/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/documentaion.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/documentaion.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/documentation/sections/component.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/documentation/sections/component.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/documentation.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/documentation.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/.htaccess" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -337,7 +314,7 @@
       <workItem from="1666177854922" duration="19478000" />
       <workItem from="1666593603530" duration="16122000" />
       <workItem from="1666702130078" duration="319000" />
-      <workItem from="1666702904492" duration="43767000" />
+      <workItem from="1666702904492" duration="44069000" />
     </task>
     <servers />
   </component>
