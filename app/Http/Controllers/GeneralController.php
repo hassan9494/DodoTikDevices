@@ -11,17 +11,9 @@ class GeneralController extends Controller
 {
     public function dashboard()
     {
-//        $mqtt = MQTT::connection();
-//        $mqtt->subscribe('some/topic', function (string $topic, string $message) {
-//            echo sprintf('Received QoS level 1 message on topic [%s]: %s', $topic, $message);
-//        }, 1);
-//
-//        $mqtt = MQTT::connection();
-//        $mqtt->publish('some/topic', 'foo', 1);
-//        $mqtt->publish('some/other/topic', 'bar', 2, true); // Retain the message
-////        $mqtt->loop(true);
-//        $x = MQTT::publish('some/topic', 'Hello World!', true, 'default');
-//        dd($x);
+        // $mqtt = MQTT::connection();
+        // $mqtt->subscribe('DODOLORA');
+        // dd($mqtt);
         $user = auth()->user();
         $now = Carbon::now();
         if ($user->role == 'Administrator') {
@@ -86,7 +78,6 @@ class GeneralController extends Controller
             $long = $long / count($devices);
             $lat = $lat / count($devices);
         }
-//        dd($lastdangerRead);
         return view('admin.dashboard', compact('types', 'admin', 'long', 'lat', 'lastdangerRead', 'devices', 'state', 'warning', 'lastMinDanger'));
     }
 
@@ -130,6 +121,11 @@ class GeneralController extends Controller
 //        $test = json_decode("{\"applicationID\":\"4\",\"applicationName\":\"Test_raed\",\"deviceName\":\"FireAlarm\",\"devEUI\":\"oNt\/d0mAth8=\",\"rxInfo\":[],\"txInfo\":{\"frequency\":867300000,\"modulation\":\"LORA\",\"loRaModulationInfo\":{\"bandwidth\":125,\"spreadingFactor\":9,\"codeRate\":\"4\/5\",\"polarizationInversion\":false}},\"adr\":false,\"dr\":3,\"fCnt\":1,\"fPort\":2,\"data\":\"AZUAAQwJCAAhARgBoQAAfCEt\",\"objectJSON\":\"{}\",\"tags\":{},\"confirmedUplink\":false,\"devAddr\":\"ALc9wg==\"}");
 
         return view('admin.documentaion', compact('general'));
+    }
+
+    public function test()
+    {
+        return view('admin.test1');
     }
 
     public function general()

@@ -88,7 +88,6 @@ class DeviceComponentController extends Controller
         $device = Device::findOrFail($id);
         $deviceComponents = DevicesComponents::where('device_id', $id)->get();
         $components = Component::all();
-//        dd($components);
         return view('admin.device_components.editDisplay', compact('components', 'device', 'deviceComponents'));
 
     }

@@ -29,13 +29,13 @@ class DeviceApiController extends Controller
         $para = $request->getContent();
         $testsApi = new TestApi();
         $testsApi->settings = json_encode($para);
-        $testsApi->save();
+//        $testsApi->save();
         $test = explode(',', $para);
+//        dd($test[0]);
         $device = Device::where('device_id', $test[0])->first();
         if ($device != null) {
             $type = $device->deviceType;
-            foreach ($type->deviceParameters as $key => $parameter) {
-//                dd(count($type->deviceParameters));
+            foreach ($type->deviceParameters()->orderBy('order')->get() as $key => $parameter) {
                 $parameters = new DeviceParametersValues();
                 $jsonParameters[$parameter->code] = $test[$key + 1];
                 $parameters->parameters = json_encode($jsonParameters);

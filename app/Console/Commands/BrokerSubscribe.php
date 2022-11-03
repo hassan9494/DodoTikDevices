@@ -39,15 +39,15 @@ class BrokerSubscribe extends Command
      */
     public function handle()
     {
-        $data = array('name'=>"Virat Gandhi");
-        Mail::send(['text'=>'mail'], $data, function($message) {
-            $message->to('hassanalwan36@gmail.com', 'Tutorials Point')->subject
-            ('Laravel Basic Testing Mail');
-            $message->from('DODOTIK','Virat Gandhi');
-        });
+        // $data = array('name'=>"Virat Gandhi");
+        // Mail::send(['text'=>'email.test'], $data, function($message) {
+        //     $message->to('hassanalwan36@gmail.com', 'Tutorials Point')->subject
+        //     ('Laravel Basic Testing Mail');
+        //     $message->from('info@dodolora.com','DODOTIK');
+        // });
         $mqtt = MQTT::connection();
-        $mqtt->publish('some/topic', 'foo', 1);
-        $mqtt->publish('some/other/topic', 'bar', 2, true); // Retain the message
+        // $mqtt->subscribe('some/topic');
+        $mqtt->publish('DODOLORA', 'Dodolora', 2, true); // Retain the message
 //        $mqtt->loop(true);
     }
 }
