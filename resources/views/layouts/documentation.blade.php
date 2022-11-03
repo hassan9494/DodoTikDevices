@@ -173,6 +173,14 @@
                                 <li><a href="#type_settings_4">Delete Type Setting</a></li>
                             </ul>
                         </li>
+                        <li><a href="#component">Component</a>
+                            <ul class="nav">
+                                <li><a href="#component_1">Show Components</a></li>
+{{--                                <li><a href="#component_2">Create Component</a></li>--}}
+                                <li><a href="#component_3">Edit Component</a></li>
+                                <li><a href="#component_4">Delete Component</a></li>
+                            </ul>
+                        </li>
 
                     </ul>
                 </nav>

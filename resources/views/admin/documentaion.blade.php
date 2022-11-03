@@ -33,7 +33,7 @@
 
     @include('documentation.sections.type_settings', [])
 
-{{--    @include('documentation.sections.component', [])--}}
+    @include('documentation.sections.component', [])
 
 {{--    @include('documentation.sections.device_component', [])--}}
 

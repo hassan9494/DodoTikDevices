@@ -20,9 +20,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b9c3d3c-a351-4ab6-90ca-e38cb16d2c4d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/Console/Commands/SendMailWhenBrokerFail.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/.htaccess" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/documentation/images/img/delcom.JPG" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/documentation/images/img/edicom.JPG" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/documentation/images/img/shocom.JPG" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/admin/test1.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/admin/test2.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/email/brokerStop.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/email/test.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/storage/app/public/images/components/2GcMAyYr83RILMJTBrZGj72fjC6m5qze2kZZhMhC.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/storage/app/public/images/components/IBK0dgwAQ5r2fWi91JZpr0KClSu3n5IQym3skm7b.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Console/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Console/Kernel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Console/Commands/BrokerSubscribe.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Console/Commands/BrokerSubscribe.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceApiController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceComponentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceComponentController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/GeneralController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/GeneralController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/flowchart.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/flowchart.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/device/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/device/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/documentaion.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/documentaion.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/documentation/sections/component.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/documentation/sections/component.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layouts/documentation.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/documentation.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,24 +204,24 @@
     <property name="DefaultHtmlFileTemplate" value="XHTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/admin/dashboard" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/email" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="php.override.implement.member.chooser.php.doc" value="NONE" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\projects\DodotikDevice\resources\views\admin\dashboard" />
-      <recent name="D:\projects\DodotikDevice\resources\views\documentation\sections" />
-      <recent name="D:\projects\DodotikDevice\resources\views\layouts" />
-      <recent name="D:\projects\DodotikDevice\public\documentation" />
-      <recent name="D:\projects\DodotikDevice\resources\views\admin" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\projects\DodotikDevice\resources\views\documentation\sections\lines" />
       <recent name="D:\projects\DodotikDevice\database\migrations\test" />
       <recent name="D:\projects\DodotikDevice\database\migrations" />
       <recent name="D:\projects\DodotikDevice\database\seeders" />
       <recent name="D:\projects\DodotikDevice\public" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\projects\DodotikDevice\resources\views\email" />
+      <recent name="D:\projects\DodotikDevice\resources\views\admin\shared" />
+      <recent name="D:\projects\DodotikDevice\resources\views\admin\vendor" />
+      <recent name="D:\projects\DodotikDevice\resources\views\admin" />
+      <recent name="D:\projects\DodotikDevice\resources\views\admin\dashboard" />
     </key>
   </component>
   <component name="RunManager">
@@ -316,12 +337,15 @@
       <workItem from="1666177854922" duration="19478000" />
       <workItem from="1666593603530" duration="16122000" />
       <workItem from="1666702130078" duration="319000" />
-      <workItem from="1666702904492" duration="3964000" />
+      <workItem from="1666702904492" duration="43767000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.log" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -336,28 +360,28 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1666767499789">
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1666767968871">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1666767499789" />
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1666767968871" />
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1660067780739" />
-    <state x="463" y="118" key="FileChooserDialogImpl" timestamp="1666178886830">
+    <state x="463" y="118" key="FileChooserDialogImpl" timestamp="1667111898339">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1666178886830" />
+    <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1667111898339" />
     <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1662970045362" />
     <state x="396" y="86" key="NewPhpClassDialog" timestamp="1660550365220">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="396" y="86" key="NewPhpClassDialog/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1660550365220" />
-    <state x="517" y="287" key="NewPhpFileDialog" timestamp="1660564088891">
+    <state x="517" y="287" key="NewPhpFileDialog" timestamp="1667111702106">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="517" y="287" key="NewPhpFileDialog/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1660564088891" />
-    <state x="389" y="97" width="587" height="534" key="find.popup" timestamp="1666767359448">
+    <state x="517" y="287" key="NewPhpFileDialog/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1667111702106" />
+    <state x="389" y="97" width="587" height="534" key="find.popup" timestamp="1666774938074">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="389" y="97" width="587" height="534" key="find.popup/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1666767359448" />
+    <state x="389" y="97" width="587" height="534" key="find.popup/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1666774938074" />
     <state x="339" y="162" key="run.anything.popup" timestamp="1661777521725">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

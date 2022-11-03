@@ -122,7 +122,7 @@
                             },
                                 @endforeach
                                 @else
-                                @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+                                @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
 
                             {
                                 name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
@@ -204,7 +204,7 @@
                                             },
                                                 @endforeach
                                                 @else
-                                                @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+                                                @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
 
                                             {
                                                 name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
@@ -272,7 +272,7 @@
                                 },
                                 @endforeach
                                 @else
-                                    @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+                                    @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
 
                                 {
                                     name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
@@ -348,7 +348,7 @@
                                 },
                                 @endforeach
                                 @else
-                                    @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+                                    @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
 
                                 {
                                     name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
@@ -408,7 +408,7 @@
                             },
                                 @endforeach
                                 @else
-                                @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+                                @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
 
                             {
                                 name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
@@ -451,7 +451,7 @@
         }
 
 
-        @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+        @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
         units.push("{{$parameter->unit}}")
 
         @endforeach
@@ -467,7 +467,7 @@
                 },
                 @endforeach
                 @else
-                    @foreach($device->deviceType->deviceParameters as $key=>$parameter)
+                    @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
 
                 {
                     name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",

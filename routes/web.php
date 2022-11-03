@@ -29,7 +29,7 @@ use App\Http\Controllers\{Auth\ForgotPasswordController,
 //     return view('welcome');
 // });
 Route::get('/', [FrontController::class, 'home'])->name('homepage');
-Route::post('/', [FrontController::class, 'subscribe'])->name('subscribe');
+//Route::post('/', [FrontController::class, 'subscribe'])->name('subscribe');
 Route::get('about-us', [FrontController::class, 'about'])->name('about');
 
 Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
@@ -59,11 +59,11 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth','middleware'
     Route::post('about', [GeneralController::class, 'aboutUpdate'])->middleware('can:isAdmin')->name('about.update');
 
     // Manage Admin
-    Route::resource('users',UserController::class);
+//    Route::resource('users',UserController::class);
     Route::get('users', [UserController::class, 'index'])->middleware('can:isAdminOrUser')->name('users.index');
     Route::post('users/{id}', [UserController::class, 'changepassword'])->middleware('can:isAdminOrUser')->name('users.changepassword');
     Route::get('users/create', [UserController::class, 'create'])->middleware('can:isAdminOrUser')->name('users.create');
-//     Route::post('users/store', [UserController::class, 'store'])->middleware('can:isAdminOrUser')->name('users.store');
+    Route::post('users', [UserController::class, 'store'])->middleware('can:isAdminOrUser')->name('users.store');
     Route::get('users/edit/{id}', [UserController::class, 'edit'])->middleware('can:isAdminOrUser')->name('users.edit');
     Route::post('users/edit/{id}', [UserController::class, 'update'])->middleware('can:isAdminOrUser')->name('users.update');
     Route::delete('users/destroy/{id}',[UserController::class, 'destroy'])->middleware('can:isAdmin')->name('users.destroy');
@@ -72,7 +72,7 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth','middleware'
     Route::get('device_types/add_default_values/{typeid}', [DevicTypeController::class, 'add_default_values'])->middleware('can:isAdmin')->name('device_types.add_default_values');
     Route::post('device_types/add_default_values/{typeid}', [DevicTypeController::class, 'add_default'])->middleware('can:isAdmin')->name('device_types.add_default');
 
-    Route::resource('device_types',DevicTypeController::class);
+
     Route::get('device_types', [DevicTypeController::class, 'index'])->middleware('can:isAdmin')->name('device_types');
     Route::get('device_types/create', [DevicTypeController::class, 'create'])->middleware('can:isAdmin')->name('device_types.create');
     Route::post('device_types/store', [DevicTypeController::class, 'store'])->middleware('can:isAdminOrUser')->name('device_types.store');
@@ -82,7 +82,7 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth','middleware'
     Route::delete('device_types/destroy/{id}',[DevicTypeController::class, 'destroy'])->middleware('can:isAdmin')->name('device_types.destroy');
 
     // Manage device_parameters
-    Route::resource('device_parameters',DeviceParametersController::class);
+//    Route::resource('device_parameters',DeviceParametersController::class);
     Route::get('device_parameters', [DeviceParametersController::class, 'index'])->middleware('can:isAdmin')->name('device_parameters');
     Route::get('device_parameters/create', [DeviceParametersController::class, 'create'])->middleware('can:isAdmin')->name('device_parameters.create');
     Route::post('device_parameters/store', [DeviceParametersController::class, 'store'])->middleware('can:isAdminOrUser')->name('device_parameters.store');
@@ -93,7 +93,7 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth','middleware'
 
 
     // Manage device_types
-    Route::resource('device_setting',DeviceSettingController::class);
+//    Route::resource('device_setting',DeviceSettingController::class);
     Route::get('device_setting', [DeviceSettingController::class, 'index'])->middleware('can:isAdmin')->name('device_setting');
     Route::get('device_setting/create', [DeviceSettingController::class, 'create'])->middleware('can:isAdmin')->name('device_setting.create');
     Route::post('device_setting/store', [DeviceSettingController::class, 'store'])->middleware('can:isAdminOrUser')->name('device_setting.store');
@@ -113,7 +113,7 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth','middleware'
     Route::get('devices/add_device_limit_values/{id}', [DeviceController::class, 'add_device_limit_values'])->middleware('can:isAdminOrUser')->name('devices.add_device_limit_values');
     Route::post('devices/add_device_limit_values/{id}', [DeviceController::class, 'add_limit_values'])->middleware('can:isAdminOrUser')->name('devices.add_limit_values');
 
-    Route::resource('devices',DeviceController::class);
+//    Route::resource('devices',DeviceController::class);
     Route::get('devices', [DeviceController::class, 'index'])->middleware('can:isAdminOrUser')->name('devices');
     Route::get('devices/create', [DeviceController::class, 'create'])->middleware('can:isAdminOrUser')->name('devices.create');
     Route::post('devices/store', [DeviceController::class, 'store'])->middleware('can:isAdminOrUser')->name('devices.store');
@@ -133,12 +133,28 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth','middleware'
     Route::get('devices/getDeviceStatus/{id}', [DeviceController::class, 'getDeviceStatus'])->middleware('can:isAdminOrUser')->name('devices.getDeviceStatus');
 
 
-    Route::resource('components',ComponentController::class);
-    Route::post('components/edit/{id}', [ComponentController::class, 'update'])->name('components.update');
+//    Route::resource('components',ComponentController::class);
+//    Route::post('components/edit/{id}', [ComponentController::class, 'update'])->name('components.update');
+    Route::get('components', [ComponentController::class, 'index'])->middleware('can:isAdmin')->name('components.index');
+    Route::get('components/create', [ComponentController::class, 'create'])->middleware('can:isAdmin')->name('components.create');
+    Route::post('components/store', [ComponentController::class, 'store'])->middleware('can:isAdminOrUser')->name('components.store');
+    Route::get('components/edit/{id}', [ComponentController::class, 'edit'])->middleware('can:isAdmin')->name('components.edit');
+    Route::get('components/show/{id}', [ComponentController::class, 'show'])->middleware('can:isAdmin')->name('components.show');
+    Route::post('components/edit/{id}', [ComponentController::class, 'update'])->middleware('can:isAdmin')->name('components.update');
+    Route::delete('components/destroy/{id}',[ComponentController::class, 'destroy'])->middleware('can:isAdmin')->name('components.destroy');
 
 
-    Route::resource('device_components',DeviceComponentController::class);
-    Route::post('device_components/edit/{id}', [DeviceComponentController::class, 'update'])->name('device_components.update');
+//    Route::resource('device_components',DeviceComponentController::class);
+//    Route::post('device_components/edit/{id}', [DeviceComponentController::class, 'update'])->name('device_components.update');
+    Route::get('device_components', [DeviceComponentController::class, 'index'])->middleware('can:isAdmin')->name('device_components.index');
+    Route::get('device_components/create', [DeviceComponentController::class, 'create'])->middleware('can:isAdmin')->name('device_components.create');
+    Route::post('device_components/store', [DeviceComponentController::class, 'store'])->middleware('can:isAdminOrUser')->name('device_components.store');
+    Route::get('device_components/edit/{id}', [DeviceComponentController::class, 'edit'])->middleware('can:isAdmin')->name('device_components.edit');
+    Route::get('device_components/show/{id}', [DeviceComponentController::class, 'show'])->middleware('can:isAdmin')->name('device_components.show');
+    Route::post('device_components/edit/{id}', [DeviceComponentController::class, 'update'])->middleware('can:isAdmin')->name('device_components.update');
+    Route::delete('device_components/destroy/{id}',[DeviceComponentController::class, 'destroy'])->middleware('can:isAdmin')->name('device_components.destroy');
+
+
     Route::get('device_components/editDisplay/{id}', [DeviceComponentController::class, 'editDisplay'])->name('device_components.editDisplay');
     Route::post('device_components/updateDisplay/{id}', [DeviceComponentController::class, 'updateDisplay'])->name('device_components.updateDisplay');
 
@@ -153,5 +169,6 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth','middleware'
 
 
     Route::get('documentaion', [GeneralController::class, 'documentaion'])->name('documentaion');
+    Route::get('test', [GeneralController::class, 'test'])->name('test');
 
 });

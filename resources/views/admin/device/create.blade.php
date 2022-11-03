@@ -102,7 +102,7 @@
                 </div>
             </div>
             <div class="form-group ml-5">
-                <label for="time_between_two_read" class="col-sm-2 col-form-label">{{__('message.time_between_two_read')}} </label>
+                <label for="time_between_two_read" class="col-sm-2 col-form-label">{{__('message.time_between_two_read')}} (minute)</label>
                 <div class="col-sm-9">
                     <input type="number" name="time_between_two_read" placeholder="Time Between Two Read In Minute" id="time_between_two_read"
                            class="form-control {{$errors->first('time_between_two_read') ? "is-invalid" : "" }} "
@@ -113,9 +113,9 @@
                 </div>
             </div>
             <div class="form-group ml-5">
-                <label for="tolerance" class="col-sm-2 col-form-label">{{__('message.tolerance')}} </label>
+                <label for="tolerance" class="col-sm-2 col-form-label">{{__('message.tolerance')}} (minute) </label>
                 <div class="col-sm-9">
-                    <input type="number" name="tolerance" placeholder="tolerance" id="tolerance"
+                    <input type="number" name="tolerance" placeholder="Tolerance In Minute" id="tolerance"
                            class="form-control {{$errors->first('tolerance') ? "is-invalid" : "" }} "
                            value="{{old('tolerance')}}">
                     <div class="invalid-feedback">
