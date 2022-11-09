@@ -60,6 +60,16 @@ class Device extends Model
     {
         return $this->hasMany(DevicesComponents::class,'device_id');
     }
+
+    public function deviceFactories()
+    {
+        return $this->hasMany(DeviceFactory::class,'device_id');
+    }
+
+    public function deviceFactoryValues()
+    {
+        return $this->hasMany(DeviceFactoryValue::class,'device_id');
+    }
 }
 
 

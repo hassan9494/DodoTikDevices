@@ -152,7 +152,7 @@
                                                     </div>
                                                 @endforeach
                                                 <span
-                                                    style="color: #000000">{{\Carbon\Carbon::parse($xValues[count($xValues) - 1])->setTimezone('Asia/Damascus')->format('Y-d-m h:i a')}}  </span>
+                                                    style="color: #000000">{{\Carbon\Carbon::parse($xValues[count($xValues) - 1])->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a')}}  </span>
                                             @else
                                                 @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
                                                     <div><p style=""></p>
@@ -162,7 +162,7 @@
                                                     </div>
                                                 @endforeach
                                                 <span
-                                                    style="color: #000000">{{\Carbon\Carbon::parse($xValues[count($xValues) - 1])->setTimezone('Asia/Damascus')->format('Y-d-m h:i a')}}  </span>
+                                                    style="color: #000000">{{\Carbon\Carbon::parse($xValues[count($xValues) - 1])->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a')}}  </span>
                                             @endif
                                         @endif
                                     </div>
@@ -181,7 +181,7 @@
                                                     </div>
                                                 @endforeach
                                                 <span
-                                                    style="color: #000000">{{\Carbon\Carbon::parse($device->deviceParameters()->orderBy('id','desc')->first()->time_of_read)->setTimezone('Asia/Damascus')->format('Y-d-m h:i a')}}  </span>
+                                                    style="color: #000000">{{\Carbon\Carbon::parse($device->deviceParameters()->orderBy('id','desc')->first()->time_of_read)->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a')}}  </span>
                                             @else
                                                 @foreach($testPara as $key=>$parameter)
                                                     {{--                                                <h4>{{$key}}</h4>--}}
@@ -193,7 +193,7 @@
                                                     </div>
                                                 @endforeach
                                                 <span
-                                                    style="color: #000000">{{\Carbon\Carbon::parse($device->deviceParameters()->orderBy('id','desc')->first()->time_of_read)->setTimezone('Asia/Damascus')->format('Y-d-m h:i a')}}  </span>
+                                                    style="color: #000000">{{\Carbon\Carbon::parse($device->deviceParameters()->orderBy('id','desc')->first()->time_of_read)->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a')}}  </span>
 
                                             @endif
                                         @endif

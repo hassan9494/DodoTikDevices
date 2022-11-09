@@ -3,35 +3,39 @@
 namespace App\Exports;
 
 use App\Models\Device;
-use App\Models\DeviceParametersValues;
+use App\Models\DeviceFactoryValue;
+use App\Models\Factory;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class ParametersDataExport implements FromCollection, WithHeadings
+class FactoryDeviceValueExport implements FromCollection, WithHeadings
 {
+    protected $device;
+    protected $factory;
     protected $from;
     protected $to;
-    protected $devType;
 
-    function __construct($from, $to, $devType)
+    function __construct($from, $to,$device,$factory)
     {
         $this->from = $from;
         $this->to = $to;
-        $this->devType = $devType;
+        $this->device = $device;
+        $this->factory = $factory;
     }
-
     /**
-     * @return \Illuminate\Support\Collection
-     */
+    * @return \Illuminate\Support\Collection
+    */
     public function collection()
     {
-        $device = Device::findOrFail($this->devType);
-        $devPara = DeviceParametersValues::select( 'parameters', 'time_of_read')
-            ->where('device_id', $this->devType)
-            ->whereBetween('time_of_read', [date('Y-m-d', strtotime($this->from)) . " 00:00:00", date('Y-m-d', strtotime($this->to)) . " 23:59:59"])
+        $device = Device::findOrFail($this->device);
+        $factory = Factory::findOrFail($this->factory);
+//        dd($this->to);
+        $devPara = DeviceFactoryValue::select('parameters','factory_id', 'time_of_read')
+            ->where('device_id', $this->device)
+            ->where('factory_id', $this->factory)
+            ->whereBetween('time_of_read', [date('Y-m-d H:i:s', strtotime($this->from)) , date('Y-m-d H:i:s', strtotime($this->to))])
             ->get();
-
         foreach ($devPara as $para) {
             foreach ($device->deviceType->deviceParameters()->orderBy('order')->get() as $key => $type) {
                 $x = $type->code;
@@ -45,17 +49,20 @@ class ParametersDataExport implements FromCollection, WithHeadings
 
             }
             $para->parameters = $device->device_id;
+            $para->factory_id = $factory->name;
             $para->time_of_read = Carbon::parse($para->time_of_read)->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a');
         }
+
         return $devPara;
     }
 
 
     public function headings(): array
     {
-        $device = Device::findOrFail($this->devType);
+        $device = Device::findOrFail($this->device);
         $headers = [
             'device',
+            'factory',
             'time of read',
 
         ];

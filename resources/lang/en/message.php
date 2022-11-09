@@ -113,6 +113,20 @@ return [
     'Gateway' => 'Gateway',
     'Delete this type permanently?' => 'Delete this type permanently?',
     'No Devices In This Type' => 'No Devices In This Type',
-    'tolerance' => 'Tolerance'
+    'tolerance' => 'Tolerance',
+    'Device Parameters Color' => 'Device Parameters Color',
+    'Factories' => 'Factories',
+    'Delete this factory permanently?' => 'Delete this factory permanently?',
+    'Factory' => 'Factory',
+    'device' => 'device',
+    'Start' => 'Start',
+    'Error' => 'Error',
+    'Start Date' => 'Start Date',
+    'Stop This Device?' => 'Stop This Device?',
+    'Connected devices in the Factory' => 'Connected devices in the Factory',
+    'End Date' => 'End Date',
+    'Show factory parameters according to the device that finished recording parameters' => 'Show factory parameters according to the device that finished recording parameters',
+    'Show Factory Parameters By Device' => 'Show Factory Parameters By Device',
+    'Show factory parameters by device that is still recording parameters' => 'Show factory parameters by device that is still recording parameters',
 
 ];

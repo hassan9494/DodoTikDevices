@@ -145,26 +145,29 @@ class DeviceController extends Controller
         $parameterTableColumn = [];
         $numberOfRow = 0;
         $deviceComponentparameterTable = DevicesComponents::where('device_id', $id)->where('component_id', 13)->first();
-        if ($deviceComponentColumn != null && json_decode($deviceComponentColumn->settings)->parameters != null) {
-            foreach (json_decode($deviceComponentColumn->settings)->parameters as $key => $test) {
-                $testParaColumn[$key] = DeviceParameters::findOrFail((int)$test);
+            if ($deviceComponentColumn != null && json_decode($deviceComponentColumn->settings)->parameters != null) {
+                foreach (json_decode($deviceComponentColumn->settings)->parameters as $key => $test) {
+                    $testParaColumn[$key] = DeviceParameters::findOrFail((int)$test);
+                }
             }
-        }
-        if ($deviceComponentparameterTable != null && json_decode($deviceComponentparameterTable->settings)->parameters != null) {
-            if (isset(json_decode($deviceComponentparameterTable->settings)->number_of_row)){
-                $numberOfRow = (int)json_decode($deviceComponentparameterTable->settings)->number_of_row;
+            if ($deviceComponentparameterTable != null && json_decode($deviceComponentparameterTable->settings)->parameters != null) {
+                if (isset(json_decode($deviceComponentparameterTable->settings)->number_of_row)){
+                    $numberOfRow = (int)json_decode($deviceComponentparameterTable->settings)->number_of_row;
+                }
+
+                foreach (json_decode($deviceComponentparameterTable->settings)->parameters as $key => $test) {
+                    $parameterTableColumn[$key] = DeviceParameters::findOrFail((int)$test);
+                }
+            }
+            if ($deviceComponent != null && json_decode($deviceComponent->settings)->parameters != null) {
+                foreach (json_decode($deviceComponent->settings)->parameters as $key => $test) {
+                    $testPara[$key] = DeviceParameters::findOrFail((int)$test);
+                }
+            } else {
             }
 
-            foreach (json_decode($deviceComponentparameterTable->settings)->parameters as $key => $test) {
-                $parameterTableColumn[$key] = DeviceParameters::findOrFail((int)$test);
-            }
-        }
-        if ($deviceComponent != null && json_decode($deviceComponent->settings)->parameters != null) {
-            foreach (json_decode($deviceComponent->settings)->parameters as $key => $test) {
-                $testPara[$key] = DeviceParameters::findOrFail((int)$test);
-            }
-        } else {
-        }
+
+
         $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
         if (count($parameters) > 0) {
             if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->m == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->d == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i <= ($device->time_between_two_read + $device->tolerance) ) {
@@ -183,43 +186,67 @@ class DeviceController extends Controller
             }
             $warning = 1;
             $dangerColor = [];
+            foreach ($device_type->deviceParameters()->orderBy('order')->get() as $index => $tPara) {
+                array_push($color, $tPara->pivot->color);
+            }
             if (count($testPara) > 0) {
 
                 foreach ($testPara as $index => $tPara) {
+
                     $dangerColor[$index] = '#000000';
                     foreach ($parameters as $parameter) {
                         if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parameter->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0 ){
-                            array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            if (isset(json_decode($parameter->parameters, true)[$tPara->code])){
+                                array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            }else{
+                                array_push($yValues, 0);
+                            }
+
                         }
                         if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
-                            array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            if (isset(json_decode($parameter->parameters, true)[$tPara->code])){
+                                array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            }else{
+                                array_push($yValues,0);
+                            }
+
                         }
                     }
                     array_push($paraValues, $yValues);
                     $yValues = [];
                     if (isset($device->limitValues)) {
                         if ($device->limitValues->min_warning == 1) {
-                            if (json_decode($parameters->last()->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
-                                $warning += 1;
-                                $dangerColor[$index] = 'red';
+                            if (isset(json_decode($parameters->last()->parameters, true)[$tPara->code]) && isset(json_decode($device->limitValues->min_value, true)[$tPara->code])){
+                                if (json_decode($parameters->last()->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
+                                    $warning += 1;
+                                    $dangerColor[$index] = 'red';
+                                }
                             }
+
                         }
                         if ($device->limitValues->max_warning == 1) {
-                            if (json_decode($parameters->last()->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]) {
-                                $warning += 1;
-                                $dangerColor[$index] = 'red';
+                            if (isset(json_decode($parameters->last()->parameters, true)[$tPara->code]) && isset(json_decode($device->limitValues->max_value, true)[$tPara->code])){
+                                if (json_decode($parameters->last()->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]) {
+                                    $warning += 1;
+                                    $dangerColor[$index] = 'red';
+                                }
                             }
+
                         }
                     }
                 }
             } else {
                 foreach ($device_type->deviceParameters()->orderBy('order')->get() as $index => $tPara) {
-                    array_push($color,$tPara->pivot->color);
+//                    array_push($color,$tPara->pivot->color);
                     $dangerColor[$index] = '#000000';
-//                    dd($parameters);
                     foreach ($parameters as $parameter) {
                         if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parameter->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0 ){
-                            array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            if (isset(json_decode($parameter->parameters, true)[$tPara->code])){
+                                array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            }else{
+                                array_push($yValues, 0);
+                            }
+
                         }
                         if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
                             if (isset(json_decode($parameter->parameters, true)[$tPara->code])){
@@ -234,16 +261,21 @@ class DeviceController extends Controller
                     $yValues = [];
                     if (isset($device->limitValues)) {
                         if ($device->limitValues->min_warning == 1) {
-                            if (json_decode($parameters->last()->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
-                                $warning += 1;
-                                $dangerColor[$index] = 'red';
+                            if (isset(json_decode($parameters->last()->parameters, true)[$tPara->code]) && isset(json_decode($device->limitValues->min_value, true)[$tPara->code])) {
+                                if (json_decode($parameters->last()->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
+                                    $warning += 1;
+                                    $dangerColor[$index] = 'red';
+                                }
                             }
                         }
                         if ($device->limitValues->max_warning == 1) {
-                            if (json_decode($parameters->last()->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]) {
-                                $warning += 1;
-                                $dangerColor[$index] = 'red';
+                            if (isset(json_decode($parameters->last()->parameters, true)[$tPara->code]) && isset(json_decode($device->limitValues->max_value, true)[$tPara->code])){
+                                if (json_decode($parameters->last()->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]) {
+                                    $warning += 1;
+                                    $dangerColor[$index] = 'red';
+                                }
                             }
+
                         }
                     }
                 }

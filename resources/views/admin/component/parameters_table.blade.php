@@ -63,7 +63,7 @@
                                                     @endif
 
                                                     <td>
-                                                        {{\Carbon\Carbon::parse($deviceParameter->time_of_read)->setTimezone('Asia/Damascus')->format('Y-d-m h:i a')}}
+                                                        {{\Carbon\Carbon::parse($deviceParameter->time_of_read)->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a')}}
 {{--                                                        <br>--}}
 {{--                                                        {{$deviceParameter->time_of_read}}--}}
                                                     </td>

@@ -29,6 +29,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
 
         $schedule->command('broker:subscribe')->everyFiveMinutes();
+        $schedule->command('sendMail:whenBrokerFail')->everyFiveMinutes();
     }
 
     /**

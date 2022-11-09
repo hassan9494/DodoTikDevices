@@ -22,18 +22,19 @@
             width: 10px;
         }
 
-        .device-types-name .nav-item span{
+        .device-types-name .nav-item span {
             color: #00989d;
         }
 
-        .device-types-name .active span{
+        .device-types-name .active span {
             color: #ffffff;
         }
 
         .device-types-name .active {
-            background-color: #00989d!important;
+            background-color: #00989d !important;
         }
-        .no-device-in-type{
+
+        .no-device-in-type {
             margin: 50px;
         }
     </style>
@@ -77,19 +78,22 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
     <script>
         var countOfDevice = {{count($devices)}}
-        console.log(countOfDevice)
 
         mapboxgl.accessToken = 'pk.eyJ1Ijoic2FoYWIyMiIsImEiOiJja3Zud2NjeG03cGk1MnBxd3NrMm5kaDd4In0.vsQXgdGOH8KQ91g4rHkvUA';
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
-            center: [{{$long}},{{$lat}}],
+            center: [{{$long != null ? $long : 0}},{{$lat != null ? $lat : 0}}],
             zoom: 3
         });
 
         map.on('load', () => {
             @foreach($devices as $key=>$device)
-            var warning = {{$warning[$key]}};
+                @if(isset($warning[$key]))
+                    var warning = {{$warning[$key]}};
+                @else
+                    var warning = 0;
+                @endif
             map.addSource('places_{{$device->id}}', {
                 'type': 'geojson',
                 'data': {
@@ -105,27 +109,45 @@
                                     '<h5>{{$device->name}}</h5>' +
                                     @if($device->deviceType != null)
                                         @foreach($device->deviceType->deviceParameters as $key1=>$parameter)
-                                        '<div><span ></span>{{$parameter->name}}' +
-                                    ':{{count($device->deviceParameters) > 0 ? json_decode($device->deviceParameters->last()->parameters, true)[$parameter->code]. " (". $parameter->unit .") " : "No Data"}}' +
-                                    '</div>' +
-                                    @endforeach
-                                        @endif
+                                            '<div><span ></span>{{$parameter->name}}' +
+                                            @if(count($device->deviceParameters) > 0)
+                                                @if(isset(json_decode($device->deviceParameters->last()->parameters, true)[$parameter->code]))
+                                                    ':{{count($device->deviceParameters) > 0 ? json_decode($device->deviceParameters->last()->parameters, true)[$parameter->code]. " (". $parameter->unit .") " : "No Data"}}' +
+                                                @else
+                                                    ':{{count($device->deviceParameters) > 0 ?  0 . " (". $parameter->unit .") " : "No Data"}}' +
+                                                @endif
+                                            @endif
+                                            '</div>' +
+                                        @endforeach
+                                    @endif
 
-                                        '<span>{{count($device->deviceParameters) > 0 ? \Carbon\Carbon::parse($device->deviceParameters->last()->time_of_read)->setTimezone('Asia/Damascus')->format('Y-d-m h:i a') : ""}}</span>' +
-                                        '</div>' :
+                                    '<span>{{count($device->deviceParameters) > 0 ? \Carbon\Carbon::parse($device->deviceParameters->last()->time_of_read)->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a') : ""}}</span>' +
+                                    '</div>' :
                                     '<div>' +
                                     '<h4 style="color : #000000">{{__('message.Last Read')}}</h4>' +
                                     '<h5>{{$device->name}}</h5>' +
                                     @if($device->deviceType != null)
                                         @foreach($device->deviceType->deviceParameters as $key2=>$parameter)
-                                        '<div><span style ="color:{{$lastdangerRead[$key][$key2]}}!important">{{$parameter->name}}</span>' +
-                                    ':<span style ="color:{{$lastdangerRead[$key][$key2]}}!important">{{$lastMinDanger[$key] != null ? json_decode($lastMinDanger[$key]->parameters, true)[$parameter->code]. " (". $parameter->unit .") " : "No Data"}}</span>' +
-                                    '</div>' +
-                                    @endforeach
-                                        @endif
+                                            @if(isset($lastdangerRead[$key][$key2]))
+                                                '<div><span style ="color:{{$lastdangerRead[$key][$key2]}}!important">{{$parameter->name}}</span>' +
+                                            @else
+                                                '<div><span style ="color:#000000!important">{{$parameter->name}}</span>' +
+                                            @endif
+                                            @if(isset($lastMinDanger[$key]))
+                                                @if($lastMinDanger[$key] != null)
+                                                    @if(isset(json_decode($lastMinDanger[$key]->parameters, true)[$parameter->code]))
+                                                        ':<span style ="color:{{$lastdangerRead[$key][$key2]}}!important">{{$lastMinDanger[$key] != null ? json_decode($lastMinDanger[$key]->parameters, true)[$parameter->code]. " (". $parameter->unit .") " : "No Data"}}</span>' +
+                                                    @else
+                                                        ':<span style ="color:{{$lastdangerRead[$key][$key2]}}!important">{{$lastMinDanger[$key] != null ? 0 . " (". $parameter->unit .") " : "No Data"}}</span>' +
+                                                    @endif
+                                                @endif
+                                            @endif
+                                            '</div>' +
+                                        @endforeach
+                                    @endif
 
-                                        '<span>{{count($device->deviceParameters) > 0 ? \Carbon\Carbon::parse($device->deviceParameters->last()->time_of_read)->setTimezone('Asia/Damascus')->format('Y-d-m h:i a') : ""}}</span>' +
-                                        '</div>'
+                                        '<span>{{count($device->deviceParameters) > 0 ? \Carbon\Carbon::parse($device->deviceParameters->last()->time_of_read)->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a') : ""}}</span>' +
+                                    '</div>'
                             },
                             'geometry': {
                                 'type': 'Point',

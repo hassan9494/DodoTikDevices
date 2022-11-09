@@ -118,6 +118,14 @@
                     <i class="fas fa-fw fa-satellite-dish"></i>
                     <span>{{__('message.Components_Settings')}}</span></a>
             </li>
+
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ route('admin.factories') }}">
+                    <i class="fas fa-fw fa-industry"></i>
+                    <span>{{__('message.Factories')}}</span></a>
+            </li>
     @endcan
     <!-- Nav Item - Dashboard -->
         <li class="nav-item active">

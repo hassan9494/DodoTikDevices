@@ -10,6 +10,7 @@ use App\Http\Controllers\{Auth\ForgotPasswordController,
     DeviceParametersController,
     DeviceSettingController,
     DevicTypeController,
+    FactoryController,
     FrontController,
     GeneralController,
     UserController};
@@ -170,5 +171,20 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth','middleware'
 
     Route::get('documentaion', [GeneralController::class, 'documentaion'])->name('documentaion');
     Route::get('test', [GeneralController::class, 'test'])->name('test');
+
+
+    Route::get('factories', [FactoryController::class, 'index'])->middleware('can:isAdmin')->name('factories');
+    Route::get('factories/create', [FactoryController::class, 'create'])->middleware('can:isAdmin')->name('factories.create');
+    Route::post('factories/store', [FactoryController::class, 'store'])->middleware('can:isAdminOrUser')->name('factories.store');
+    Route::get('factories/edit/{id}', [FactoryController::class, 'edit'])->middleware('can:isAdmin')->name('factories.edit');
+    Route::get('factories/show/{id}', [FactoryController::class, 'show'])->middleware('can:isAdmin')->name('factories.show');
+    Route::post('factories/edit/{id}', [FactoryController::class, 'update'])->middleware('can:isAdmin')->name('factories.update');
+    Route::delete('factories/destroy/{id}',[FactoryController::class, 'destroy'])->middleware('can:isAdmin')->name('factories.destroy');
+    Route::get('factories/start/{id}', [FactoryController::class, 'start'])->middleware('can:isAdmin')->name('factories.start');
+    Route::post('factories/attach/{id}', [FactoryController::class, 'attach'])->middleware('can:isAdmin')->name('factories.attach');
+    Route::get('factories/stop/{id}', [FactoryController::class, 'stop'])->middleware('can:isAdmin')->name('factories.stop');
+    Route::post('factories/detach/{id}', [FactoryController::class, 'detach'])->middleware('can:isAdmin')->name('factories.detach');
+    Route::get('factories/details/{id}', [FactoryController::class, 'details'])->middleware('can:isAdmin')->name('factories.details');
+    Route::get('factories/export/{id}',[FactoryController::class, 'export'])->middleware('can:isAdmin')->name('factories.export');
 
 });
