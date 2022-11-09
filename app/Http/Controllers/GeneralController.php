@@ -3,82 +3,92 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use App\Models\{About, Device, DeviceParametersValues, DeviceType, General, User};
-use PhpMqtt\Client\Facades\MQTT;
 
 class GeneralController extends Controller
 {
     public function dashboard()
     {
-        // $mqtt = MQTT::connection();
-        // $mqtt->subscribe('DODOLORA');
-        // dd($mqtt);
-        $user = auth()->user();
-        $now = Carbon::now();
-        if ($user->role == 'Administrator') {
-            $admin = User::orderBy('id', 'desc')->count();
-            $devices = Device::all();
-        } else {
-            $admin = User::orderBy('id', 'desc')->count();
-            $devices = Device::where('user_id', $user->id)->get();
-        }
-        $types = DeviceType::all();
-        $state = [];
-        $status = "Offline";
-        $warning = [];
-        $lastMinDanger = [];
-        $lastdangerRead = [];
-        $long = 0;
-        $lat = 0;
-        foreach ($devices as $key => $device) {
-            $long += $device->longitude;
-            $lat += $device->latitude;
-            $warning[$key] = 0;
-            $lastMinDanger[$key] = null;
-            $lastdangerRead[$key] = ["#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000",];
-            $parameters = $device->deviceParameters;
-            $lastPara = DeviceParametersValues::where('device_id', $device->id)->orderBy('id', 'desc')->first();
-            if (count($parameters) > 0) {
-                if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->m == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->d == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i < ($device->time_between_two_read + $device->tolerance)) {
-                    $status = "Online";
+        try {
+            $user = auth()->user();
+            $now = Carbon::now();
+            if ($user->role == 'Administrator') {
+                $admin = User::orderBy('id', 'desc')->count();
+                $devices = Device::all();
+            } else {
+                $admin = User::orderBy('id', 'desc')->count();
+                $devices = Device::where('user_id', $user->id)->get();
+            }
+            $types = DeviceType::all();
+            $state = [];
+            $status = "Offline";
+            $warning = [];
+            $lastMinDanger = [];
+            $lastdangerRead = [];
+            $long = 0;
+            $lat = 0;
+            foreach ($devices as $key => $device) {
+                $long += $device->longitude;
+                $lat += $device->latitude;
+                $warning[$key] = 0;
+                $lastMinDanger[$key] = null;
+                $lastdangerRead[$key] = ["#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000",];
+                $parameters = $device->deviceParameters;
+                $lastPara = DeviceParametersValues::where('device_id', $device->id)->orderBy('id', 'desc')->first();
+                if (count($parameters) > 0) {
+                    if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->m == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->d == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i < ($device->time_between_two_read + $device->tolerance)) {
+                        $status = "Online";
+                    } else {
+                        $status = "Offline";
+                    }
                 } else {
                     $status = "Offline";
                 }
-            } else {
-                $status = "Offline";
-            }
-            array_push($state, $status);
-            if ($device->deviceType != null) {
-                foreach ($device->deviceType->deviceParameters as $key2 => $tPara) {
-                    if (isset($device->limitValues)) {
-                        if ($device->limitValues->min_warning == 1) {
-                            if ($device->deviceParameters->last() != null)
-                                if (json_decode($device->deviceParameters->last()->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
+                array_push($state, $status);
+                if ($device->deviceType != null) {
+                    foreach ($device->deviceType->deviceParameters as $key2 => $tPara) {
+                        if (isset($device->limitValues)) {
+                            if ($device->limitValues->min_warning == 1) {
+                                if ($device->deviceParameters->last() != null)
+                                    if (isset(json_decode($device->deviceParameters->last()->parameters, true)[$tPara->code]) && isset(json_decode($device->limitValues->min_value, true)[$tPara->code])){
+                                        if (json_decode($device->deviceParameters->last()->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
 
-                                    $warning[$key] += 1;
-                                    $lastMinDanger[$key] = $device->deviceParameters->last();
-                                    $lastdangerRead[$key][$key2] = "red";
-                                }
-                        }
-                        if ($device->limitValues->max_warning == 1) {
-                            if ($device->deviceParameters->last() != null)
-                                if (json_decode($device->deviceParameters->last()->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]) {
-                                    $warning[$key] += 1;
-                                    $lastMinDanger[$key] = $device->deviceParameters->last();
-                                    $lastdangerRead[$key][$key2] = "red";
-                                }
+                                            $warning[$key] += 1;
+                                            $lastMinDanger[$key] = $device->deviceParameters->last();
+                                            $lastdangerRead[$key][$key2] = "red";
+                                        }
+                                    }
+
+                            }
+                            if ($device->limitValues->max_warning == 1) {
+                                if ($device->deviceParameters->last() != null)
+                                    if (isset(json_decode($device->deviceParameters->last()->parameters, true)[$tPara->code]) && isset(json_decode($device->limitValues->max_value, true)[$tPara->code])){
+                                        if (json_decode($device->deviceParameters->last()->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]) {
+                                            $warning[$key] += 1;
+                                            $lastMinDanger[$key] = $device->deviceParameters->last();
+                                            $lastdangerRead[$key][$key2] = "red";
+                                        }
+                                    }
+
+                            }
                         }
                     }
                 }
-            }
 
+            }
+            if (count($devices) > 0) {
+                $long = $long / count($devices);
+                $lat = $lat / count($devices);
+            }
+//        dd($lastdangerRead);
+            return view('admin.dashboard', compact('types', 'admin', 'long', 'lat', 'lastdangerRead', 'devices', 'state', 'warning', 'lastMinDanger'));
+
+        }catch (Exception $exception){
+            $error = $exception;
+            return view('admin.error',compact('error'));
         }
-        if (count($devices) > 0) {
-            $long = $long / count($devices);
-            $lat = $lat / count($devices);
-        }
-        return view('admin.dashboard', compact('types', 'admin', 'long', 'lat', 'lastdangerRead', 'devices', 'state', 'warning', 'lastMinDanger'));
     }
 
     public function device_status()

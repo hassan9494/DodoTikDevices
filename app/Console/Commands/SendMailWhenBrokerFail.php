@@ -39,28 +39,28 @@ class SendMailWhenBrokerFail extends Command
      */
     public function handle()
     {
-//        try {
-//            $mqtt = MQTT::connection();
-//            $mqtt->subscribe('DODOLORA',function (string $topic, string $message) {
-//                if ($message == null){
-//                     $data = array('name'=>"Broker Stop");
-//                     Mail::send(['text'=>'email.brokerStop'], $data, function($message) {
-//                         $message->to('hassanalwan36@gmail.com', 'Broker Stop')->subject
-//                         ('Broker Stop');
-//                         $message->from('info@dodolora.com','DODOTIK');
-//                     });
-//                }
-//                echo sprintf('Received QoS level 1 message on topic [%s]: %s', $topic, $message);
-//            }, 0);
-//            $mqtt->loop(false,false);
-//        }catch (Exception $e){
-//            $data = array('name'=>"Broker Stop");
-//            $mess = $e->getMessage();
-//            Mail::send(['text'=>'email.brokerStop',compact('mess')], $data, function($message) {
-//                $message->to('hassanalwan36@gmail.com', 'Broker Stop')->subject
-//                ('Broker Stop');
-//                $message->from('info@dodolora.com','DODOTIK');
-//            });
-//        }
+        try {
+            $mqtt = MQTT::connection();
+            $mqtt->subscribe('DODOLORA',function (string $topic, string $message) {
+                if ($message == null){
+                     $data = array('name'=>"Broker Stop");
+                     Mail::send(['text'=>'email.brokerStop'], $data, function($message) {
+                         $message->to('hassanalwan36@gmail.com', 'Broker Stop')->subject
+                         ('Broker Stop');
+                         $message->from('info@dodolora.com','DODOTIK');
+                     });
+                }
+                echo sprintf('Received QoS level 1 message on topic [%s]: %s', $topic, $message);
+            }, 0);
+            $mqtt->loop(false,false);
+        }catch (Exception $e){
+            $data = array('name'=>"Broker Stop");
+            $mess = $e->getMessage();
+            Mail::send(['text'=>'email.brokerStop',compact('mess')], $data, function($message) {
+                $message->to('hassanalwan36@gmail.com', 'Broker Stop')->subject
+                ('Broker Stop');
+                $message->from('info@dodolora.com','DODOTIK');
+            });
+        }
     }
 }

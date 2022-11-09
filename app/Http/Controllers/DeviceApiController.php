@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Device;
+use App\Models\DeviceFactoryValue;
 use App\Models\DeviceParametersValues;
 use App\Models\TestApi;
 use Carbon\Carbon;
@@ -46,6 +47,22 @@ class DeviceApiController extends Controller
                     $parameters->time_of_read = Carbon::now();
                 }
 
+
+            }
+            if (count($device->deviceFactories()->where('is_attached',1)->get()) > 0){
+                $factory = $device->deviceFactories()->where('is_attached',1)->first()->factory;
+                $devFactoryValue = new DeviceFactoryValue();
+                $devFactoryValue->device_id = $device->id;
+                $devFactoryValue->factory_id = $factory->id;
+                $devFactoryValue->device_factory_id = $device->deviceFactories()->where('is_attached',1)->first()->id;
+                $devFactoryValue->parameters = json_encode($jsonParameters);
+                if (count($test) == count($type->deviceParameters) + 2){
+                    $devFactoryValue->time_of_read = last($test);
+                }else{
+                    $devFactoryValue->time_of_read = Carbon::now();
+                }
+                $devFactoryValue->save();
+//                dd($factory->name);
             }
             $parameters->save();
             $response = '##';
@@ -162,6 +179,7 @@ class DeviceApiController extends Controller
             $dev_id_ascii = base64_decode($dev_id_base64);
             $dev_id = bin2hex($dev_id_ascii);
             $device = Device::where('device_id', $dev_id)->first();
+//            dd($device->name);
             if ($device != null){
                 $data_base64 = json_decode($para)->data;
                 $data_ascii = base64_decode($data_base64);
@@ -183,6 +201,17 @@ class DeviceApiController extends Controller
                     $parameters->parameters = json_encode($jsonParameters);
                     $parameters->device_id = $device->id;
                     $parameters->time_of_read = Carbon::now();
+                }
+                if (count($device->deviceFactories()->where('is_attached',1)->get()) > 0){
+                    $factory = $device->deviceFactories()->where('is_attached',1)->first()->factory;
+                    $devFactoryValue = new DeviceFactoryValue();
+                    $devFactoryValue->device_id = $device->id;
+                    $devFactoryValue->factory_id = $factory->id;
+                    $devFactoryValue->device_factory_id = $device->deviceFactories()->where('is_attached',1)->first()->id;
+                    $devFactoryValue->parameters = json_encode($jsonParameters);
+                    $devFactoryValue->time_of_read = Carbon::now();
+                    $devFactoryValue->save();
+//                dd($factory->name);
                 }
                 $parameters->save();
             }
