@@ -186,13 +186,11 @@ class DeviceController extends Controller
             }
             $warning = 1;
             $dangerColor = [];
-            foreach ($device_type->deviceParameters()->orderBy('order')->get() as $index => $tPara) {
-                array_push($color, $tPara->pivot->color);
-            }
             if (count($testPara) > 0) {
 
                 foreach ($testPara as $index => $tPara) {
-
+                    $colorPara = $device_type->deviceParameters()->where('code',$tPara->code)->first()->pivot->color;
+                    array_push($color, $colorPara);
                     $dangerColor[$index] = '#000000';
                     foreach ($parameters as $parameter) {
                         if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parameter->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0 ){
@@ -237,7 +235,7 @@ class DeviceController extends Controller
                 }
             } else {
                 foreach ($device_type->deviceParameters()->orderBy('order')->get() as $index => $tPara) {
-//                    array_push($color,$tPara->pivot->color);
+                    array_push($color,$tPara->pivot->color);
                     $dangerColor[$index] = '#000000';
                     foreach ($parameters as $parameter) {
                         if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parameter->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0 ){
