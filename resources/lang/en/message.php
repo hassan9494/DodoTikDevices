@@ -128,5 +128,9 @@ return [
     'Show factory parameters according to the device that finished recording parameters' => 'Show factory parameters according to the device that finished recording parameters',
     'Show Factory Parameters By Device' => 'Show Factory Parameters By Device',
     'Show factory parameters by device that is still recording parameters' => 'Show factory parameters by device that is still recording parameters',
+    'Encode Type' => 'Encode Type',
+    'Encode To Decimal' => 'Encode To Decimal',
+    'Encode To Float' => 'Encode To Float',
+    'Device Status' => 'Device Status'
 
 ];

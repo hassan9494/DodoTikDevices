@@ -131,7 +131,7 @@ class DeviceController extends Controller
         }
         $device_type = $device->deviceType;
         $now = Carbon::now();
-        $thisMidnight = Carbon::now()->endOfDay() ;
+        $thisMidnight = Carbon::now()->endOfDay();
         $parameters = $device->deviceParameters;
         $xValues = [];
         $yValues = [];
@@ -145,38 +145,37 @@ class DeviceController extends Controller
         $parameterTableColumn = [];
         $numberOfRow = 0;
         $deviceComponentparameterTable = DevicesComponents::where('device_id', $id)->where('component_id', 13)->first();
-            if ($deviceComponentColumn != null && json_decode($deviceComponentColumn->settings)->parameters != null) {
-                foreach (json_decode($deviceComponentColumn->settings)->parameters as $key => $test) {
-                    $testParaColumn[$key] = DeviceParameters::findOrFail((int)$test);
-                }
+        if ($deviceComponentColumn != null && json_decode($deviceComponentColumn->settings)->parameters != null) {
+            foreach (json_decode($deviceComponentColumn->settings)->parameters as $key => $test) {
+                $testParaColumn[$key] = DeviceParameters::findOrFail((int)$test);
             }
-            if ($deviceComponentparameterTable != null && json_decode($deviceComponentparameterTable->settings)->parameters != null) {
-                if (isset(json_decode($deviceComponentparameterTable->settings)->number_of_row)){
-                    $numberOfRow = (int)json_decode($deviceComponentparameterTable->settings)->number_of_row;
-                }
-
-                foreach (json_decode($deviceComponentparameterTable->settings)->parameters as $key => $test) {
-                    $parameterTableColumn[$key] = DeviceParameters::findOrFail((int)$test);
-                }
-            }
-            if ($deviceComponent != null && json_decode($deviceComponent->settings)->parameters != null) {
-                foreach (json_decode($deviceComponent->settings)->parameters as $key => $test) {
-                    $testPara[$key] = DeviceParameters::findOrFail((int)$test);
-                }
-            } else {
+        }
+        if ($deviceComponentparameterTable != null && json_decode($deviceComponentparameterTable->settings)->parameters != null) {
+            if (isset(json_decode($deviceComponentparameterTable->settings)->number_of_row)) {
+                $numberOfRow = (int)json_decode($deviceComponentparameterTable->settings)->number_of_row;
             }
 
+            foreach (json_decode($deviceComponentparameterTable->settings)->parameters as $key => $test) {
+                $parameterTableColumn[$key] = DeviceParameters::findOrFail((int)$test);
+            }
+        }
+        if ($deviceComponent != null && json_decode($deviceComponent->settings)->parameters != null) {
+            foreach (json_decode($deviceComponent->settings)->parameters as $key => $test) {
+                $testPara[$key] = DeviceParameters::findOrFail((int)$test);
+            }
+        } else {
+        }
 
 
         $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
         if (count($parameters) > 0) {
-            if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->m == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->d == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i <= ($device->time_between_two_read + $device->tolerance) ) {
+            if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->m == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->d == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i <= ($device->time_between_two_read + $device->tolerance)) {
                 $status = "Online";
             } else {
                 $status = "Offline";
             }
             foreach ($parameters as $parameter) {
-                if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parameter->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0 ){
+                if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parameter->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
                     array_push($xValues, date(DATE_ISO8601, strtotime($parameter->time_of_read)));
                 }
                 if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
@@ -189,23 +188,23 @@ class DeviceController extends Controller
             if (count($testPara) > 0) {
 
                 foreach ($testPara as $index => $tPara) {
-                    $colorPara = $device_type->deviceParameters()->where('code',$tPara->code)->first()->pivot->color;
+                    $colorPara = $device_type->deviceParameters()->where('code', $tPara->code)->first()->pivot->color;
                     array_push($color, $colorPara);
                     $dangerColor[$index] = '#000000';
                     foreach ($parameters as $parameter) {
-                        if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parameter->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0 ){
-                            if (isset(json_decode($parameter->parameters, true)[$tPara->code])){
+                        if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parameter->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
+                            if (isset(json_decode($parameter->parameters, true)[$tPara->code])) {
                                 array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
-                            }else{
+                            } else {
                                 array_push($yValues, 0);
                             }
 
                         }
                         if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
-                            if (isset(json_decode($parameter->parameters, true)[$tPara->code])){
+                            if (isset(json_decode($parameter->parameters, true)[$tPara->code])) {
                                 array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
-                            }else{
-                                array_push($yValues,0);
+                            } else {
+                                array_push($yValues, 0);
                             }
 
                         }
@@ -214,7 +213,7 @@ class DeviceController extends Controller
                     $yValues = [];
                     if (isset($device->limitValues)) {
                         if ($device->limitValues->min_warning == 1) {
-                            if (isset(json_decode($parameters->last()->parameters, true)[$tPara->code]) && isset(json_decode($device->limitValues->min_value, true)[$tPara->code])){
+                            if (isset(json_decode($parameters->last()->parameters, true)[$tPara->code]) && isset(json_decode($device->limitValues->min_value, true)[$tPara->code])) {
                                 if (json_decode($parameters->last()->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
                                     $warning += 1;
                                     $dangerColor[$index] = 'red';
@@ -223,7 +222,7 @@ class DeviceController extends Controller
 
                         }
                         if ($device->limitValues->max_warning == 1) {
-                            if (isset(json_decode($parameters->last()->parameters, true)[$tPara->code]) && isset(json_decode($device->limitValues->max_value, true)[$tPara->code])){
+                            if (isset(json_decode($parameters->last()->parameters, true)[$tPara->code]) && isset(json_decode($device->limitValues->max_value, true)[$tPara->code])) {
                                 if (json_decode($parameters->last()->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]) {
                                     $warning += 1;
                                     $dangerColor[$index] = 'red';
@@ -235,21 +234,21 @@ class DeviceController extends Controller
                 }
             } else {
                 foreach ($device_type->deviceParameters()->orderBy('order')->get() as $index => $tPara) {
-                    array_push($color,$tPara->pivot->color);
+                    array_push($color, $tPara->pivot->color);
                     $dangerColor[$index] = '#000000';
                     foreach ($parameters as $parameter) {
-                        if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parameter->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0 ){
-                            if (isset(json_decode($parameter->parameters, true)[$tPara->code])){
+                        if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parameter->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
+                            if (isset(json_decode($parameter->parameters, true)[$tPara->code])) {
                                 array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
-                            }else{
+                            } else {
                                 array_push($yValues, 0);
                             }
 
                         }
                         if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
-                            if (isset(json_decode($parameter->parameters, true)[$tPara->code])){
+                            if (isset(json_decode($parameter->parameters, true)[$tPara->code])) {
                                 array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
-                            }else{
+                            } else {
                                 array_push($yValues, 0);
                             }
 
@@ -267,7 +266,7 @@ class DeviceController extends Controller
                             }
                         }
                         if ($device->limitValues->max_warning == 1) {
-                            if (isset(json_decode($parameters->last()->parameters, true)[$tPara->code]) && isset(json_decode($device->limitValues->max_value, true)[$tPara->code])){
+                            if (isset(json_decode($parameters->last()->parameters, true)[$tPara->code]) && isset(json_decode($device->limitValues->max_value, true)[$tPara->code])) {
                                 if (json_decode($parameters->last()->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]) {
                                     $warning += 1;
                                     $dangerColor[$index] = 'red';
@@ -288,7 +287,7 @@ class DeviceController extends Controller
         }
 //        dd($color);
         $deviceComponents = DevicesComponents::where('device_id', $device->id)->orderBy('order', 'asc')->get();
-        return view('admin.device.custom_show', compact('numberOfRow','color','parameterTableColumn','testParaColumn', 'testPara', 'device', 'deviceComponents', 'dangerColor', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
+        return view('admin.device.custom_show', compact('numberOfRow', 'color', 'parameterTableColumn', 'testParaColumn', 'testPara', 'device', 'deviceComponents', 'dangerColor', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
     }
 
 
@@ -298,7 +297,7 @@ class DeviceController extends Controller
         $device_type = $device->deviceType;
         $now = Carbon::now();
 
-        $thisMidnight = Carbon::now()->endOfDay() ;
+        $thisMidnight = Carbon::now()->endOfDay();
         if ($from == 7 && $to == 0) {
             $label = 7;
         } elseif ($from == 30 && $to == 0) {
@@ -318,33 +317,49 @@ class DeviceController extends Controller
                 $status = "Offline";
             }
 
-            if ($from == 1 && $to == 0)  {
+            if ($from == 1 && $to == 0) {
                 foreach ($parameters as $parameter) {
-                    if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parameter->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0 ){
+                    if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parameter->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
                         array_push($xValues, date(DATE_ISO8601, strtotime($parameter->time_of_read)));
                     }
-                    if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0  && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
+                    if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
                         array_push($xValues, date(DATE_ISO8601, strtotime($parameter->time_of_read)));
                     }
                 }
                 $warning = 1;
                 foreach ($device_type->deviceParameters()->orderBy('order')->get() as $tPara) {
                     foreach ($parameters as $parameter) {
-                        if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parameter->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0 ){
-                            array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                        if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parameter->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
+                            if (isset(json_decode($parameter->parameters, true)[$tPara->code])) {
+                                array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            } else {
+                                array_push($yValues, 0);
+                            }
+
                         }
-                        if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0&& $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
-                            array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                        if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
+                            if (isset(json_decode($parameter->parameters, true)[$tPara->code])) {
+                                array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            } else {
+                                array_push($yValues, 0);
+                            }
+
                             if (isset($device->limitValues)) {
                                 if ($device->limitValues->min_warning == 1) {
-                                    if (json_decode($parameter->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
-                                        $warning += 1;
+                                    if (isset(json_decode($parameter->parameters, true)[$tPara->code]) && isset(json_decode($device->limitValues->min_value, true)[$tPara->code])) {
+                                        if (json_decode($parameter->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
+                                            $warning += 1;
+                                        }
                                     }
+
                                 }
                                 if ($device->limitValues->max_warning == 1) {
-                                    if (json_decode($parameter->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]) {
-                                        $warning += 1;
+                                    if (isset(json_decode($parameter->parameters, true)[$tPara->code]) && isset(json_decode($device->limitValues->max_value, true)[$tPara->code])) {
+                                        if (json_decode($parameter->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]) {
+                                            $warning += 1;
+                                        }
                                     }
+
                                 }
                             }
                         }
@@ -364,17 +379,28 @@ class DeviceController extends Controller
                 foreach ($device_type->deviceParameters()->orderBy('order')->get() as $tPara) {
                     foreach ($parameters as $parameter) {
                         if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d <= $from && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d >= $to && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
-                            array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            if (isset(json_decode($parameter->parameters, true)[$tPara->code])) {
+                                array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            } else {
+                                array_push($yValues, 0);
+                            }
+
                             if (isset($device->limitValues)) {
                                 if ($device->limitValues->min_warning == 1) {
-                                    if (json_decode($parameter->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
-                                        $warning += 1;
+                                    if (isset(json_decode($parameter->parameters, true)[$tPara->code]) && isset(json_decode($device->limitValues->min_value, true)[$tPara->code])) {
+                                        if (json_decode($parameter->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
+                                            $warning += 1;
+                                        }
                                     }
+
                                 }
                                 if ($device->limitValues->max_warning == 1) {
-                                    if (json_decode($parameter->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]) {
-                                        $warning += 1;
+                                    if (isset(json_decode($parameter->parameters, true)[$tPara->code]) && isset(json_decode($device->limitValues->max_value, true)[$tPara->code])) {
+                                        if (json_decode($parameter->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]) {
+                                            $warning += 1;
+                                        }
                                     }
+
                                 }
                             }
                         }
@@ -398,7 +424,6 @@ class DeviceController extends Controller
 
         $now = Carbon::now();
         $parameters = $device->deviceParameters;
-
 
 
         $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
@@ -439,7 +464,12 @@ class DeviceController extends Controller
 
                     foreach ($parameters as $parameter) {
                         if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
-                            array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            if (isset(json_decode($parameter->parameters, true)[$tPara->code])) {
+                                array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            } else {
+                                array_push($yValues, 0);
+                            }
+
                         }
                     }
                     $sum = 0;
@@ -458,7 +488,12 @@ class DeviceController extends Controller
 
                     foreach ($parameters as $parameter) {
                         if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
-                            array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            if (isset(json_decode($parameter->parameters, true)[$tPara->code])) {
+                                array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            } else {
+                                array_push($yValues, 0);
+                            }
+
                         }
                     }
                     $sum = 0;
@@ -501,7 +536,12 @@ class DeviceController extends Controller
                     foreach ($parameters as $parameter) {
                         if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == $i && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
                             $day = date("m/d", strtotime($parameter->time_of_read));
-                            array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            if (isset(json_decode($parameter->parameters, true)[$tPara->code])) {
+                                array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            } else {
+                                array_push($yValues, 0);
+                            }
+
 
                         }
                     }
@@ -512,10 +552,10 @@ class DeviceController extends Controller
                     if (count($yValues) != 0) {
                         $test = round($sum / count($yValues));
                     }
-if (isset($day)){
-    array_push($days, $day);
-    array_push($paraValues, $test);
-}
+                    if (isset($day)) {
+                        array_push($days, $day);
+                        array_push($paraValues, $test);
+                    }
 
                 }
                 array_push($xValues, $paraValues);
@@ -543,7 +583,12 @@ if (isset($day)){
                 if ($tPara->code == "Temperature") {
                     foreach ($parameters as $parameter) {
                         if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
-                            array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            if (isset(json_decode($parameter->parameters, true)[$tPara->code])){
+                                array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            }else{
+                                array_push($yValues, 0);
+                            }
+
                         }
                     }
                     $sum = 0;
@@ -786,7 +831,7 @@ if (isset($day)){
     {
         $device = Device::findOrFail($id);
         return view('admin.device.export', compact('device'));
-        return Excel::download(new ParametersDataExport($from, $to, $devType), 'parameter.xlsx');
+//        return Excel::download(new ParametersDataExport($from, $to, $devType), 'parameter.xlsx');
     }
 
     public function exportToDatasheet(Request $request)

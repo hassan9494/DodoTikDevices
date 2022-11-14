@@ -14,8 +14,6 @@
                            class="btn btn-edit btn-sm"
                            style="float: right;background-color: #00989d!important;"> {{__('message.Export To Data Sheet')}} </a>
                     </div>
-
-
                     <div class="card-body">
                         <div class="col-md-12">
                             <div class="card shadow mb-4">
@@ -53,7 +51,7 @@
                                                     @else
                                                         @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $parameter)
                                                             @if(isset(json_decode($deviceParameter->parameters,true)[$parameter->code]))
-                                                            <td>{{json_decode($deviceParameter->parameters,true)[$parameter->code]}}</td>
+                                                                <td>{{json_decode($deviceParameter->parameters,true)[$parameter->code]}}</td>
                                                             @elseif(isset(json_decode($deviceParameter->parameters,true)[$parameter->name]))
                                                                 <td>{{json_decode($deviceParameter->parameters,true)[$parameter->name]}}</td>
                                                             @else
@@ -63,9 +61,9 @@
                                                     @endif
 
                                                     <td>
-                                                        {{\Carbon\Carbon::parse($deviceParameter->time_of_read)->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a')}}
-{{--                                                        <br>--}}
-{{--                                                        {{$deviceParameter->time_of_read}}--}}
+                                                        {{\Carbon\Carbon::parse($deviceParameter->time_of_read)->setTimezone('GMT+03:00')->format('Y-d-m h:i a')}}
+                                                        {{--                                                        <br>--}}
+                                                        {{--                                                        {{$deviceParameter->time_of_read}}--}}
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -84,6 +82,16 @@
 </section>
 @push('scripts')
     <script>
+        // function seconds_with_leading_zeros(dt)
+        // {
+        //     return /\((.*)\)/.exec(new Date().toString())[1];
+        // }
+        //
+        // dt = new Date();
+        // console.log(seconds_with_leading_zeros(dt));
+        //
+        // dt = new Date(1989, 10, 1);
+        // console.log(seconds_with_leading_zeros(dt));
         function test(x) {
             return x.toLocaleString()
         }
