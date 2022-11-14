@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use App\Models\{About, Device, DeviceParametersValues, DeviceType, General, User};
+use PhpMqtt\Client\Facades\MQTT;
 
 class GeneralController extends Controller
 {

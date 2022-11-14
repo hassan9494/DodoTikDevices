@@ -186,5 +186,7 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth','middleware'
     Route::post('factories/detach/{id}', [FactoryController::class, 'detach'])->middleware('can:isAdmin')->name('factories.detach');
     Route::get('factories/details/{id}', [FactoryController::class, 'details'])->middleware('can:isAdmin')->name('factories.details');
     Route::get('factories/export/{id}',[FactoryController::class, 'export'])->middleware('can:isAdmin')->name('factories.export');
-
+//    Route::post('factories/detail/{id}', [FactoryController::class, 'details1'])->middleware('can:isAdmin')->name('factories.test');
+    Route::post('factories/detail/{id}', [FactoryController::class, 'details1'] )->name('factories.detail');
+    Route::get('factories/flow/{id}', [FactoryController::class, 'flowchartWithDate'])->middleware('can:isAdmin')->name('factories.flowchartWithDate');
 });

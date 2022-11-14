@@ -103,6 +103,8 @@
 
                         <th>{{__('message.Start Date')}}</th>
 
+                        <th>{{__('message.Device Status')}}</th>
+
                         <th>{{__('message.Option')}}</th>
 
                     </tr>
@@ -116,11 +118,12 @@
                         $no=0;
 
                     @endphp
-                    @foreach ($factory->deviceFactories()->where('is_attached',1)->get() as $devFac)
+                    @foreach ($factory->deviceFactories()->where('is_attached',1)->get() as $key=>$devFac)
                         <tr>
                             <td>{{ ++$no }}</td>
                             <td>{{ $devFac->device->name }}</td>
                             <td>{{\Carbon\Carbon::parse($devFac->start_date)->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a')}}</td>
+                            <td>{{ $status[$key] }}</td>
                             <td>
                                 <a href="{{route('admin.factories.details', [$devFac->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-eye"></i> </a>
                             </td>

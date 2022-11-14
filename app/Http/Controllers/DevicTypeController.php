@@ -45,11 +45,11 @@ class DevicTypeController extends Controller
      */
     public function store(DeviceTypesRequest $request)
     {
-
         $type = new DeviceType();
         $type->name = $request->name;
         if ($request->is_gateway == 'on'){
             $type->is_gateway = 1;
+            $type->encode_type = $request->encode_type;
         }
         if ($request->is_need_response == 'on'){
             $type->is_need_response = 1;
@@ -174,8 +174,10 @@ class DevicTypeController extends Controller
         $type->name = $request->name;
         if ($request->is_gateway == 'on'){
             $type->is_gateway = 1;
+            $type->encode_type = $request->encode_type;
         }else{
             $type->is_gateway = 0;
+            $type->encode_type = 1;
         }
         if ($request->is_need_response == 'on'){
             $type->is_need_response = 1;

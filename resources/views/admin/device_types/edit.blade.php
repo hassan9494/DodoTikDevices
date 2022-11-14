@@ -65,10 +65,27 @@
             <div class="col-md-2 d-flex flex-column justify-content-center">
                 <label class="switch">
                     <input type="hidden" name="is_gateway" value="0">
-                    <input type="checkbox" name="is_gateway" {{$type->is_gateway == 1 ? 'checked' : ''}}>
+                    <input type="checkbox" id="is_gateway" name="is_gateway" {{$type->is_gateway == 1 ? 'checked' : ''}}>
                     <span class="slider round"></span>
                 </label>
 
+            </div>
+        </div>
+
+        <div class="form-group ml-5" style="display: {{$type->is_gateway == 1 ? 'block' : 'none'}}" id="encode_type_div">
+            <label for="encode_type" class="col-sm-2 col-form-label">{{__('message.Encode Type')}}</label>
+            <div class="col-sm-9">
+                <select name='encode_type'
+                        class="form-control {{$errors->first('encode_type') ? "is-invalid" : "" }}"
+                        id="encode_type">
+
+                    <option value="1" {{$type->encode_type == 1 ? 'selected' : ''}}>{{__('message.Encode To Decimal')}}</option>
+                    <option value="2" {{$type->encode_type == 2 ? 'selected' : ''}}>{{__('message.Encode To Float')}}</option>
+
+                </select>
+                <div class="invalid-feedback">
+                    {{ $errors->first('encode_type') }}
+                </div>
             </div>
         </div>
 
@@ -116,9 +133,6 @@
                 placeholder: "Choose Some parameters"
             });
         });
-        $(function () {
-            $('.selectpicker').selectpicker();
-        });
     </script>
     <script>
         $(document).ready(function () {
@@ -126,8 +140,16 @@
                 placeholder: "Choose Some settings"
             });
         });
-        $(function () {
-            $('.selectpicker').selectpicker();
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#is_gateway').change(function () {
+                if (this.checked)
+                    //  ^
+                    $('#encode_type_div').fadeIn('slow');
+                else
+                    $('#encode_type_div').fadeOut('slow');
+            });
         });
     </script>
 @endpush

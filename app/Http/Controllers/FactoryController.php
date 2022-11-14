@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Exports\FactoryDeviceValueExport;
-use App\Exports\ParametersDataExport;
 use App\Http\Requests\FactoryRequest;
 use App\Models\Device;
 use App\Models\DeviceFactory;
-use App\Models\DeviceFactoryValue;
+use App\Models\DeviceParametersValues;
 use App\Models\Factory;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
@@ -51,9 +50,9 @@ class FactoryController extends Controller
     {
         $factory = new Factory();
         $factory->name = $request->name;
-        if ($factory->save()){
+        if ($factory->save()) {
             return redirect()->route('admin.factories')->with('success', 'Data added successfully');
-        }else{
+        } else {
             return redirect()->route('admin.factories.create')->with('error', 'Data failed to add');
         }
 
@@ -62,25 +61,44 @@ class FactoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return Application|\Illuminate\Contracts\View\Factory|View|Response
      */
     public function show($id)
     {
         $factory = Factory::findOrFail($id);
-        return view('admin.factory.show',compact('factory'));
+        $devicesFactory = $factory->deviceFactories()->where('is_attached',1)->get();
+        $devices = [];
+        $status = [];
+        foreach ($devicesFactory as $item){
+            array_push($devices,$item->device);
+        }
+        $now = Carbon::now();
+        foreach ($devices as $key=>$device){
+            $parameters = $device->deviceParameters;
+            $lastPara = DeviceParametersValues::where('device_id', $device->id)->orderBy('id', 'desc')->first();
+            if (count($parameters) > 0) {
+                if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i < ($device->time_between_two_read + $device->tolerance)) {
+                    $state = "Online";
+                } else {
+                    $state = "Offline";
+                }
+            }
+            array_push($status,$state);
+        }
+        return view('admin.factory.show', compact('factory','devices','status'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return Application|\Illuminate\Contracts\View\Factory|View|Response
      */
     public function edit($id)
     {
         $factory = Factory::findOrFail($id);
-        return view('admin.factory.edit',compact('factory'));
+        return view('admin.factory.edit', compact('factory'));
     }
 
     /**
@@ -94,44 +112,43 @@ class FactoryController extends Controller
     {
         $factory = Factory::findOrFail($id);
         $factory->name = $request->name;
-        if ($factory->save()){
+        if ($factory->save()) {
             return redirect()->route('admin.factories')->with('success', 'Data added successfully');
-        }else{
+        } else {
             return redirect()->route('admin.factories.edit')->with('error', 'Data failed to add');
         }
     }
-
 
 
     public function start($id)
     {
         $factory = Factory::findOrFail($id);
         $devices = Device::all();
-        foreach ($devices as $key=>$device){
-            if (count($device->deviceFactories()->where('is_attached',1)->get()) > 0){
+        foreach ($devices as $key => $device) {
+            if (count($device->deviceFactories()->where('is_attached', 1)->get()) > 0) {
                 $devices->forget($key);
             }
         }
-        return view('admin.factory.start',compact('factory','devices'));
+        return view('admin.factory.start', compact('factory', 'devices'));
     }
 
-    public function attach(Request $request,$id)
+    public function attach(Request $request, $id)
     {
 
         $factory = Factory::findOrFail($id);
         $device = Device::findOrFail((int)$request['device']);
-        if (count($device->deviceFactories()->where('is_attached', 1)->get()) == 0){
+        if (count($device->deviceFactories()->where('is_attached', 1)->get()) == 0) {
             $deviceFactory = new DeviceFactory();
             $deviceFactory->device_id = $device->id;
             $deviceFactory->factory_id = $factory->id;
             $deviceFactory->start_date = Carbon::now();
             $deviceFactory->is_attached = true;
-            if ($deviceFactory->save()){
+            if ($deviceFactory->save()) {
                 return redirect()->route('admin.factories')->with('success', 'Data added successfully');
-            }else{
+            } else {
                 return redirect()->route('admin.factories.start', [$factory->id])->with('error', 'There was an error try again later or contact with admin');
             }
-        }else{
+        } else {
             return redirect()->route('admin.factories.start', [$factory->id])->with('error', 'The Device Is Used In Another Factory Now');
         }
         dd($device->deviceFactories()->where('is_attached', 0)->get());
@@ -141,33 +158,33 @@ class FactoryController extends Controller
     {
         $factory = Factory::findOrFail($id);
         $devices = Device::all();
-        return view('admin.factory.stop',compact('factory','devices'));
+        return view('admin.factory.stop', compact('factory', 'devices'));
     }
 
     public function detach($id)
     {
 
         $deviceFactory = DeviceFactory::findOrFail($id);
-            $deviceFactory->is_attached = false;
-            if ($deviceFactory->save()){
-                return redirect()->route('admin.factories.stop', [$deviceFactory->factory->id])->with('success', 'The device has been stopped');
-            }else{
-                return redirect()->route('admin.factories.stop', [$deviceFactory->factory->id])->with('error', 'There was an error try again later or contact with admin');
-            }
+        $deviceFactory->is_attached = false;
+        if ($deviceFactory->save()) {
+            return redirect()->route('admin.factories.stop', [$deviceFactory->factory->id])->with('success', 'The device has been stopped');
+        } else {
+            return redirect()->route('admin.factories.stop', [$deviceFactory->factory->id])->with('error', 'There was an error try again later or contact with admin');
+        }
 
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return RedirectResponse
      */
     public function destroy($id)
     {
         $factory = Factory::findOrFail($id);
-        if ($factory->delete()){
-            foreach ($factory->deviceFactories as $devFac){
+        if ($factory->delete()) {
+            foreach ($factory->deviceFactories as $devFac) {
                 $devFac->is_attached = false;
                 $devFac->save();
             }
@@ -179,9 +196,320 @@ class FactoryController extends Controller
     public function details($id)
     {
         $devFactory = DeviceFactory::findOrFail($id);
-//        $data = DeviceFactoryValue::where('device_id',$devFactory->device_id)->where('factory_id',)
-//        dd($devFactory->device->deviceType->deviceParameters);
-        return view('admin.factory.details',compact('devFactory'));
+        $device = $devFactory->device;
+        $device_type = $device->deviceType;
+
+        $parameters = $devFactory->deviceFactoryValues;
+        $xValues = [];
+        $yValues = [];
+        $paraValues = [];
+        $color = [];
+        $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
+        if (count($parameters) > 0) {
+
+            foreach ($parameters as $parameter) {
+                array_push($xValues, date(DATE_ISO8601, strtotime($parameter->time_of_read)));
+
+            }
+            $warning = 1;
+            foreach ($device_type->deviceParameters()->orderBy('order')->get() as $tPara) {
+                array_push($color, $tPara->pivot->color);
+                foreach ($parameters as $parameter) {
+                    if (isset(json_decode($parameter->parameters, true)[$tPara->code])) {
+                        array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                    } else {
+                        array_push($yValues, 0);
+                    }
+
+
+                }
+                array_push($paraValues, $yValues);
+                $yValues = [];
+            }
+
+
+        } else {
+            $warning = 1;
+            $status = "Offline";
+            $label = 1;
+        }
+        return view('admin.factory.details', compact('devFactory', 'xValues', 'paraValues', 'color'));
+    }
+
+    public function flowchart($id)
+    {
+        $devFactory = DeviceFactory::findOrFail($id);
+
+        $device = $devFactory->device;
+        $device_type = $device->deviceType;
+        $now = Carbon::now();
+        $thisMidnight = Carbon::now()->endOfDay();
+        $parameters = $device->deviceParameters;
+        $xValues = [];
+        $yValues = [];
+        $paraValues = [];
+        $dangerColor = [];
+        $testPara = [];
+        $color = [];
+        $deviceComponent = DevicesComponents::where('device_id', $id)->where('component_id', 9)->first();
+        $testParaColumn = [];
+        $deviceComponentColumn = DevicesComponents::where('device_id', $id)->where('component_id', 6)->first();
+        $parameterTableColumn = [];
+        $numberOfRow = 0;
+        $deviceComponentparameterTable = DevicesComponents::where('device_id', $id)->where('component_id', 13)->first();
+        if ($deviceComponentColumn != null && json_decode($deviceComponentColumn->settings)->parameters != null) {
+            foreach (json_decode($deviceComponentColumn->settings)->parameters as $key => $test) {
+                $testParaColumn[$key] = DeviceParameters::findOrFail((int)$test);
+            }
+        }
+        if ($deviceComponentparameterTable != null && json_decode($deviceComponentparameterTable->settings)->parameters != null) {
+            if (isset(json_decode($deviceComponentparameterTable->settings)->number_of_row)) {
+                $numberOfRow = (int)json_decode($deviceComponentparameterTable->settings)->number_of_row;
+            }
+
+            foreach (json_decode($deviceComponentparameterTable->settings)->parameters as $key => $test) {
+                $parameterTableColumn[$key] = DeviceParameters::findOrFail((int)$test);
+            }
+        }
+        if ($deviceComponent != null && json_decode($deviceComponent->settings)->parameters != null) {
+            foreach (json_decode($deviceComponent->settings)->parameters as $key => $test) {
+                $testPara[$key] = DeviceParameters::findOrFail((int)$test);
+            }
+        } else {
+        }
+
+
+        $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
+        if (count($parameters) > 0) {
+            if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->m == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->d == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i <= ($device->time_between_two_read + $device->tolerance)) {
+                $status = "Online";
+            } else {
+                $status = "Offline";
+            }
+            foreach ($parameters as $parameter) {
+                if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parameter->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
+                    array_push($xValues, date(DATE_ISO8601, strtotime($parameter->time_of_read)));
+                }
+                if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
+                    array_push($xValues, date(DATE_ISO8601, strtotime($parameter->time_of_read)));
+                }
+
+            }
+            $warning = 1;
+            $dangerColor = [];
+            if (count($testPara) > 0) {
+
+                foreach ($testPara as $index => $tPara) {
+                    $colorPara = $device_type->deviceParameters()->where('code', $tPara->code)->first()->pivot->color;
+                    array_push($color, $colorPara);
+                    $dangerColor[$index] = '#000000';
+                    foreach ($parameters as $parameter) {
+                        if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parameter->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
+                            if (isset(json_decode($parameter->parameters, true)[$tPara->code])) {
+                                array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            } else {
+                                array_push($yValues, 0);
+                            }
+
+                        }
+                        if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
+                            if (isset(json_decode($parameter->parameters, true)[$tPara->code])) {
+                                array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            } else {
+                                array_push($yValues, 0);
+                            }
+
+                        }
+                    }
+                    array_push($paraValues, $yValues);
+                    $yValues = [];
+                    if (isset($device->limitValues)) {
+                        if ($device->limitValues->min_warning == 1) {
+                            if (isset(json_decode($parameters->last()->parameters, true)[$tPara->code]) && isset(json_decode($device->limitValues->min_value, true)[$tPara->code])) {
+                                if (json_decode($parameters->last()->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
+                                    $warning += 1;
+                                    $dangerColor[$index] = 'red';
+                                }
+                            }
+
+                        }
+                        if ($device->limitValues->max_warning == 1) {
+                            if (isset(json_decode($parameters->last()->parameters, true)[$tPara->code]) && isset(json_decode($device->limitValues->max_value, true)[$tPara->code])) {
+                                if (json_decode($parameters->last()->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]) {
+                                    $warning += 1;
+                                    $dangerColor[$index] = 'red';
+                                }
+                            }
+
+                        }
+                    }
+                }
+            } else {
+                foreach ($device_type->deviceParameters()->orderBy('order')->get() as $index => $tPara) {
+                    array_push($color, $tPara->pivot->color);
+                    $dangerColor[$index] = '#000000';
+                    foreach ($parameters as $parameter) {
+                        if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parameter->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
+                            if (isset(json_decode($parameter->parameters, true)[$tPara->code])) {
+                                array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            } else {
+                                array_push($yValues, 0);
+                            }
+
+                        }
+                        if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
+                            if (isset(json_decode($parameter->parameters, true)[$tPara->code])) {
+                                array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            } else {
+                                array_push($yValues, 0);
+                            }
+
+                        }
+                    }
+                    array_push($paraValues, $yValues);
+                    $yValues = [];
+                    if (isset($device->limitValues)) {
+                        if ($device->limitValues->min_warning == 1) {
+                            if (isset(json_decode($parameters->last()->parameters, true)[$tPara->code]) && isset(json_decode($device->limitValues->min_value, true)[$tPara->code])) {
+                                if (json_decode($parameters->last()->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
+                                    $warning += 1;
+                                    $dangerColor[$index] = 'red';
+                                }
+                            }
+                        }
+                        if ($device->limitValues->max_warning == 1) {
+                            if (isset(json_decode($parameters->last()->parameters, true)[$tPara->code]) && isset(json_decode($device->limitValues->max_value, true)[$tPara->code])) {
+                                if (json_decode($parameters->last()->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]) {
+                                    $warning += 1;
+                                    $dangerColor[$index] = 'red';
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+
+
+            $label = 1;
+        } else {
+            $warning = 1;
+            $status = "Offline";
+            $label = 1;
+        }
+//        dd($color);
+        $deviceComponents = DevicesComponents::where('device_id', $device->id)->orderBy('order', 'asc')->get();
+        return view('admin.device.custom_show', compact('numberOfRow', 'color', 'parameterTableColumn', 'testParaColumn', 'testPara', 'device', 'deviceComponents', 'dangerColor', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
+    }
+
+    public function flowchartWithDate($id)
+    {
+        $devFactory = DeviceFactory::findOrFail($id);
+
+        $device = $devFactory->device;
+        $device_type = $device->deviceType;
+
+        $parameters = $devFactory->deviceFactoryValues;
+        $xValues = [];
+        $yValues = [];
+        $paraValues = [];
+        $color = [];
+        if (count($parameters) > 0) {
+
+            foreach ($parameters as $parameter) {
+                array_push($xValues, date(DATE_ISO8601, strtotime($parameter->time_of_read)));
+
+            }
+            $warning = 1;
+            foreach ($device_type->deviceParameters()->orderBy('order')->get() as $tPara) {
+                array_push($color, $tPara->pivot->color);
+                foreach ($parameters as $parameter) {
+                    if (isset(json_decode($parameter->parameters, true)[$tPara->code])) {
+                        array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                    } else {
+                        array_push($yValues, 0);
+                    }
+
+
+                }
+                array_push($paraValues, $yValues);
+                $yValues = [];
+            }
+
+
+        } else {
+            $warning = 1;
+            $status = "Offline";
+            $label = 1;
+        }
+        return array($paraValues, $xValues, $device, $color);
+    }
+
+
+    public function details1(Request $request, $id)
+    {
+        $devFactory = DeviceFactory::findOrFail($id);
+        $columns = array(
+            0 => 'No',
+//            1 =>'title',
+//            2=> 'body',
+//            3=> 'created_at',
+//            4=> 'id',
+        );
+        foreach ($devFactory->device->deviceType->deviceParameters()->orderBy('order')->get() as $parameter) {
+            array_push($columns, $parameter->name);
+        }
+
+        array_push($columns, 'time_of_read');
+
+        $totalData = $devFactory->deviceFactoryValues()->orderBy('id', 'desc')->count();
+
+        $totalFiltered = $totalData;
+        $counter = 1;
+
+        if (empty($request->input('search.value'))) {
+            $posts = $devFactory->deviceFactoryValues()->orderBy('id', 'desc')->get();
+        } else {
+            $posts = $devFactory->deviceFactoryValues()->orderBy('id', 'desc')->get();
+//            $search = $request->input('search.value');
+
+//            $posts =  $posts = $devFactory->deviceFactoryValues()->orderBy('id','desc')->get();
+//
+//            $totalFiltered = $posts = $devFactory->deviceFactoryValues()->orderBy('id','desc')->count();
+        }
+
+        $data = array();
+        if (!empty($posts)) {
+            foreach ($posts as $post) {
+//                $show =  route('posts.show',$post->id);
+//                $edit =  route('posts.edit',$post->id);
+
+                $nestedData['No'] = $counter++;
+
+                foreach ($devFactory->device->deviceType->deviceParameters()->orderBy('order')->get() as $parameter) {
+                    if (isset(json_decode($post->parameters, true)[$parameter->code])) {
+                        $nestedData[$parameter->name] = json_decode($post->parameters, true)[$parameter->code];
+                    } else {
+                        $nestedData[$parameter->name] = 0;
+                    }
+                }
+
+                $nestedData['time_of_read'] = Carbon::parse($post->time_of_read)->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a');
+
+                $data[] = $nestedData;
+
+            }
+        }
+
+        $json_data = array(
+            "draw" => intval($request->input('draw')),
+            "recordsTotal" => intval($totalData),
+            "recordsFiltered" => intval($totalFiltered),
+            "data" => $data
+        );
+//        dd($json_data);
+
+        echo json_encode($json_data);
     }
 
     public function export($id)
@@ -190,27 +518,11 @@ class FactoryController extends Controller
         $device = $deviceFactory->device_id;
         $factory = $deviceFactory->factory_id;
         $from = $deviceFactory->start_date;
-        if ($deviceFactory->is_attached == 0){
-//            dd('2222222');
+        if ($deviceFactory->is_attached == 0) {
             $to = $deviceFactory->updated_at;
-        }else{
-//            dd('1111111');
+        } else {
             $to = Carbon::now();
         }
-        return Excel::download(new FactoryDeviceValueExport($from, $to, $device,$factory), 'parameter.xlsx');
-    }
-
-    public function exportToDatasheet(Request $request)
-    {
-        $validate = [
-            'from' => 'required',
-            'to' => 'required'
-        ];
-        \Validator::make($request->all(), $validate)->validate();
-        $from = $request->from;
-        $to = $request->to;
-        $dev = $request->id;
-        $factory = $request->factory;
-        return Excel::download(new FactoryDeviceValueExport($from, $to, $dev,$factory), 'parameter.xlsx');
+        return Excel::download(new FactoryDeviceValueExport($from, $to, $device, $factory), 'parameter.xlsx');
     }
 }

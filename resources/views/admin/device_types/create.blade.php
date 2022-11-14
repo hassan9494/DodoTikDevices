@@ -112,10 +112,26 @@
                 <div class="col-md-2 d-flex flex-column justify-content-center">
                     <label class="switch">
                         <input type="hidden" name="is_gateway" value="0">
-                        <input type="checkbox" name="is_gateway" >
+                        <input type="checkbox" name="is_gateway" id="is_gateway">
                         <span class="slider round"></span>
                     </label>
 
+                </div>
+            </div>
+            <div class="form-group ml-5" style="display: none" id="encode_type_div">
+                <label for="encode_type" class="col-sm-2 col-form-label">{{__('message.Encode Type')}}</label>
+                <div class="col-sm-9">
+                    <select name='encode_type'
+                            class="form-control {{$errors->first('encode_type') ? "is-invalid" : "" }}"
+                            id="encode_type">
+
+                        <option value="1">{{__('message.Encode To Decimal')}}</option>
+                        <option value="2">{{__('message.Encode To Float')}}</option>
+
+                    </select>
+                    <div class="invalid-feedback">
+                        {{ $errors->first('encode_type') }}
+                    </div>
                 </div>
             </div>
 
@@ -125,7 +141,7 @@
                 <div class="col-md-2 d-flex flex-column justify-content-center">
                     <label class="switch">
                         <input type="hidden" name="is_need_response" value="0">
-                        <input type="checkbox" name="is_need_response" >
+                        <input type="checkbox" name="is_need_response">
                         <span class="slider round"></span>
                     </label>
 
@@ -149,9 +165,6 @@
                 placeholder: "Choose Some parameters"
             });
         });
-        $(function () {
-            $('.selectpicker').selectpicker();
-        });
     </script>
     <script>
         $(document).ready(function () {
@@ -159,25 +172,16 @@
                 placeholder: "Choose Some settings"
             });
         });
-        $(function () {
-            $('.selectpicker').selectpicker();
-        });
     </script>
     <script>
-        // Prepare the preview for profile picture
-        $("#wizard-picture").change(function () {
-            readURL(this);
+        $(document).ready(function () {
+            $('#is_gateway').change(function () {
+                if (this.checked)
+                    //  ^
+                    $('#encode_type_div').fadeIn('slow');
+                else
+                    $('#encode_type_div').fadeOut('slow');
+            });
         });
-
-        //Function to show image before upload
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#wizardPicturePreview').attr('src', e.target.result).fadeIn('slow');
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
     </script>
 @endpush

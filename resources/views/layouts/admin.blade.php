@@ -113,11 +113,11 @@
 
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ route('admin.component_settings') }}">
-                    <i class="fas fa-fw fa-satellite-dish"></i>
-                    <span>{{__('message.Components_Settings')}}</span></a>
-            </li>
+{{--            <li class="nav-item active">--}}
+{{--                <a class="nav-link" href="{{ route('admin.component_settings') }}">--}}
+{{--                    <i class="fas fa-fw fa-satellite-dish"></i>--}}
+{{--                    <span>{{__('message.Components_Settings')}}</span></a>--}}
+{{--            </li>--}}
 
 
             <!-- Nav Item - Dashboard -->
