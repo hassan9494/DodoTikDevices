@@ -35,6 +35,8 @@
 
     @include('documentation.sections.component', [])
 
+    @include('documentation.sections.factory',[])
+
 {{--    @include('documentation.sections.device_component', [])--}}
 
 {{--    @include('documentation.sections.component_settings', [])--}}
