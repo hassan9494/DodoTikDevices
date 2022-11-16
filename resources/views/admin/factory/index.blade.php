@@ -2,106 +2,121 @@
 
 @section('styles')
 
-<link href="{{ asset('admin/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('admin/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 
 @endsection
 
 @section('content')
 
-<!-- Page Heading -->
+    <!-- Page Heading -->
 
-<h1 class="h3 mb-2 text-gray-800">{{__('message.Factories')}}</h1>
+    <h1 class="h3 mb-2 text-gray-800">{{__('message.Factories')}}</h1>
 
-@if (session('success'))
+    @if (session('success'))
 
-<div class="alert alert-success">
+        <div class="alert alert-success">
 
-    {{ session('success') }}
+            {{ session('success') }}
 
-</div>
+        </div>
 
-@endif
+    @endif
 
-<!-- DataTales Example -->
+    <!-- DataTales Example -->
 
-<div class="card shadow mb-4">
-@can('isAdmin')
-    <div class="card-header py-3">
-        <a href="{{ route('admin.factories.create') }}" class="btn btn-pass">{{__('message.add_new')}}</a>
-    </div>
-@endcan
-    <div class="card-body">
+    <div class="card shadow mb-4">
+        @can('isAdmin')
+            <div class="card-header py-3">
+                <a href="{{ route('admin.factories.create') }}" class="btn btn-pass">{{__('message.add_new')}}</a>
+            </div>
+        @endcan
+        <div class="card-body">
 
-        <div class="table-responsive">
+            <div class="table-responsive">
 
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
                     <tr>
                         <th>{{__('message.No.')}}</th>
 
                         <th>{{__('message.Name')}}</th>
 
+                        <th>{{__('message.status')}}</th>
+
                         <th>{{__('message.Option')}}</th>
 
                     </tr>
 
-                </thead>
+                    </thead>
 
-                <tbody>
+                    <tbody>
 
-                @php
+                    @php
 
-                $no=0;
+                        $no=0;
 
-                @endphp
+                    @endphp
 
-                @foreach ($factories as $factory)
-                @if(auth()->user()->role=='Administrator')
-                    <tr>
-                        <td>{{ ++$no }}</td>
-                        <td>{{ $factory->name }}</td>
-                        <td>
-                            <a href="{{route('admin.factories.edit', [$factory->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-edit"></i> </a>
-                            <a href="{{route('admin.factories.start', [$factory->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-play"></i> </a>
-                            <a href="{{route('admin.factories.stop', [$factory->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-stop"></i> </a>
-                            <a href="{{route('admin.factories.show', [$factory->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-eye"></i> </a>
+                    @foreach ($factories as $factory)
+                        @if(auth()->user()->role=='Administrator')
+                            <tr>
+                                <td>{{ ++$no }}</td>
+                                <td>{{ $factory->name }}</td>
+                                <td>
+                            <span
+                                style="color:{{ count($factory->deviceFactories()->where('is_attached',1)->get()) > 0 ? '#1cc88a' : '#dd5959 '}}">
+                                {{ count($factory->deviceFactories()->where('is_attached',1)->get()) > 0 ? __('message.Running') : __('message.Finished')}}
+                            </span>
 
-                            <form method="POST" action="{{route('admin.factories.destroy', [$factory->id])}}" class="d-inline" onsubmit="return confirm('{{__("message.Delete this factory permanently?")}}')">
+                                </td>
+                                <td>
+                                    <a href="{{route('admin.factories.edit', [$factory->id])}}"
+                                       class="btn btn-edit btn-sm"> <i class="fas fa-edit"></i> </a>
+                                    <a href="{{route('admin.factories.start', [$factory->id])}}"
+                                       class="btn btn-edit btn-sm"> <i class="fas fa-play"></i> </a>
+                                    <a href="{{route('admin.factories.stop', [$factory->id])}}"
+                                       class="btn btn-edit btn-sm"> <i class="fas fa-stop"></i> </a>
+                                    <a href="{{route('admin.factories.show', [$factory->id])}}"
+                                       class="btn btn-edit btn-sm"> <i class="fas fa-eye"></i> </a>
 
-                                @csrf
+                                    <form method="POST" action="{{route('admin.factories.destroy', [$factory->id])}}"
+                                          class="d-inline"
+                                          onsubmit="return confirm('{{__("message.Delete this factory permanently?")}}')">
 
-                                <input type="hidden" name="_method" value="DELETE">
+                                        @csrf
 
-                                <button type="submit" value="Delete" class="btn btn-delete btn-sm">
-                                <i class='fas fa-trash-alt'></i>
-                                </button>
+                                        <input type="hidden" name="_method" value="DELETE">
 
-                            </form>
+                                        <button type="submit" value="Delete" class="btn btn-delete btn-sm">
+                                            <i class='fas fa-trash-alt'></i>
+                                        </button>
 
-                        </td>
+                                    </form>
 
-                    </tr>
-                    @endif
+                                </td>
+
+                            </tr>
+                        @endif
                     @endforeach
 
-                </tbody>
+                    </tbody>
 
-            </table>
+                </table>
+
+            </div>
 
         </div>
 
     </div>
 
-</div>
-
 @endsection
 
 @push('scripts')
 
-<script src="{{ asset('admin/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('admin/vendor/datatables/jquery.dataTables.min.js') }}"></script>
 
-<script src="{{ asset('admin/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('admin/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 
-<script src="{{ asset('admin/js/demo/datatables-demo.js') }}"></script>
+    <script src="{{ asset('admin/js/demo/datatables-demo.js') }}"></script>
 
 @endpush

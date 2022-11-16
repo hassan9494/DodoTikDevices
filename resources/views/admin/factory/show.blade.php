@@ -62,8 +62,8 @@
                         <tr>
                             <td>{{ ++$no }}</td>
                             <td>{{ $devFac->device->name }}</td>
-                            <td>{{\Carbon\Carbon::parse($devFac->start_date)->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a')}}</td>
-                            <td>{{\Carbon\Carbon::parse($devFac->updated_at)->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a')}}</td>
+                            <td>{{\Carbon\Carbon::parse($devFac->start_date)->setTimezone('GMT+03:00')->format('Y-d-m h:i a')}}</td>
+                            <td>{{\Carbon\Carbon::parse($devFac->updated_at)->setTimezone('GMT+03:00')->format('Y-d-m h:i a')}}</td>
                             <td>
                                 <a href="{{route('admin.factories.details', [$devFac->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-eye"></i> </a>
 
@@ -122,7 +122,7 @@
                         <tr>
                             <td>{{ ++$no }}</td>
                             <td>{{ $devFac->device->name }}</td>
-                            <td>{{\Carbon\Carbon::parse($devFac->start_date)->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a')}}</td>
+                            <td>{{\Carbon\Carbon::parse($devFac->start_date)->setTimezone('GMT+03:00')->format('Y-d-m h:i a')}}</td>
                             <td>{{ $status[$key] }}</td>
                             <td>
                                 <a href="{{route('admin.factories.details', [$devFac->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-eye"></i> </a>

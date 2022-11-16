@@ -131,6 +131,10 @@ return [
     'Encode Type' => 'Encode Type',
     'Encode To Decimal' => 'Encode To Decimal',
     'Encode To Float' => 'Encode To Float',
-    'Device Status' => 'Device Status'
+    'Device Status' => 'Device Status',
+    'Last 24 hour' => 'Last 24 hour',
+    'Running' => 'Running',
+    'Finished' => 'Finished',
+
 
 ];

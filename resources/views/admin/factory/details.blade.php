@@ -41,6 +41,14 @@
         .dataTables_filter label {
             color: #0b2e13;
         }
+
+        .spinner-border {
+            position: relative;
+            bottom: 300px;
+            width: 5rem;
+            height: 5rem;
+            display: none;
+        }
     </style>
 
 @endsection

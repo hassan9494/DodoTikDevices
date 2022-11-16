@@ -101,8 +101,6 @@
 @push('scripts')
     <script>
 
-
-
         var timer = {!! json_encode($device, JSON_HEX_TAG) !!};
          interval = setInterval(function() {
             jQuery.ajax({
@@ -330,7 +328,8 @@
                 const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                 const diffTime1 = Math.abs(Date.parse(today) - Date.parse(from.value));
                 const diffDays1 = Math.ceil(diffTime1 / (1000 * 60 * 60 * 24));
-
+                console.log(diffDays)
+                console.log(diffDays1)
                 jQuery.ajax({
                     url: '/admin/devices/showWithDate/{{$device->id}}/' + diffDays1 + '/' + diffDays,
                     type: 'GET',

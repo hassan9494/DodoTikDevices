@@ -221,10 +221,20 @@
             <!-- end col -->
         </div>
     </div>
+    <div id="device_11_1" style="padding-top: 150px;">
+        <div class="row">
+            <div class="col-md-12 left-align">
+                <h2 class="dark-text">Gateway Device
+                    <hr>
+                </h2>
+            </div>
+            <!-- end col -->
+        </div>
+    </div>
     <div class="row">
-        <div class="col-md-12" id="device_11_1">
+        <div class="col-md-12" id="device_11_1_1">
 
-            <h4>Gateway Device</h4>
+            <h4>{{__('documentation.Gateway Device With Encoded To Decimal')}}</h4>
 
 
             <p>In this tab we will learn how to connect gateway device to website to send data for it .</p>
@@ -293,6 +303,83 @@
                 - after that we will send the request
                 - we need to know the rate of every parameter date Which is the number that we will divide by to get the value of the parameter
                 - this rate we are set in the device type options
+
+
+
+                         </pre>
+        </div>
+        <!-- end col -->
+    </div>
+    <div class="row">
+        <div class="col-md-12" id="device_11_1_2">
+
+            <h4>{{__('documentation.Gateway Device With Encoded To Float')}}</h4>
+
+
+            <p>In this tab we will learn how to connect gateway device to website to send data for it .</p>
+
+            <p>After add new device to website we need to connect it to this website by make device send post request to
+                the website using this url :</p>
+
+            <div class="intro2 clearfix">
+                <p style="text-align: center;font-size: 25px;font-weight: bold">https://dodolora.com/api/read
+
+                </p>
+            </div>
+
+            <p>The device must send data in this format</p>
+
+            <pre class="brush: html; highlight: [5,21]">
+                {
+                  "applicationID": "4",
+                  "applicationName": "Test_raed",
+                  "deviceName": "FireAlarm",
+                  "devEUI": "oNt/d0mAth8=",
+                  "rxInfo": [],
+                  "txInfo": {
+                    "frequency": 867300000,
+                    "modulation": "LORA",
+                    "loRaModulationInfo": {
+                      "bandwidth": 125,
+                      "spreadingFactor": 9,
+                      "codeRate": "4/5",
+                      "polarizationInversion": false
+                    }
+                  },
+                  "adr": false,
+                  "dr": 3,
+                  "fCnt": 1,
+                  "fPort": 2,
+                  "data": "AZUAAQwJCAAhARgBoQAAfCEt",
+                  "objectJSON": "{}",
+                  "tags": {},
+                  "confirmedUplink": false,
+                  "devAddr": "ALc9wg=="
+                }
+            </pre>
+
+            <p>The main attribute is devEUI and data where devEUI is the device Id and data is the data of parameters of device<br>
+                this attribute is encoded in multi type
+            </p>
+
+            <pre class="brush: html">
+                            devEUI : it is the device id encode to binary then encode to hexa then to base64,
+                            data   : it is the data encode to Float then encode to hexa then to base64
+                         </pre>
+
+            <p>How to get the value of data attribute :</p>
+
+            <pre class="brush: html">
+                            Example for data:
+
+                - if we have four parameters temperature ,humidity ,battary volt ,gas resistance:
+                - we need to know the length of every parameter
+                - for example the length of temperature in hexa,humidity ,battary volt is 4 digit and gas resistance is 8 digit
+                - in device type option we need to set this parameter length
+                - we will convert every parameter data from float to hexa first
+                - then we will order this 4 value next to each other as we set the order in device type options
+                - after that we will encode them to base64
+                - after that we will send the request
 
 
 

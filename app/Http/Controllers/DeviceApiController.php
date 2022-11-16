@@ -156,26 +156,28 @@ class DeviceApiController extends Controller
                 }
 
             }
-            if ($device != null) {
-                $response = '##';
-                if ($device->deviceSetting != null) {
-                    $x = json_decode($device->deviceSetting->settings, true);
-                    $x['time'] = gmdate("Y-m-dTH:i:s");
-                    foreach ($device->deviceType->deviceSettings as $setting) {
-                        $response = $response . '' . $setting->name . '=' . $x[$setting->name] . ',';
+            if ($type->is_need_response == 1) {
+                if ($device != null) {
+                    $response = '##';
+                    if ($device->deviceSetting != null) {
+                        $x = json_decode($device->deviceSetting->settings, true);
+                        $x['time'] = gmdate("Y-m-dTH:i:s");
+                        foreach ($device->deviceType->deviceSettings as $setting) {
+                            $response = $response . '' . $setting->name . '=' . $x[$setting->name] . ',';
+                        }
+                        $response = $response . '' . 'time=' . $x['time'];
+                    } else {
+                        foreach ($device->deviceType->deviceSettings as $setting) {
+                            $response = $response . '' . $setting->name . '=' . $setting->pivot->value . ',';
+                        }
+                        $response = $response . '' . 'time=' . gmdate("Y-m-dTH:i:s");
                     }
-                    $response = $response . '' . 'time=' . $x['time'];
+                    return response()->json($response, 201);
                 } else {
-                    foreach ($device->deviceType->deviceSettings as $setting) {
-                        $response = $response . '' . $setting->name . '=' . $setting->pivot->value . ',';
-                    }
-                    $response = $response . '' . 'time=' . gmdate("Y-m-dTH:i:s");
+                    return response()->json('device id is not exist', 404);
                 }
-                return response()->json($response, 201);
-            } else {
-                return response()->json('device id is not exist', 404);
             }
-        } else {
+        }else {
             return response()->json('No data was sent', 404);
         }
     }
