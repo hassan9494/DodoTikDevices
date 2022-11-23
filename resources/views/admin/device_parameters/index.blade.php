@@ -68,6 +68,7 @@
                         <td>{{ $parameter->unit }}</td>
                         <td>
                             <a href="{{route('admin.device_parameters.edit', [$parameter->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-edit"></i> </a>
+                            <a href="{{route('admin.device_parameters.color', [$parameter->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-eye-dropper"></i> </a>
 
                             <form method="POST" action="{{route('admin.device_parameters.destroy', [$parameter->id])}}" class="d-inline" onsubmit="return confirm('{{__("message.Delete this type permanently?")}}')">
 

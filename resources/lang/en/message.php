@@ -135,6 +135,12 @@ return [
     'Last 24 hour' => 'Last 24 hour',
     'Running' => 'Running',
     'Finished' => 'Finished',
+    'Line Chart' => 'Line Chart',
+    'Colors Range' => 'Colors Range For',
+    'from' => 'From',
+    'to' => 'To',
+    'Level Name' => 'Level Name',
+    'color' => 'Color'
 
 
 ];
