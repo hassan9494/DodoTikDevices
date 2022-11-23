@@ -6,6 +6,7 @@ use App\Exports\FactoryDeviceValueExport;
 use App\Http\Requests\FactoryRequest;
 use App\Models\Device;
 use App\Models\DeviceFactory;
+use App\Models\DeviceParameters;
 use App\Models\DeviceParametersValues;
 use App\Models\Factory;
 use Carbon\Carbon;
@@ -206,7 +207,9 @@ class FactoryController extends Controller
         $now = Carbon::now();
         $thisMidnight = Carbon::now()->endOfDay();
         $color = [];
-        $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
+        $multiColor = [];
+        $label = 0;
+        $test = [];
         if (count($parameters) > 0) {
 
             foreach ($parameters as $parameter) {
@@ -225,6 +228,13 @@ class FactoryController extends Controller
                     if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parameter->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
                         if (isset(json_decode($parameter->parameters, true)[$tPara->code])) {
                             array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+                            if ($tPara->code == $device_type->deviceParameters()->orderBy('order')->first()->code){
+                                foreach ($tPara->parameterRangeColors as $key=>$paraRangeColor){
+                                    if (json_decode($parameter->parameters, true)[$tPara->code] >= $paraRangeColor->from && json_decode($parameter->parameters, true)[$tPara->code] < $paraRangeColor->to){
+                                        array_push($multiColor,$paraRangeColor->color);
+                                    }
+                                }
+                            }
                         } else {
                             array_push($yValues, 0);
                         }
@@ -233,15 +243,18 @@ class FactoryController extends Controller
                     if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
                         if (isset(json_decode($parameter->parameters, true)[$tPara->code])) {
                             array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
+
+                            if ($tPara->code == $device_type->deviceParameters()->orderBy('order')->first()->code){
+                                foreach ($tPara->parameterRangeColors as $key=>$paraRangeColor){
+                                    if (json_decode($parameter->parameters, true)[$tPara->code] >= $paraRangeColor->from && json_decode($parameter->parameters, true)[$tPara->code] < $paraRangeColor->to){
+                                        array_push($multiColor,$paraRangeColor->color);
+                                    }
+                                }
+                            }
                         } else {
                             array_push($yValues, 0);
                         }
                     }
-//                    if (isset(json_decode($parameter->parameters, true)[$tPara->code])) {
-//                        array_push($yValues, json_decode($parameter->parameters, true)[$tPara->code]);
-//                    } else {
-//                        array_push($yValues, 0);
-//                    }
 
 
                 }
@@ -255,7 +268,8 @@ class FactoryController extends Controller
             $status = "Offline";
             $label = 1;
         }
-        return view('admin.factory.details', compact('devFactory', 'xValues', 'paraValues', 'color'));
+//        dd($multiColor);
+        return view('admin.factory.details', compact('label','devFactory','device_type','multiColor', 'xValues', 'paraValues', 'color'));
     }
 
     public function flowchartWithDate($id, $from, $to)
@@ -334,7 +348,80 @@ class FactoryController extends Controller
         }
         return array($paraValues, $xValues, $device, $color);
     }
+    public function showParameterData($devFactory_id,$parameter_id)
+    {
+        $devFactory = DeviceFactory::findOrFail($devFactory_id);
+        $device = $devFactory->device;
+        $device_type = $device->deviceType;
+        $requestedParameter = DeviceParameters::findOrFail($parameter_id);
+        $parameters = $devFactory->deviceFactoryValues;
+        $xValues = [];
+        $yValues = [];
+        $paraValues = [];
+        $now = Carbon::now();
+        $thisMidnight = Carbon::now()->endOfDay();
+        $color = [];
+        $multiColor = [];
+        $test = [];
+        if (count($parameters) > 0) {
 
+            foreach ($parameters as $parameter) {
+                if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parameter->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
+                    array_push($xValues, date(DATE_ISO8601, strtotime($parameter->time_of_read)));
+                }
+                if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
+                    array_push($xValues, date(DATE_ISO8601, strtotime($parameter->time_of_read)));
+                }
+//                array_push($xValues, date(DATE_ISO8601, strtotime($parameter->time_of_read)));
+            }
+            $warning = 1;
+//            foreach ($device_type->deviceParameters()->orderBy('order')->get() as $tPara) {
+//                array_push($color, $requestedParameter->pivot->color);
+                foreach ($parameters as $parameter) {
+                    if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parameter->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
+                        if (isset(json_decode($parameter->parameters, true)[$requestedParameter->code])) {
+                            array_push($yValues, json_decode($parameter->parameters, true)[$requestedParameter->code]);
+                            if ($requestedParameter->code == $requestedParameter->code){
+                                foreach ($requestedParameter->parameterRangeColors as $key=>$paraRangeColor){
+                                    if (json_decode($parameter->parameters, true)[$requestedParameter->code] >= $paraRangeColor->from && json_decode($parameter->parameters, true)[$requestedParameter->code] < $paraRangeColor->to){
+                                        array_push($multiColor,$paraRangeColor->color);
+                                    }
+                                }
+                            }
+                        } else {
+                            array_push($yValues, 0);
+                        }
+
+                    }
+                    if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
+                        if (isset(json_decode($parameter->parameters, true)[$requestedParameter->code])) {
+                            array_push($yValues, json_decode($parameter->parameters, true)[$requestedParameter->code]);
+
+                            if ($requestedParameter->code == $requestedParameter->code){
+                                foreach ($requestedParameter->parameterRangeColors as $key=>$paraRangeColor){
+                                    if (json_decode($parameter->parameters, true)[$requestedParameter->code] >= $paraRangeColor->from && json_decode($parameter->parameters, true)[$requestedParameter->code] < $paraRangeColor->to){
+                                        array_push($multiColor,$paraRangeColor->color);
+                                    }
+                                }
+                            }
+                        } else {
+                            array_push($yValues, 0);
+                        }
+                    }
+
+
+                }
+                array_push($paraValues, $yValues);
+                $yValues = [];
+//            }
+
+
+        }
+        $color = $device_type->deviceParameters()->where('code',$requestedParameter->code)->orderBy('order')->first()->pivot->color;
+//        dd($paraValues);
+        return array($paraValues, $xValues, $device, $multiColor,$requestedParameter,$color);
+//        return view('admin.factory.details', compact('devFactory','device_type','multiColor', 'xValues', 'paraValues', 'color'));
+    }
 
     public function details1(Request $request, $id)
     {

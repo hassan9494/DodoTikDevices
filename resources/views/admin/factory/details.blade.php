@@ -49,6 +49,18 @@
             height: 5rem;
             display: none;
         }
+
+        canvas {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .tooltip-custom:before {
+            content: "•";
+            font-size: 170%; /* or whatever */
+            padding-right: 5px;
+        }
     </style>
 
 @endsection
@@ -69,8 +81,8 @@
 
     @endif
 
-
     @include('admin.component.factory.flowchart')
+    @include('admin.component.factory.linechart')
     @include('admin.component.factory.parameters_table')
 
 @endsection

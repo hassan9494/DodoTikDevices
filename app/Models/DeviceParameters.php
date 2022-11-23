@@ -28,4 +28,9 @@ class DeviceParameters extends Model
     {
         return $this->belongsToMany(DeviceType::class);
     }
+
+    public function parameterRangeColors()
+    {
+        return $this->hasMany(ParameterRangeColor::class,'parameter_id');
+    }
 }

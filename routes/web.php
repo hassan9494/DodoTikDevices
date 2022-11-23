@@ -91,6 +91,9 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth','middleware'
     Route::get('device_parameters/show/{id}', [DeviceParametersController::class, 'show'])->middleware('can:isAdmin')->name('device_parameters.show');
     Route::post('device_parameters/edit/{id}', [DeviceParametersController::class, 'update'])->middleware('can:isAdmin')->name('device_parameters.update');
     Route::delete('device_parameters/destroy/{id}',[DeviceParametersController::class, 'destroy'])->middleware('can:isAdmin')->name('device_parameters.destroy');
+    Route::get('device_parameters/color/{id}', [DeviceParametersController::class, 'color'])->middleware('can:isAdmin')->name('device_parameters.color');
+    Route::post('device_parameters/color_range/{id}', [DeviceParametersController::class, 'color_range'])->middleware('can:isAdmin')->name('device_parameters.color_range');
+    Route::post('device_parameters/update_color_range/{id}', [DeviceParametersController::class, 'update_color_range'])->middleware('can:isAdmin')->name('device_parameters.update_color_range');
 
 
     // Manage device_types
@@ -189,4 +192,6 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth','middleware'
 //    Route::post('factories/detail/{id}', [FactoryController::class, 'details1'])->middleware('can:isAdmin')->name('factories.test');
     Route::post('factories/detail/{id}', [FactoryController::class, 'details1'] )->name('factories.detail');
     Route::get('factories/flow/{id}/{from}/{to}', [FactoryController::class, 'flowchartWithDate'])->middleware('can:isAdmin')->name('factories.flowchartWithDate');
+    Route::get('devices/showParameterData/{devFactory_id}/{parameter_id}', [FactoryController::class, 'showParameterData'])->middleware('can:isAdminOrUser')->name('devices.showParameterData');
+
 });
