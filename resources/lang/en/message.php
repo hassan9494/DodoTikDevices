@@ -140,7 +140,8 @@ return [
     'from' => 'From',
     'to' => 'To',
     'Level Name' => 'Level Name',
-    'color' => 'Color'
+    'color' => 'Color',
+    'All Data' => 'All Data'
 
 
 ];

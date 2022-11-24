@@ -156,7 +156,6 @@
                     }else {
                         document.getElementById('status').innerHTML ='Status : Offline  <i class="fas fa-times" style="color:red "></i> '
                     }
-                    console.log(data)
                  },
                  error: function (xhr, b, c) {
                      console.log("xhr=" + xhr + " b=" + b + " c=" + c);
@@ -328,8 +327,6 @@
                 const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                 const diffTime1 = Math.abs(Date.parse(today) - Date.parse(from.value));
                 const diffDays1 = Math.ceil(diffTime1 / (1000 * 60 * 60 * 24));
-                console.log(diffDays)
-                console.log(diffDays1)
                 jQuery.ajax({
                     url: '/admin/devices/showWithDate/{{$device->id}}/' + diffDays1 + '/' + diffDays,
                     type: 'GET',
