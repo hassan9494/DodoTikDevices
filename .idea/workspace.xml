@@ -21,12 +21,11 @@
   <component name="ChangeListManager">
     <list default="true" id="4b9c3d3c-a351-4ab6-90ca-e38cb16d2c4d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceParametersController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceParametersController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/FactoryController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/FactoryController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/DeviceParameters.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/DeviceParameters.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/lang/en/message.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/en/message.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_parameters/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_parameters/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/factory/details.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/factory/details.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/factory/flowchart.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/factory/flowchart.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/factory/linechart.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/factory/linechart.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/flowchart.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/flowchart.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -324,7 +323,7 @@
       <workItem from="1666702904492" duration="85632000" />
       <workItem from="1667893428708" duration="79424000" />
       <workItem from="1668928031124" duration="34203000" />
-      <workItem from="1669097553697" duration="18389000" />
+      <workItem from="1669097553697" duration="36230000" />
     </task>
     <servers />
   </component>

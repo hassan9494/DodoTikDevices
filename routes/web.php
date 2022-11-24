@@ -193,5 +193,6 @@ Route::group(['as'=>'admin.','prefix'=>'admin','middleware'=>'auth','middleware'
     Route::post('factories/detail/{id}', [FactoryController::class, 'details1'] )->name('factories.detail');
     Route::get('factories/flow/{id}/{from}/{to}', [FactoryController::class, 'flowchartWithDate'])->middleware('can:isAdmin')->name('factories.flowchartWithDate');
     Route::get('devices/showParameterData/{devFactory_id}/{parameter_id}', [FactoryController::class, 'showParameterData'])->middleware('can:isAdminOrUser')->name('devices.showParameterData');
+    Route::get('devices/showParameterDataWithDate/{devFactory_id}/{parameter_id}/{from}/{to}', [FactoryController::class, 'showParameterDataWithDate'])->middleware('can:isAdminOrUser')->name('devices.showParameterDataWithDate');
 
 });

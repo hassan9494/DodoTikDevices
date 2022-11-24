@@ -11,6 +11,11 @@
                         <ul class="nav nav-pills nav-pills-sm nav-dark-75 nav nav-test flowchart-nav" role="tablist">
                             <li class="nav-item nav-item">
                                 <a href="#" role="tab" data-rb-event-key="Custom"
+                                   tabindex="4" aria-selected="false"
+                                   class="nav-link py-2 px-4   nav-link"
+                                   id="allData">{{__('message.All Data')}}</a></li>
+                            <li class="nav-item nav-item">
+                                <a href="#" role="tab" data-rb-event-key="Custom"
                                    tabindex="3" aria-selected="false"
                                    class="nav-link py-2 px-4   nav-link"
                                    id="custom">{{__('message.Custom')}}</a></li>
@@ -72,7 +77,7 @@
                 <div class="card-body pt-2" style="position: relative;">
                     <div id="chart">
                     </div>
-                    <div class="spinner-border  text-success" role="status" id="spinner">
+                    <div class="spinner-border  text-success" role="status" id="spinner" style="position: absolute;left: 45%">
                         <span class="sr-only">Loading...</span>
                     </div>
                     <div class="resize-triggers">
@@ -190,17 +195,26 @@
                         }, timer['time_between_two_read'] *1000 * 60);
                     }
 
-                } else if (el[i].getAttribute('tabindex') == 1) {
+                }
+                else if (el[i].getAttribute('tabindex') == 1) {
                     fromm = 2;
                     too = 0;
                     clearInterval(interval);
                     interval = false;
-                } else if (el[i].getAttribute('tabindex') == 2) {
+                }
+                else if (el[i].getAttribute('tabindex') == 2) {
                     fromm = 7;
                     too = 0;
                     clearInterval(interval);
                     interval = false;
-                }else {
+                }
+                else if (el[i].getAttribute('tabindex') == 4) {
+                    fromm = 0;
+                    too = 0;
+                    clearInterval(interval);
+                    interval = false;
+                }
+                else {
                     clearInterval(interval);
                     interval = false;
                 }
