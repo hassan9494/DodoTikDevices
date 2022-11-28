@@ -9,15 +9,12 @@
                                         class="card-label font-weight-bolder text-dark"
                                         style="float: left;margin-bottom: 10px;">{{__('message.Parameters')}} </span>
                         </h3>
-
                         <a title="Export" id="d_{{$devFactory->id}}" href="{{route('admin.factories.export', $devFactory->id)}}"
                            class="btn btn-edit btn-sm"
                            style="float: right;background-color: #00989d!important;"> {{__('message.Export To Data Sheet')}} </a>
                     </div>
                     <div class="card-body">
-
                         <div class="table-responsive">
-
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
@@ -25,15 +22,12 @@
                                     @foreach($devFactory->device->deviceType->deviceParameters()->orderBy('order')->get() as $parameter)
                                         <th>{{$parameter->name}}</th>
                                     @endforeach
-
                                     <th>{{__('message.time of read')}}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @php
-
                                     $no=0;
-
                                 @endphp
                                 @foreach($devFactory->deviceFactoryValues()->orderBy('id','desc')->get() as $deviceParameter)
                                     <tr>
@@ -48,22 +42,18 @@
                                             @endforeach
                                         @endif
                                         <td>
-                                            {{\Carbon\Carbon::parse($deviceParameter->time_of_read)->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a')}}
+                                            {{\Carbon\Carbon::parse($deviceParameter->time_of_read)->setTimezone('Europe/Istanbul')->format('Y-m-d H:i')}}
                                         </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
                             </table>
-
                         </div>
-
                     </div>
-
                 </div>
             </div>
         </div>
     @endif
-
 </section>
 @push('scripts')
     <script>

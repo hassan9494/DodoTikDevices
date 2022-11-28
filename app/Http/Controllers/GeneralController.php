@@ -83,7 +83,6 @@ class GeneralController extends Controller
                 $long = $long / count($devices);
                 $lat = $lat / count($devices);
             }
-//        dd($lastdangerRead);
             return view('admin.dashboard', compact('types', 'admin', 'long', 'lat', 'lastdangerRead', 'devices', 'state', 'warning', 'lastMinDanger'));
 
         }catch (Exception $exception){

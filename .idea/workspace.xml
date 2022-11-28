@@ -21,12 +21,18 @@
   <component name="ChangeListManager">
     <list default="true" id="4b9c3d3c-a351-4ab6-90ca-e38cb16d2c4d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Exports/FactoryDeviceValueExport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exports/FactoryDeviceValueExport.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Exports/ParametersDataExport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exports/ParametersDataExport.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DevicTypeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DevicTypeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceApiController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/FactoryController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/FactoryController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/en/message.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/en/message.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/GeneralController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/GeneralController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/admin/component/factory/flowchart.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/factory/flowchart.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/admin/component/factory/linechart.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/factory/linechart.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/factory/parameters_table.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/factory/parameters_table.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/admin/component/flowchart.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/flowchart.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/parameters_table.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/parameters_table.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -323,7 +329,8 @@
       <workItem from="1666702904492" duration="85632000" />
       <workItem from="1667893428708" duration="79424000" />
       <workItem from="1668928031124" duration="34203000" />
-      <workItem from="1669097553697" duration="36805000" />
+      <workItem from="1669097553697" duration="38681000" />
+      <workItem from="1669533989460" duration="7980000" />
     </task>
     <servers />
   </component>
@@ -355,18 +362,14 @@
     </state>
     <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1667903471894" />
     <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1662970045362" />
-    <state x="396" y="86" key="NewPhpClassDialog" timestamp="1660550365220">
-      <screen x="0" y="0" width="1366" height="728" />
-    </state>
-    <state x="396" y="86" key="NewPhpClassDialog/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1660550365220" />
     <state x="517" y="287" key="NewPhpFileDialog" timestamp="1667111702106">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="517" y="287" key="NewPhpFileDialog/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1667111702106" />
-    <state x="389" y="97" width="587" height="534" key="find.popup" timestamp="1667738018962">
+    <state x="389" y="97" width="587" height="534" key="find.popup" timestamp="1669294975352">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="389" y="97" width="587" height="534" key="find.popup/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1667738018962" />
+    <state x="389" y="97" width="587" height="534" key="find.popup/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1669294975352" />
     <state x="339" y="162" key="run.anything.popup" timestamp="1661777521725">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

@@ -45,7 +45,7 @@ class ParametersDataExport implements FromCollection, WithHeadings
 
             }
             $para->parameters = $device->device_id;
-            $para->time_of_read = Carbon::parse($para->time_of_read)->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a');
+            $para->time_of_read = Carbon::parse($para->time_of_read)->setTimezone('Europe/Istanbul')->format('Y-m-d H:i');
         }
         return $devPara;
     }

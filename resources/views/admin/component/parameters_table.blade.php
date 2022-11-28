@@ -9,7 +9,6 @@
                                         class="card-label font-weight-bolder text-dark"
                                         style="float: left;margin-bottom: 10px;">{{__('message.Parameters')}} </span>
                         </h3>
-
                         <a title="Export" id="d_{{$device->id}}" href="{{route('admin.devices.export', [$device->id])}}"
                            class="btn btn-edit btn-sm"
                            style="float: right;background-color: #00989d!important;"> {{__('message.Export To Data Sheet')}} </a>
@@ -37,9 +36,7 @@
                                             </thead>
                                             <tbody>
                                             @php
-
                                                 $no=0;
-
                                             @endphp
                                             @foreach($device->deviceParameters()->orderBy('id','desc')->paginate($numberOfRow != 0 ? $numberOfRow : 500) as $deviceParameter)
                                                 <tr>
@@ -59,11 +56,8 @@
                                                             @endif
                                                         @endforeach
                                                     @endif
-
                                                     <td>
-                                                        {{\Carbon\Carbon::parse($deviceParameter->time_of_read)->setTimezone('GMT+03:00')->format('Y-d-m h:i a')}}
-                                                        {{--                                                        <br>--}}
-                                                        {{--                                                        {{$deviceParameter->time_of_read}}--}}
+                                                        {{\Carbon\Carbon::parse($deviceParameter->time_of_read)->setTimezone('GMT+03:00')->format('Y-m-d H:i')}}
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -78,20 +72,9 @@
             </div>
         </div>
     @endif
-
 </section>
 @push('scripts')
     <script>
-        // function seconds_with_leading_zeros(dt)
-        // {
-        //     return /\((.*)\)/.exec(new Date().toString())[1];
-        // }
-        //
-        // dt = new Date();
-        // console.log(seconds_with_leading_zeros(dt));
-        //
-        // dt = new Date(1989, 10, 1);
-        // console.log(seconds_with_leading_zeros(dt));
         function test(x) {
             return x.toLocaleString()
         }

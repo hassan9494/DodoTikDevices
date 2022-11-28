@@ -285,7 +285,6 @@ class DeviceController extends Controller
             $status = "Offline";
             $label = 1;
         }
-//        dd($color);
         $deviceComponents = DevicesComponents::where('device_id', $device->id)->orderBy('order', 'asc')->get();
         return view('admin.device.custom_show', compact('numberOfRow', 'color', 'parameterTableColumn', 'testParaColumn', 'testPara', 'device', 'deviceComponents', 'dangerColor', 'warning', 'status', 'label', 'xValues', 'yValues', 'paraValues'));
     }
@@ -831,7 +830,6 @@ class DeviceController extends Controller
     {
         $device = Device::findOrFail($id);
         return view('admin.device.export', compact('device'));
-//        return Excel::download(new ParametersDataExport($from, $to, $devType), 'parameter.xlsx');
     }
 
     public function exportToDatasheet(Request $request)
