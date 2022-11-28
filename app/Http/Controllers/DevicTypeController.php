@@ -20,7 +20,6 @@ class DevicTypeController extends Controller
     public function index()
 
     {
-//dd(hexdec('41200001'));
         $types = DeviceType::all();
         return view('admin.device_types.index',compact('types'));
     }
@@ -90,9 +89,7 @@ class DevicTypeController extends Controller
      */
     public function add_default(Request $request, $id)
     {
-//        dd($request);
         $type = DeviceType::findOrFail($id);
-//        dd($type->deviceParameters()->orderBy('order')->get());
         foreach ($type->deviceSettings as $setting){
             $typeSet = DeviceTypeSetting::where('device_settings_id',$setting->id)->where('device_type_id',$id)->first();
             if ($request[$setting->name] != null){
@@ -104,7 +101,6 @@ class DevicTypeController extends Controller
         }
         foreach ($type->deviceParameters()->orderBy('order')->get() as $key=>$parameter){
             $typePara = DeviceTypeParameter::where('device_parameters_id',$parameter->id)->where('device_type_id',$id)->first();
-//            dd($request['Humidity_0_color']);
             if ($request[\Str::slug($parameter->code).'_'.$key] != null){
                 $typePara->order = $request[\Str::slug($parameter->code).'_'.$key];
             }else{
@@ -121,12 +117,10 @@ class DevicTypeController extends Controller
                 $typePara->rate = 4;
             }
             if ($request[\Str::slug($parameter->code).'_'.$key.'_color'] != null){
-//                dd('1111111');
                 $typePara->color = $request[\Str::slug($parameter->code).'_'.$key.'_color'];
             }else{
                 $typePara->color = '#000000';
             }
-//            dd($request['PM2.5_color']);
 
             $typePara->save();
         }

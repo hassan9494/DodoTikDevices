@@ -152,7 +152,6 @@ class FactoryController extends Controller
         } else {
             return redirect()->route('admin.factories.start', [$factory->id])->with('error', 'The Device Is Used In Another Factory Now');
         }
-        dd($device->deviceFactories()->where('is_attached', 0)->get());
     }
 
     public function stop($id)
@@ -268,7 +267,6 @@ class FactoryController extends Controller
             $status = "Offline";
             $label = 1;
         }
-//        dd($multiColor);
         return view('admin.factory.details', compact('label', 'firstParameter', 'devFactory', 'device_type', 'multiColor', 'xValues', 'paraValues', 'color'));
     }
 
@@ -390,11 +388,7 @@ class FactoryController extends Controller
                 if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
                     array_push($xValues, date(DATE_ISO8601, strtotime($parameter->time_of_read)));
                 }
-//                array_push($xValues, date(DATE_ISO8601, strtotime($parameter->time_of_read)));
             }
-            $warning = 1;
-//            foreach ($device_type->deviceParameters()->orderBy('order')->get() as $tPara) {
-//                array_push($color, $requestedParameter->pivot->color);
             foreach ($parameters as $parameter) {
                 if ($now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parameter->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parameter->time_of_read)))->y == 0) {
                     if (isset(json_decode($parameter->parameters, true)[$requestedParameter->code])) {
@@ -431,14 +425,11 @@ class FactoryController extends Controller
             }
             array_push($paraValues, $yValues);
             $yValues = [];
-//            }
 
 
         }
         $color = $device_type->deviceParameters()->where('code', $requestedParameter->code)->orderBy('order')->first()->pivot->color;
-//        dd($paraValues);
         return array($paraValues, $xValues, $device, $multiColor, $requestedParameter, $color);
-//        return view('admin.factory.details', compact('devFactory','device_type','multiColor', 'xValues', 'paraValues', 'color'));
     }
 
     public function showParameterDataWithDate($devFactory_id, $parameter_id, $from, $to)
@@ -556,7 +547,6 @@ class FactoryController extends Controller
 
         }
         $color = $device_type->deviceParameters()->where('code', $requestedParameter->code)->orderBy('order')->first()->pivot->color;
-//        dd($paraValues);
         return array($paraValues, $xValues, $device, $multiColor, $requestedParameter, $color);
     }
 
@@ -564,11 +554,7 @@ class FactoryController extends Controller
     {
         $devFactory = DeviceFactory::findOrFail($id);
         $columns = array(
-            0 => 'No',
-//            1 =>'title',
-//            2=> 'body',
-//            3=> 'created_at',
-//            4=> 'id',
+            0 => 'No'
         );
         foreach ($devFactory->device->deviceType->deviceParameters()->orderBy('order')->get() as $parameter) {
             array_push($columns, $parameter->name);
@@ -621,7 +607,6 @@ class FactoryController extends Controller
             "recordsFiltered" => intval($totalFiltered),
             "data" => $data
         );
-//        dd($json_data);
 
         echo json_encode($json_data);
     }

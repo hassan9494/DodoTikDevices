@@ -518,7 +518,7 @@
                     }
                 },
                 x: {
-                    format: 'M/d/y hh : mm TT',
+                    format: 'd/M/y hh : mm TT',
                 }
             },
             legend: {

@@ -30,7 +30,6 @@ class FactoryDeviceValueExport implements FromCollection, WithHeadings
     {
         $device = Device::findOrFail($this->device);
         $factory = Factory::findOrFail($this->factory);
-//        dd($this->to);
         $devPara = DeviceFactoryValue::select('parameters','factory_id', 'time_of_read')
             ->where('device_id', $this->device)
             ->where('factory_id', $this->factory)
@@ -46,13 +45,11 @@ class FactoryDeviceValueExport implements FromCollection, WithHeadings
                 }else{
                     $para[$x] = "-";
                 }
-
             }
             $para->parameters = $device->device_id;
             $para->factory_id = $factory->name;
-            $para->time_of_read = Carbon::parse($para->time_of_read)->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a');
+            $para->time_of_read = Carbon::parse($para->time_of_read)->setTimezone('Europe/Istanbul')->format('Y-m-d H:i');
         }
-
         return $devPara;
     }
 
@@ -64,7 +61,6 @@ class FactoryDeviceValueExport implements FromCollection, WithHeadings
             'device',
             'factory',
             'time of read',
-
         ];
         foreach ($device->deviceType->deviceParameters()->orderBy('order')->get() as $type) {
             array_push($headers, $type->name . " (" . $type->unit . ")");

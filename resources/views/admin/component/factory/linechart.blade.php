@@ -4,9 +4,15 @@
             <div class="card card-custom mb-4">
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label font-weight-bolder text-dark" id="parameter_name"
-                              style="font-size: 1rem;">{{$firstParameter->name}}  </span>
+                        <select class="form-control" id="parameter_select">
+                            @foreach($device_type->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
+                                <option title="{{$parameter->name}}" id="{{$parameter->id}}"
+                                        class="btn btn-edit btn-group-lg m-1"
+                                        style="font-size: 1rem;width:45%;float: right;background-color: {{$device_type->deviceParameters()->where('code', $parameter->code)->first()->pivot->color}}!important;" value="{{$parameter->id}}"> {{$parameter->name}} </option>
+                            @endforeach
+                        </select>
                     </h3>
+
                     <div class="card-toolbar">
                         <button parameter="{{$firstParameter->id}}" title="lineAllData" id="lineAllData"
                                 onclick="getParametervaluewithDate(this.id)"
@@ -71,7 +77,7 @@
                 </div>
                 <div class="card-body pt-2" style="position: relative;">
                     <div class="row">
-                        <div class="col-lg-9 col-xxl-9 order-1 order-xxl-1 mb-4">
+                        <div class="col-lg-12 col-xxl-12 order-1 order-xxl-1 mb-4">
                             <div id="chart1">
                             </div>
                             <div class="spinner-border  text-success" role="status" id="spinnerLine"
@@ -85,17 +91,17 @@
                                 <div class="contract-trigger"></div>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-xxl-3 order-1 order-xxl-1 mb-4">
-                            <ul class="nav1 nav-pills nav-pills-sm nav-dark-75 nav nav-test flowchart-nav"
-                                role="tablist" style="justify-content: center">
-                                @foreach($device_type->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
-                                    <button title="{{$parameter->name}}" id="{{$parameter->id}}"
-                                            onclick="getParametervalue(this.id)"
-                                            class="btn btn-edit btn-group-lg m-1"
-                                            style="font-size: 0.9rem;width:45%;float: right;background-color: {{$device_type->deviceParameters()->where('code', $parameter->code)->first()->pivot->color}}!important;"> {{$parameter->name}} </button>
-                                @endforeach
-                            </ul>
-                        </div>
+{{--                        <div class="col-lg-3 col-xxl-3 order-1 order-xxl-1 mb-4">--}}
+{{--                            <ul class="nav1 nav-pills nav-pills-sm nav-dark-75 nav nav-test flowchart-nav"--}}
+{{--                                role="tablist" style="justify-content: center">--}}
+{{--                                @foreach($device_type->deviceParameters()->orderBy('order')->get() as $key=>$parameter)--}}
+{{--                                    <button title="{{$parameter->name}}" id="{{$parameter->id}}"--}}
+{{--                                            onclick="getParametervalue(this.id)"--}}
+{{--                                            class="btn btn-edit btn-group-lg m-1"--}}
+{{--                                            style="font-size: 0.9rem;width:45%;float: right;background-color: {{$device_type->deviceParameters()->where('code', $parameter->code)->first()->pivot->color}}!important;"> {{$parameter->name}} </button>--}}
+{{--                                @endforeach--}}
+{{--                            </ul>--}}
+{{--                        </div>--}}
                     </div>
 
                 </div>
@@ -104,6 +110,14 @@
     </div>
 </section>
 @push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            $('#parameter_select').change(function (e) {
+                var selectedParameter = document.getElementById('parameter_select')
+                getParametervalue(selectedParameter.value)
+            })
+        });
+    </script>
     <script>
         function getParametervaluewithCustomDate(id){
 
@@ -122,7 +136,7 @@
                 var $loadingLine = $('#spinnerLine').show();
                 var para1 = $('#lineCustom').attr('parameter')
                 $loadingLine.show();
-                console.log(fromLine+' test : '+toLine)
+                // console.log(fromLine+' test : '+toLine)
                 var from = document.getElementById('lineFrom')
                 var today = new Date();
                 var dd = String(today.getDate()).padStart(2, '0');
@@ -205,7 +219,7 @@
                                     }
                                 },
                                 x: {
-                                    format: 'M/d/y hh : mm TT',
+                                    format: 'd/M/y hh : mm TT',
                                 }
                             },
 
@@ -232,7 +246,7 @@
 
 
                         })
-                        document.getElementById('parameter_name').innerHTML = resp[4]['name'];
+                        // document.getElementById('parameter_name').innerHTML = resp[4]['name'];
                         $loadingLine.hide();
                     },
                     error: function (xhr, b, c) {
@@ -247,7 +261,7 @@
             var $loadingLine = $('#spinnerLine').show();
             var para1 = $('#lineCustom').attr('parameter')
             $loadingLine.show();
-            console.log(fromLine+' test : '+toLine)
+            // console.log(fromLine+' test : '+toLine)
             var from = document.getElementById('lineFrom')
             var today = new Date();
             var dd = String(today.getDate()).padStart(2, '0');
@@ -259,8 +273,8 @@
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             const diffTime1 = Math.abs(Date.parse(today) - Date.parse(from.value));
             const diffDays1 = Math.ceil(diffTime1 / (1000 * 60 * 60 * 24));
-            console.log(diffDays)
-            console.log(diffDays1)
+            // console.log(diffDays)
+            // console.log(diffDays1)
             jQuery.ajax({
                 url: '/admin/devices/showParameterDataWithDate/{{$devFactory->id}}/' + para1 +'/' + diffDays1 + '/' + diffDays,
                 type: 'GET',
@@ -331,7 +345,7 @@
                                 }
                             },
                             x: {
-                                format: 'M/d/y hh : mm TT',
+                                format: 'd/M/y hh : mm TT',
                             }
                         },
 
@@ -358,7 +372,7 @@
 
 
                     })
-                    document.getElementById('parameter_name').innerHTML = resp[4]['name'];
+                    // document.getElementById('parameter_name').innerHTML = resp[4]['name'];
                     $loadingLine.hide();
                 },
                 error: function (xhr, b, c) {
@@ -374,11 +388,11 @@
         function calcFromAndTo(id){
             // console.log(id)
             if (id == 'lineToday'){
-                console.log(id)
+                // console.log(id)
                 fromLine = 1;
                 toLine = 0;
             }else if (id == 'line24hour'){
-                console.log(id)
+                // console.log(id)
                 fromLine = 2;
                 toLine = 0;
             }else if (id == 'lineWeek'){
@@ -398,7 +412,7 @@
             var $loadingLine = $('#spinnerLine').show();
             var para1 = $('#'+id+'').attr('parameter')
             $loadingLine.show();
-            console.log(fromLine+' test : '+toLine)
+            // console.log(fromLine+' test : '+toLine)
             jQuery.ajax({
                 url: '/admin/devices/showParameterDataWithDate/{{$devFactory->id}}/' + para1 +'/' + fromLine + '/' + toLine,
                 type: 'GET',
@@ -469,7 +483,7 @@
                                 }
                             },
                             x: {
-                                format: 'M/d/y hh : mm TT',
+                                format: 'd/M/y hh : mm TT',
                             }
                         },
 
@@ -496,7 +510,7 @@
 
 
                     })
-                    document.getElementById('parameter_name').innerHTML = resp[4]['name'];
+                    // document.getElementById('parameter_name').innerHTML = resp[4]['name'];
                     $loadingLine.hide();
                 },
                 error: function (xhr, b, c) {
@@ -600,7 +614,7 @@
                                 }
                             },
                             x: {
-                                format: 'M/d/y hh : mm TT',
+                                format: 'd/M/y hh : mm TT',
                             }
                         },
 
@@ -627,7 +641,7 @@
 
 
                     })
-                    document.getElementById('parameter_name').innerHTML = resp[4]['name'];
+                    // document.getElementById('parameter_name').innerHTML = resp[4]['name'];
                     $loadingLine.hide();
                 },
                 error: function (xhr, b, c) {
@@ -730,7 +744,7 @@
                     }
                 },
                 x: {
-                    format: 'M/d/y hh : mm TT',
+                    format: 'd/M/y hh : mm TT',
                 }
             },
 

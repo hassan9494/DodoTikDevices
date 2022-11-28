@@ -19,7 +19,6 @@ class DeviceApiController extends Controller
         $testsApi->settings = json_encode($para);
 //        $testsApi->save();
         $test = explode(',', $para);
-//        dd($test[0]);
         $device = Device::where('device_id', $test[0])->first();
         if ($device != null) {
             $type = $device->deviceType;
@@ -49,7 +48,6 @@ class DeviceApiController extends Controller
                     $devFactoryValue->time_of_read = Carbon::now();
                 }
                 $devFactoryValue->save();
-//                dd($factory->name);
             }
             $parameters->save();
             $response = '##';
@@ -82,7 +80,7 @@ class DeviceApiController extends Controller
         $para = $request->getContent();
         $testsApi = new TestApi();
         $testsApi->settings = json_encode($para);
-        $testsApi->save();
+//        $testsApi->save();
         if (isset(json_decode($para)->data)) {
             $dev_id_base64 = json_decode($para)->devEUI;
             $dev_id_ascii = base64_decode($dev_id_base64);
@@ -302,7 +300,6 @@ class DeviceApiController extends Controller
                     $devFactoryValue->parameters = json_encode($jsonParameters);
                     $devFactoryValue->time_of_read = Carbon::now();
                     $devFactoryValue->save();
-//                dd($factory->name);
                 }
                 $parameters->save();
 
@@ -338,8 +335,6 @@ class DeviceApiController extends Controller
         $data_ascii = base64_decode($x);
         $finaldata = bin2hex($data_ascii);
         $vol = substr($finaldata, 0, 8);
-//        dd($vol);
-//        $strHex = 41200000;
         $hex = sscanf($vol, "%02x%02x%02x%02x%02x%02x%02x%02x");
         $bin = implode('', array_map('chr', $hex));
         $array = unpack("Gnum", $bin);
