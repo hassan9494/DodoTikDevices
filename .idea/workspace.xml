@@ -21,18 +21,18 @@
   <component name="ChangeListManager">
     <list default="true" id="4b9c3d3c-a351-4ab6-90ca-e38cb16d2c4d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Exports/FactoryDeviceValueExport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exports/FactoryDeviceValueExport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Exports/ParametersDataExport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exports/ParametersDataExport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DevicTypeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DevicTypeController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceApiController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DeviceController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/FactoryController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/FactoryController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/GeneralController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/GeneralController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/factory/flowchart.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/factory/flowchart.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/lang/en/message.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/en/message.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/admin/component/factory/linechart.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/factory/linechart.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/factory/parameters_table.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/factory/parameters_table.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/flowchart.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/flowchart.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/parameters_table.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/parameters_table.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/device/custom_show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device/custom_show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/device_parameters/edit_color.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/device_parameters/edit_color.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/test1.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/test1.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -193,24 +193,24 @@
     <property name="DefaultHtmlFileTemplate" value="XHTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/admin/device_parameters" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../sanctum/laravel8api-main" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="php.override.implement.member.chooser.php.doc" value="NONE" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\projects\DodotikDevice\resources\views\admin\component" />
+      <recent name="D:\projects\DodotikDevice\resources\views\admin\device_parameters" />
+      <recent name="D:\projects\DodotikDevice\resources\views\admin\component\factory" />
+      <recent name="D:\projects\DodotikDevice\resources\views\documentation\sections" />
+      <recent name="D:\projects\DodotikDevice\resources\views\admin\factory" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\projects\DodotikDevice\resources\views\documentation\sections\lines" />
       <recent name="D:\projects\DodotikDevice\database\migrations\test" />
       <recent name="D:\projects\DodotikDevice\database\migrations" />
       <recent name="D:\projects\DodotikDevice\database\seeders" />
       <recent name="D:\projects\DodotikDevice\public" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\projects\DodotikDevice\resources\views\admin\device_parameters" />
-      <recent name="D:\projects\DodotikDevice\resources\views\admin\component\factory" />
-      <recent name="D:\projects\DodotikDevice\resources\views\documentation\sections" />
-      <recent name="D:\projects\DodotikDevice\resources\views\admin\factory" />
-      <recent name="D:\projects\DodotikDevice\resources\views\admin" />
     </key>
   </component>
   <component name="RunManager">
@@ -330,7 +330,20 @@
       <workItem from="1667893428708" duration="79424000" />
       <workItem from="1668928031124" duration="34203000" />
       <workItem from="1669097553697" duration="38681000" />
-      <workItem from="1669533989460" duration="7980000" />
+      <workItem from="1669533989460" duration="17899000" />
+      <workItem from="1670137083118" duration="6178000" />
+      <workItem from="1670219491493" duration="1990000" />
+      <workItem from="1670401729177" duration="2511000" />
+      <workItem from="1670481672342" duration="1480000" />
+      <workItem from="1670838224191" duration="1000" />
+      <workItem from="1670838277720" duration="7782000" />
+      <workItem from="1672826429566" duration="605000" />
+      <workItem from="1672827913387" duration="5000" />
+      <workItem from="1674379548911" duration="483000" />
+      <workItem from="1674730398435" duration="1308000" />
+      <workItem from="1674986507678" duration="832000" />
+      <workItem from="1675925532396" duration="684000" />
+      <workItem from="1678013592659" duration="1257000" />
     </task>
     <servers />
   </component>
@@ -353,30 +366,22 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1669023233149">
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1669801752035">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1669023233149" />
-    <state x="463" y="118" key="FileChooserDialogImpl" timestamp="1667903471894">
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1669801752035" />
+    <state x="463" y="118" key="FileChooserDialogImpl" timestamp="1671006182288">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1667903471894" />
-    <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1662970045362" />
-    <state x="517" y="287" key="NewPhpFileDialog" timestamp="1667111702106">
+    <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1671006182288" />
+    <state x="389" y="97" width="587" height="534" key="find.popup" timestamp="1675925621628">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="517" y="287" key="NewPhpFileDialog/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1667111702106" />
-    <state x="389" y="97" width="587" height="534" key="find.popup" timestamp="1669294975352">
+    <state x="389" y="97" width="587" height="534" key="find.popup/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1675925621628" />
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1670137196045">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="389" y="97" width="587" height="534" key="find.popup/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1669294975352" />
-    <state x="339" y="162" key="run.anything.popup" timestamp="1661777521725">
-      <screen x="0" y="0" width="1366" height="728" />
-    </state>
-    <state x="339" y="162" key="run.anything.popup/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1661777521725" />
-    <state x="346" y="49" key="search.everywhere.popup" timestamp="1661844706062">
-      <screen x="0" y="0" width="1366" height="728" />
-    </state>
-    <state x="346" y="49" key="search.everywhere.popup/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1661844706062" />
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728/1366.0.1920.1040@0.0.1366.728" timestamp="1670137196045" />
   </component>
 </project>

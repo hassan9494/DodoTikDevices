@@ -141,7 +141,10 @@ return [
     'to' => 'To',
     'Level Name' => 'Level Name',
     'color' => 'Color',
-    'All Data' => 'All Data'
+    'All Data' => 'All Data',
+    'save' => 'save',
+    'Test Data' =>'Test Data',
+    'Data' => 'Data'
 
 
 ];

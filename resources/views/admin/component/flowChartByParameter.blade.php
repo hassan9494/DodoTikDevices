@@ -5,7 +5,7 @@
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
                         <select class="form-control" id="parameter_select">
-                            @foreach($device_type->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
+                            @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
                                 <option title="{{$parameter->name}}" id="{{$parameter->id}}"
                                         class="btn btn-edit btn-group-lg m-1"
                                         style="font-size: 1rem;width:45%;float: right;background-color: {{$device_type->deviceParameters()->where('code', $parameter->code)->first()->pivot->color}}!important;" value="{{$parameter->id}}"> {{$parameter->name}} </option>
@@ -91,19 +91,7 @@
                                 <div class="contract-trigger"></div>
                             </div>
                         </div>
-{{--                        <div class="col-lg-3 col-xxl-3 order-1 order-xxl-1 mb-4">--}}
-{{--                            <ul class="nav1 nav-pills nav-pills-sm nav-dark-75 nav nav-test flowchart-nav"--}}
-{{--                                role="tablist" style="justify-content: center">--}}
-{{--                                @foreach($device_type->deviceParameters()->orderBy('order')->get() as $key=>$parameter)--}}
-{{--                                    <button title="{{$parameter->name}}" id="{{$parameter->id}}"--}}
-{{--                                            onclick="getParametervalue(this.id)"--}}
-{{--                                            class="btn btn-edit btn-group-lg m-1"--}}
-{{--                                            style="font-size: 0.9rem;width:45%;float: right;background-color: {{$device_type->deviceParameters()->where('code', $parameter->code)->first()->pivot->color}}!important;"> {{$parameter->name}} </button>--}}
-{{--                                @endforeach--}}
-{{--                            </ul>--}}
-{{--                        </div>--}}
                     </div>
-
                 </div>
             </div>
         </div>
@@ -150,14 +138,14 @@
                 const diffDays1 = Math.ceil(diffTime1 / (1000 * 60 * 60 * 24));
 
                 jQuery.ajax({
-                    url: '/admin/devices/showParameterDataWithDate/{{$devFactory->id}}/' + para1 +'/' + diffDays1 + '/' + diffDays,
+                    url: '/admin/device/showParameterDataWithDate/{{$device->id}}/' + para1 +'/' + diffDays1 + '/' + diffDays,
                     type: 'GET',
                     success: function (resp) {
                         xValues = resp[1];
                         yValues = resp[0];
                         colorss = resp[3];
                         units1 = [];
-                        @foreach($devFactory->device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
+                        @foreach($device_type->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
                             units1["{{$parameter->code}}"] = "{{$parameter->unit}}"
                         @endforeach
                         const generateColors2 = (data, code) => {
@@ -177,7 +165,7 @@
                         chart1.updateOptions({
 
                             chart: {
-                                height: 500,
+                                height: 350,
                                 width: "100%",
                                 type: "area",
                                 animations: {
@@ -239,7 +227,7 @@
                                     type: 'horizontal',
                                     opacityFrom: 0.4,
                                     opacityTo: 0.9,
-                                    colorStops: generateColors2(yValues[0] != null ? yValues[0] : [], resp[4]['code'])
+                                    colorStops: generateColors2(yValues[0], resp[4]['code'])
                                 },
                             },
                             labels: xValues
@@ -276,14 +264,14 @@
             // console.log(diffDays)
             // console.log(diffDays1)
             jQuery.ajax({
-                url: '/admin/devices/showParameterDataWithDate/{{$devFactory->id}}/' + para1 +'/' + diffDays1 + '/' + diffDays,
+                url: '/admin/device/showParameterDataWithDate/{{$device->id}}/' + para1 +'/' + diffDays1 + '/' + diffDays,
                 type: 'GET',
                 success: function (resp) {
                     xValues = resp[1];
                     yValues = resp[0];
                     colorss = resp[3];
                     units1 = [];
-                    @foreach($devFactory->device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
+                    @foreach($device_type->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
                         units1["{{$parameter->code}}"] = "{{$parameter->unit}}"
                     @endforeach
                     const generateColors2 = (data, code) => {
@@ -303,7 +291,7 @@
                     chart1.updateOptions({
 
                         chart: {
-                            height: 500,
+                            height: 350,
                             width: "100%",
                             type: "area",
                             animations: {
@@ -365,7 +353,7 @@
                                 type: 'horizontal',
                                 opacityFrom: 0.4,
                                 opacityTo: 0.9,
-                                colorStops: generateColors2(yValues[0] != null ? yValues[0] : [], resp[4]['code'])
+                                colorStops: generateColors2(yValues[0], resp[4]['code'])
                             },
                         },
                         labels: xValues
@@ -414,14 +402,14 @@
             $loadingLine.show();
             // console.log(fromLine+' test : '+toLine)
             jQuery.ajax({
-                url: '/admin/devices/showParameterDataWithDate/{{$devFactory->id}}/' + para1 +'/' + fromLine + '/' + toLine,
+                url: '/admin/device/showParameterDataWithDate/{{$device->id}}/' + para1 +'/' + fromLine + '/' + toLine,
                 type: 'GET',
                 success: function (resp) {
                     xValues = resp[1];
                     yValues = resp[0];
                     colorss = resp[3];
                     units1 = [];
-                    @foreach($devFactory->device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
+                    @foreach($device_type->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
                         units1["{{$parameter->code}}"] = "{{$parameter->unit}}"
                     @endforeach
                     const generateColors2 = (data, code) => {
@@ -441,7 +429,7 @@
                     chart1.updateOptions({
 
                         chart: {
-                            height: 500,
+                            height: 350,
                             width: "100%",
                             type: "area",
                             animations: {
@@ -503,7 +491,7 @@
                                 type: 'horizontal',
                                 opacityFrom: 0.4,
                                 opacityTo: 0.9,
-                                colorStops: generateColors2(yValues[0] != null ? yValues[0] : [], resp[4]['code'])
+                                colorStops: generateColors2(yValues[0], resp[4]['code'])
                             },
                         },
                         labels: xValues
@@ -544,7 +532,7 @@
             var $loadingLine = $('#spinnerLine').show();
             $loadingLine.show();
             jQuery.ajax({
-                url: '/admin/devices/showParameterData/{{$devFactory->id}}/' + para,
+                url: '/admin/device/showParameterData/{{$device->id}}/'+ para,
                 type: 'GET',
                 success: function (resp) {
                     changeButtonParameter(resp[4]['id']);
@@ -552,7 +540,7 @@
                     yValues = resp[0];
                     colorss = resp[3];
                     units1 = [];
-                    @foreach($devFactory->device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
+                    @foreach($device_type->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
                         units1["{{$parameter->code}}"] = "{{$parameter->unit}}"
                     @endforeach
                     const generateColors2 = (data, code) => {
@@ -572,7 +560,7 @@
                     chart1.updateOptions({
 
                         chart: {
-                            height: 500,
+                            height: 350,
                             width: "100%",
                             type: "area",
                             animations: {
@@ -634,7 +622,7 @@
                                 type: 'horizontal',
                                 opacityFrom: 0.4,
                                 opacityTo: 0.9,
-                                colorStops: generateColors2(yValues[0] != null ? yValues[0] : [], resp[4]['code'])
+                                colorStops: generateColors2(yValues[0], resp[4]['code'])
                             },
                         },
                         labels: xValues
@@ -653,21 +641,14 @@
     </script>
     <script>
         var xValues = {!! json_encode($xValues, JSON_HEX_TAG) !!};
-        @if(count($paraValues) > 0)
         var yValues = {!! json_encode($paraValues[0], JSON_HEX_TAG) !!};
-        @else
-        var yValues = [];
-        @endif
         var colorss = {!! json_encode($multiColor, JSON_HEX_TAG) !!};
         var units1 = [];
-        @foreach($devFactory->device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
-
+        @foreach($device_type->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
             units1["{{$parameter->code}}"] = "{{$parameter->unit}}"
 
         @endforeach
         const generateColors = (data) => {
-            console.log(data.length)
-
             return data.map((d, idx) => {
                 var color = "{{$firstParameter->pivot->color}}"
                 if (colorss.length > 0) {
@@ -683,7 +664,7 @@
         }
         let options1 = {
             chart: {
-                height: 500,
+                height: 350,
                 width: "100%",
                 type: "area",
                 animations: {

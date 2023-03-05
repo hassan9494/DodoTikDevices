@@ -154,7 +154,7 @@
                         <div class="card-footer">
                             <div class="form-group col-md-12">
                                 <div class="col-sm-3">
-                                    <button type="submit" class="btn btn-info">{{__('message.Create')}}</button>
+                                    <button type="submit" class="btn btn-info">{{__('message.save')}}</button>
                                 </div>
                             </div>
                         </div>

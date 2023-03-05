@@ -207,6 +207,16 @@
         {{--        <!-- Divider -->--}}
         {{--            @endcan--}}
         <hr class="sidebar-divider d-none d-md-block">
+
+
+        <li class="nav-item active">
+            <a class="nav-link" href="{{ route('admin.testData') }}" target="_blank">
+                <i class="fas fa-fw fa-file"></i>
+                <span>{{__('message.Test Data')}}</span></a>
+        </li>
+
+
+        <hr class="sidebar-divider d-none d-md-block">
         <!-- Sidebar Toggler (Sidebar) -->
         <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>

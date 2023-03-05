@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
-use App\Models\{About, Device, DeviceParametersValues, DeviceType, General, User};
+use App\Models\{About, Device, DeviceParametersValues, DeviceType, General, TestApi, User};
 use PhpMqtt\Client\Facades\MQTT;
 
 class GeneralController extends Controller
@@ -133,9 +133,10 @@ class GeneralController extends Controller
         return view('admin.documentaion', compact('general'));
     }
 
-    public function test()
+    public function testData()
     {
-        return view('admin.test1');
+        $allData = TestApi::all();
+        return view('admin.test1',compact('allData'));
     }
 
     public function general()
