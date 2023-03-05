@@ -176,7 +176,7 @@
     <div class="container-fluid">
         <div class="row">
 {{--                        <div class="col-md-12">--}}
-{{--                            @include('admin.component.temperatureGauge')--}}
+{{--                            @include('admin.component.flowChartByParameter')--}}
 {{--                        </div>--}}
             @if(count($deviceComponents) > 0)
                 @foreach($deviceComponents as $component)

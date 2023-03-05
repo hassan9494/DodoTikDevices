@@ -3,28 +3,55 @@
 
 @section('content')
 
-<?php
-use PhpMqtt\Client\Facades\MQTT;
+    <!-- Page Heading -->
 
-    $test = '';
-try {
-    $mqtt = MQTT::connection();
-    $mqtt->subscribe('DODOLORA',function (string $topic, string $message) {
-        $test = $message;
-        if ($message == null){
-            dd('11111111111111111');
-        }else{
-            echo $message ;
-        }
-//        dd($message);
-        echo sprintf('Received QoS level 1 message on topic [%s]: %s', $topic, $test);
-    }, 0);
-    $mqtt->loop(false,false);
-}catch (Exception $e){
-    dd($e);
-}
+    <h1 class="h3 mb-2 text-gray-800">{{__('message.Test Data')}}</h1>
 
 
 
-?>
+    <!-- DataTales Example -->
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>{{__('message.No.')}}</th>
+
+                        <th>{{__('message.Data')}}</th>
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    @php
+
+                        $no=0;
+
+                    @endphp
+
+                    @foreach ($allData as $data)
+                            <tr>
+                                <td>{{ ++$no }}</td>
+                                <td>{{ $data->settings }}</td>
+
+                            </tr>
+                    @endforeach
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
 @endsection
+

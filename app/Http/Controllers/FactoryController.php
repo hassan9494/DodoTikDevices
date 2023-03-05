@@ -267,6 +267,8 @@ class FactoryController extends Controller
             $status = "Offline";
             $label = 1;
         }
+
+
         return view('admin.factory.details', compact('label', 'firstParameter', 'devFactory', 'device_type', 'multiColor', 'xValues', 'paraValues', 'color'));
     }
 

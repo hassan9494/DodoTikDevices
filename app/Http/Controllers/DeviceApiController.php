@@ -328,6 +328,15 @@ class DeviceApiController extends Controller
         }
     }
 
+    public function readTestData(Request $request){
+        $para = $request->getContent();
+        $testsApi = new TestApi();
+        $testsApi->settings = json_encode($para);
+        $testsApi->save();
+        $response = 'data saved successfully';
+        return response()->json($response, 201);
+    }
+
     public function test()
     {
         $x = "QSAAAQACywEAAAAAAkIgMg==";
