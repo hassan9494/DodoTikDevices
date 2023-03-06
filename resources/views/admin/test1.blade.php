@@ -21,6 +21,8 @@
                     <tr>
                         <th>{{__('message.No.')}}</th>
 
+                        <th>{{__('message.date')}}</th>
+
                         <th>{{__('message.Data')}}</th>
 
                     </tr>
@@ -38,8 +40,8 @@
                     @foreach ($allData as $data)
                             <tr>
                                 <td>{{ ++$no }}</td>
+                                <td>{{\Carbon\Carbon::parse($data->created_at)->setTimezone('GMT+03:00')->format('Y-d-m h:i a')}}</td>
                                 <td>{{ $data->settings }}</td>
-
                             </tr>
                     @endforeach
 

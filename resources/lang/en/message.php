@@ -144,7 +144,8 @@ return [
     'All Data' => 'All Data',
     'save' => 'save',
     'Test Data' =>'Test Data',
-    'Data' => 'Data'
+    'Data' => 'Data',
+    'date' => 'date'
 
 
 ];
