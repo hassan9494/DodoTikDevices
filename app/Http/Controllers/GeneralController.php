@@ -12,6 +12,7 @@ class GeneralController extends Controller
 {
     public function dashboard()
     {
+
         try {
             $user = auth()->user();
             $now = Carbon::now();

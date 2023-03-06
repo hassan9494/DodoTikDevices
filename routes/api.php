@@ -33,5 +33,5 @@ Route::Post('read', [DeviceApiController::class ,'read']);
 Route::Post('read1', [DeviceApiController::class ,'read1']);
 Route::put('update/{id}', [DeviceApiController::class ,'update']);
 Route::delete('delete/{id}', [DeviceApiController::class ,'delete']);
-Route::Post('readTestData',[DeviceApiController::class ,'readTestData']);
+Route::Post('readT',[DeviceApiController::class ,'readTestData']);
 

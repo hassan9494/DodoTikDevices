@@ -332,8 +332,12 @@ class DeviceApiController extends Controller
         $para = $request->getContent();
         $testsApi = new TestApi();
         $testsApi->settings = json_encode($para);
+        $data = $testsApi->settings;
+        $lastdigits = substr ($data, -6);
         $testsApi->save();
-        $response = 'data saved successfully';
+        $response = substr($lastdigits,0,4);
+
+
         return response()->json($response, 201);
     }
 
