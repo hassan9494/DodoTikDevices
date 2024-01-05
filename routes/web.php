@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{Auth\ForgotPasswordController,
     ComponentController,
     ComponentSettingsController,
+    CSVController,
     DeviceComponentController,
     DeviceController,
     DeviceParametersController,
@@ -12,9 +13,9 @@ use App\Http\Controllers\{Auth\ForgotPasswordController,
     DevicTypeController,
     FactoryController,
     FrontController,
+    FtpFileController,
     GeneralController,
-    UserController
-};
+    UserController};
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,7 @@ use App\Http\Controllers\{Auth\ForgotPasswordController,
 // });
 Route::get('/', [FrontController::class, 'home'])->name('homepage');
 Route::get('about-us', [FrontController::class, 'about'])->name('about');
+Route::post('/upload-csv', [CSVController::class,'store']);
 
 Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
 Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
@@ -184,4 +186,17 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => 'auth', 'mi
     Route::get('devices/showParameterDataWithDate/{devFactory_id}/{parameter_id}/{from}/{to}', [FactoryController::class, 'showParameterDataWithDate'])->middleware('can:isAdminOrUser')->name('devices.showParameterDataWithDate');
 
     Route::get('testData', [GeneralController::class, 'testData'])->name('testData');
+
+
+
+    // Manage device_types
+    Route::get('files', [FtpFileController::class, 'index'])->middleware('can:isAdmin')->name('files');
+    Route::get('files/create', [FtpFileController::class, 'create'])->middleware('can:isAdmin')->name('files.create');
+    Route::post('files/store', [FtpFileController::class, 'store'])->middleware('can:isAdminOrUser')->name('files.store');
+    Route::get('files/edit/{id}', [FtpFileController::class, 'edit'])->middleware('can:isAdmin')->name('files.edit');
+    Route::get('files/show/{id}', [FtpFileController::class, 'show'])->middleware('can:isAdmin')->name('files.show');
+    Route::post('files/edit/{id}', [FtpFileController::class, 'update'])->middleware('can:isAdmin')->name('files.update');
+    Route::delete('files/destroy/{id}', [FtpFileController::class, 'destroy'])->middleware('can:isAdmin')->name('files.destroy');
+    Route::get('files/showWithDate/{id}/{from}/{to}', [FtpFileController::class, 'showWithDate'])->middleware('can:isAdminOrUser')->name('files.showWithDate');
+
 });

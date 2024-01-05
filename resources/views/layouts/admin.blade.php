@@ -126,6 +126,12 @@
                     <i class="fas fa-fw fa-industry"></i>
                     <span>{{__('message.Factories')}}</span></a>
             </li>
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ route('admin.files') }}">
+                    <i class="fas fa-fw fa-file-csv"></i>
+                    <span>{{__('message.Files')}}</span></a>
+            </li>
     @endcan
     <!-- Nav Item - Dashboard -->
         <li class="nav-item active">

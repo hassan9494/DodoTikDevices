@@ -28,7 +28,7 @@
   <link href="{{ asset('front/vendor/aos/aos.css') }}" rel="stylesheet">
   <link href="{{ asset('front/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
 
-  <!-- Template Main CSS File -->
+  <!-- Template Main CSS FtpFile -->
   <!-- <link href="{{ asset('front/css/style.css') }}" rel="stylesheet"> -->
   <link href="{{ asset('front/css/style-anapat.css') }}" rel="stylesheet">
 
@@ -173,7 +173,7 @@
   <script src="{{ asset('front/vendor/owl.carousel/owl.carousel.min.js') }}"></script>
   <script src="{{ asset('front/vendor/aos/aos.js') }}"></script>
 
-  <!-- Template Main JS File -->
+  <!-- Template Main JS FtpFile -->
   <script src="{{ asset('front/js/main.js') }}"></script>
 
   {!! $general->tawkto !!}

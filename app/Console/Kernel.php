@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-
+        $schedule->command('read:ftpFiles')->everyFifteenMinutes();
         $schedule->command('broker:subscribe')->everyFiveMinutes();
         $schedule->command('sendMail:whenBrokerFail')->everyFiveMinutes();
     }
