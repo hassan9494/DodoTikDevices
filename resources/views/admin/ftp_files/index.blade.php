@@ -10,7 +10,7 @@
 
 <!-- Page Heading -->
 
-<h1 class="h3 mb-2 text-gray-800">{{__('message.Components')}}</h1>
+<h1 class="h3 mb-2 text-gray-800">{{__('message.Files')}}</h1>
 
 @if (session('success'))
 
@@ -68,17 +68,17 @@
                             <a href="{{route('admin.files.show', [$file->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-eye"></i> </a>
 {{--                            <a href="{{route('admin.files.edit', [$file->id])}}" class="btn btn-edit btn-sm"> <i class="fas fa-edit"></i> </a>--}}
 
-                            <form method="POST" action="{{route('admin.files.destroy', [$file->id])}}" class="d-inline" onsubmit="return confirm('{{__("message.Delete this type permanently?")}}')">
+{{--                            <form method="POST" action="{{route('admin.files.destroy', [$file->id])}}" class="d-inline" onsubmit="return confirm('{{__("message.Delete this type permanently?")}}')">--}}
 
-                                @csrf
+{{--                                @csrf--}}
 
-                                <input type="hidden" name="_method" value="DELETE">
+{{--                                <input type="hidden" name="_method" value="DELETE">--}}
 
-                                <button type="submit" value="Delete" class="btn btn-delete btn-sm">
-                                <i class='fas fa-trash-alt'></i>
-                                </button>
+{{--                                <button type="submit" value="Delete" class="btn btn-delete btn-sm">--}}
+{{--                                <i class='fas fa-trash-alt'></i>--}}
+{{--                                </button>--}}
 
-                            </form>
+{{--                            </form>--}}
 
                         </td>
 
