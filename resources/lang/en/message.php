@@ -145,7 +145,9 @@ return [
     'save' => 'save',
     'Test Data' =>'Test Data',
     'Data' => 'Data',
-    'date' => 'date'
+    'date' => 'date',
+    'Files' => 'Files',
+    'Extension' => 'Extension',
 
 
 ];

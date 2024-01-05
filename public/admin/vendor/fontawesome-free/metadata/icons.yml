@@ -6997,7 +6997,7 @@ file:
     - 5.0.0
     - 5.10.1
     - 5.10.2
-  label: File
+  label: FtpFile
   search:
     terms:
       - document
@@ -7015,7 +7015,7 @@ file-alt:
     - '3.2'
     - 5.0.0
     - 5.10.2
-  label: Alternate File
+  label: Alternate FtpFile
   search:
     terms:
       - document
@@ -7035,7 +7035,7 @@ file-archive:
     - 5.0.0
     - 5.7.0
     - 5.10.2
-  label: Archive File
+  label: Archive FtpFile
   search:
     terms:
       - .zip
@@ -7054,7 +7054,7 @@ file-audio:
     - '4.1'
     - 5.0.0
     - 5.10.2
-  label: Audio File
+  label: Audio FtpFile
   search:
     terms:
       - document
@@ -7073,7 +7073,7 @@ file-code:
     - '4.1'
     - 5.0.0
     - 5.10.2
-  label: Code File
+  label: Code FtpFile
   search:
     terms:
       - css
@@ -7089,7 +7089,7 @@ file-contract:
   changes:
     - 5.1.0
     - 5.10.2
-  label: File Contract
+  label: FtpFile Contract
   search:
     terms:
       - agreement
@@ -7105,7 +7105,7 @@ file-csv:
   changes:
     - 5.4.0
     - 5.10.2
-  label: File CSV
+  label: FtpFile CSV
   search:
     terms:
       - document
@@ -7121,7 +7121,7 @@ file-download:
   changes:
     - 5.1.0
     - 5.10.2
-  label: File Download
+  label: FtpFile Download
   search:
     terms:
       - document
@@ -7136,7 +7136,7 @@ file-excel:
     - '4.1'
     - 5.0.0
     - 5.10.2
-  label: Excel File
+  label: Excel FtpFile
   search:
     terms:
       - csv
@@ -7154,7 +7154,7 @@ file-export:
     - 5.1.0
     - 5.7.0
     - 5.10.2
-  label: File Export
+  label: FtpFile Export
   search:
     terms:
       - download
@@ -7168,7 +7168,7 @@ file-image:
     - '4.1'
     - 5.0.0
     - 5.10.2
-  label: Image File
+  label: Image FtpFile
   search:
     terms:
       - document
@@ -7186,7 +7186,7 @@ file-import:
     - 5.1.0
     - 5.7.0
     - 5.10.2
-  label: File Import
+  label: FtpFile Import
   search:
     terms:
       - copy
@@ -7201,7 +7201,7 @@ file-invoice:
   changes:
     - 5.1.0
     - 5.10.2
-  label: File Invoice
+  label: FtpFile Invoice
   search:
     terms:
       - account
@@ -7218,7 +7218,7 @@ file-invoice-dollar:
   changes:
     - 5.1.0
     - 5.10.2
-  label: File Invoice with US Dollar
+  label: FtpFile Invoice with US Dollar
   search:
     terms:
       - $
@@ -7239,7 +7239,7 @@ file-medical:
   changes:
     - 5.0.7
     - 5.10.2
-  label: Medical File
+  label: Medical FtpFile
   search:
     terms:
       - document
@@ -7255,7 +7255,7 @@ file-medical-alt:
   changes:
     - 5.0.7
     - 5.10.2
-  label: Alternate Medical File
+  label: Alternate Medical FtpFile
   search:
     terms:
       - document
@@ -7272,7 +7272,7 @@ file-pdf:
     - '4.1'
     - 5.0.0
     - 5.10.2
-  label: PDF File
+  label: PDF FtpFile
   search:
     terms:
       - acrobat
@@ -7289,7 +7289,7 @@ file-powerpoint:
     - '4.1'
     - 5.0.0
     - 5.10.2
-  label: Powerpoint File
+  label: Powerpoint FtpFile
   search:
     terms:
       - display
@@ -7305,7 +7305,7 @@ file-prescription:
   changes:
     - 5.1.0
     - 5.10.2
-  label: File Prescription
+  label: FtpFile Prescription
   search:
     terms:
       - document
@@ -7321,7 +7321,7 @@ file-signature:
   changes:
     - 5.1.0
     - 5.10.2
-  label: File Signature
+  label: FtpFile Signature
   search:
     terms:
       - John Hancock
@@ -7336,7 +7336,7 @@ file-upload:
   changes:
     - 5.1.0
     - 5.10.2
-  label: File Upload
+  label: FtpFile Upload
   search:
     terms:
       - document
@@ -7352,7 +7352,7 @@ file-video:
     - '4.1'
     - 5.0.0
     - 5.10.2
-  label: Video File
+  label: Video FtpFile
   search:
     terms:
       - document
@@ -7370,7 +7370,7 @@ file-word:
     - '4.1'
     - 5.0.0
     - 5.10.2
-  label: Word File
+  label: Word FtpFile
   search:
     terms:
       - document

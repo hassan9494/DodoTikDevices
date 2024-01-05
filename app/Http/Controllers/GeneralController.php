@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use App\Models\{About, Device, DeviceParametersValues, DeviceType, General, TestApi, User};
+use Illuminate\Support\Str;
 use PhpMqtt\Client\Facades\MQTT;
 
 class GeneralController extends Controller
@@ -136,6 +137,31 @@ class GeneralController extends Controller
 
     public function testData()
     {
+//        $data = "$$0128AA865740039901280|50811800230305111930391300000000000000000000000008496665082834500000.800000003158.5066N03554.6835E000850";
+        $test = "$$0116AA359960105015707|10001000230306112113422500000000000004BB976A102100000000.700000002543.2241N05129.7910E040220";
+
+        $s='$$0030CF8642440230279140110107';
+
+// Input string. Checksum to be generated over the first 10 elements.
+        $string = '3599601050149';
+
+// Initial checksum
+        $checksum = 0;
+
+// Split into chunks and process first 10 parts
+        $parts = $string;
+        $nLength =  Str::length($parts);
+        for ($i = 0; $i < $nLength; $i++) {
+            $part = $parts[$i];
+            $nr = hexdec($part);
+            $checksum ^= $nr;
+        }
+
+// Done, bring back checksum into 0..0xff range
+        $checksum &= 0xff;
+        echo "Got checksum: ", $checksum, "\n";
+        dd($checksum);
+
         $allData = TestApi::all();
         return view('admin.test1',compact('allData'));
     }
@@ -239,4 +265,99 @@ class GeneralController extends Controller
         }
 
     }
+
+//    public function dashboard()
+//    {
+//        try {
+//            $user = auth()->user();
+//            $now = Carbon::now();
+//
+//            $admin = User::orderBy('id', 'desc')->count();
+//
+//            if ($user->role == 'Administrator') {
+//                $devices = Device::with('deviceType', 'limitValues', 'deviceParameters')
+//                    ->get();
+//            } else {
+//                $devices = Device::with('deviceType', 'limitValues', 'deviceParameters')
+//                    ->where('user_id', $user->id)
+//                    ->get();
+//            }
+//
+//            $types = DeviceType::all();
+//
+//            $state = [];
+//            $warning = [];
+//            $lastMinDanger = [];
+//            $lastdangerRead = [];
+//            $long = 0;
+//            $lat = 0;
+//
+//            foreach ($devices as $key => $device) {
+//                $long += $device->longitude;
+//                $lat += $device->latitude;
+//                $warning[$key] = 0;
+//                $lastMinDanger[$key] = null;
+//                $lastdangerRead[$key] = array_fill(0, 20, "#000000");
+//
+//                $parameters = $device->deviceParameters;
+//                $lastPara = $device->deviceParameters->last();
+//
+//                if (count($parameters) > 0) {
+//                    $lastParaTime = strtotime($lastPara->time_of_read);
+//                    $diff = $now->diff(Carbon::createFromTimestamp($lastParaTime));
+//
+//                    if ($diff->m == 0 && $diff->d == 0 && $diff->h == 0 && $diff->i < ($device->time_between_two_read + $device->tolerance)) {
+//                        $status = "Online";
+//                    } else {
+//                        $status = "Offline";
+//                    }
+//                } else {
+//                    $status = "Offline";
+//                }
+//
+//                $state[] = $status;
+//
+//                if ($device->deviceType != null) {
+//                    foreach ($device->deviceType->deviceParameters as $key2 => $tPara) {
+//                        if (isset($device->limitValues)) {
+//                            if ($device->limitValues->min_warning == 1 && $lastPara != null) {
+//                                $deviceParams = json_decode($lastPara->parameters, true);
+//                                $limitValues = json_decode($device->limitValues->min_value, true);
+//                                if (isset($deviceParams[$tPara->code]) && isset($limitValues[$tPara->code])) {
+//                                    if ($deviceParams[$tPara->code] < $limitValues[$tPara->code]) {
+//                                        $warning[$key] += 1;
+//                                        $lastMinDanger[$key] = $lastPara;
+//                                        $lastdangerRead[$key][$key2] = "red";
+//                                    }
+//                                }
+//                            }
+//
+//                            if ($device->limitValues->max_warning == 1 && $lastPara != null) {
+//                                $deviceParams = json_decode($lastPara->parameters, true);
+//                                $limitValues = json_decode($device->limitValues->max_value, true);
+//                                if (isset($deviceParams[$tPara->code]) && isset($limitValues[$tPara->code])) {
+//                                    if ($deviceParams[$tPara->code] > $limitValues[$tPara->code]) {
+//                                        $warning[$key] += 1;
+//                                        $lastMinDanger[$key] = $lastPara;
+//                                        $lastdangerRead[$key][$key2] = "red";
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//
+//            $deviceCount = count($devices);
+//            if ($deviceCount > 0) {
+//                $long /= $deviceCount;
+//                $lat /= $deviceCount;
+//            }
+//
+//            return view('admin.dashboard', compact('types', 'admin', 'long', 'lat', 'lastdangerRead', 'devices', 'state', 'warning', 'lastMinDanger'));
+//        } catch (Exception $exception) {
+//            $error = $exception;
+//            return view('admin.error', compact('error'));
+//        }
+//    }
 }

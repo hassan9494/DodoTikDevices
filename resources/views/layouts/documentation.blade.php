@@ -238,7 +238,7 @@
 {{--<script src="{{ asset('front/vendor/owl.carousel/owl.carousel.min.js') }}"></script>--}}
 {{--<script src="{{ asset('front/vendor/aos/aos.js') }}"></script>--}}
 
-{{--<!-- Template Main JS File -->--}}
+{{--<!-- Template Main JS FtpFile -->--}}
 {{--<script src="{{ asset('front/js/main.js') }}"></script>--}}
 
 {!! $general->tawkto !!}

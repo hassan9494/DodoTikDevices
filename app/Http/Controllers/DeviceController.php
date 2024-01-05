@@ -121,7 +121,6 @@ class DeviceController extends Controller
      */
     public function show($id)
     {
-
         $device = Device::findOrFail($id);
         $parametersFromSetting = DevicesComponents::where('device_id', $id)->get();
         if (count($parametersFromSetting) == 0) {
@@ -132,7 +131,7 @@ class DeviceController extends Controller
         $device_type = $device->deviceType;
         $now = Carbon::now();
         $thisMidnight = Carbon::now()->endOfDay();
-        $parameters = $device->deviceParameters;
+        $parameters = $device->deviceParameters()->whereDate('created_at','>=', Carbon::yesterday())->get();
         $firstParameter = $device_type->deviceParameters()->orderBy('order')->first();
         $xValues = [];
         $yValues = [];
@@ -171,6 +170,7 @@ class DeviceController extends Controller
 
         $lastPara = DeviceParametersValues::where('device_id', $id)->orderBy('id', 'desc')->first();
         if (count($parameters) > 0) {
+
             if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->m == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->d == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i <= ($device->time_between_two_read + $device->tolerance)) {
                 $status = "Online";
             } else {
@@ -187,8 +187,8 @@ class DeviceController extends Controller
             }
             $warning = 1;
             $dangerColor = [];
-            if (count($testPara) > 0) {
 
+            if (count($testPara) > 0) {
                 foreach ($testPara as $index => $tPara) {
                     $colorPara = $device_type->deviceParameters()->where('code', $tPara->code)->first()->pivot->color;
                     array_push($color, $colorPara);
@@ -234,7 +234,8 @@ class DeviceController extends Controller
                         }
                     }
                 }
-            } else {
+            }
+            else {
                 foreach ($device_type->deviceParameters()->orderBy('order')->get() as $index => $tPara) {
                     array_push($color, $tPara->pivot->color);
                     $dangerColor[$index] = '#000000';
