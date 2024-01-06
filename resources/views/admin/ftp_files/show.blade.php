@@ -9,10 +9,12 @@
             padding: 0;
             font-family: Roboto, sans-serif;
         }
+
         #chart {
             max-width: 100%;
             margin: 35px auto;
         }
+
         .spinner-border {
             position: relative;
             bottom: 300px;
@@ -20,6 +22,7 @@
             height: 5rem;
             display: none;
         }
+
         .apexcharts-tooltip-text-y-label {
             color: #000000;
         }
@@ -42,6 +45,20 @@
             height: 100vh;
             overflow: hidden;
         }
+        .dataTables_length {
+            float: left;
+        }
+
+        .dataTables_length label {
+            color: #0b2e13;
+        }
+
+        /*.dataTables_filter {*/
+        /*     float: left;*/
+        /* }*/
+        .dataTables_filter label {
+            color: #0b2e13;
+        }
     </style>
 
 @endsection
@@ -55,9 +72,12 @@
 
     <div class="container-fluid">
         <div class="row">
-                    <div class="col-md-12">
-                        @include('admin.component.files.flowchart')
-                    </div>
+            <div class="col-md-12">
+                @include('admin.component.files.flowchart')
+            </div>
+            <div class="col-md-12">
+                @include('admin.component.files.parameters_table')
+            </div>
         </div>
     </div>
 @endsection

@@ -198,5 +198,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => 'auth', 'mi
     Route::post('files/edit/{id}', [FtpFileController::class, 'update'])->middleware('can:isAdmin')->name('files.update');
     Route::delete('files/destroy/{id}', [FtpFileController::class, 'destroy'])->middleware('can:isAdmin')->name('files.destroy');
     Route::get('files/showWithDate/{id}/{from}/{to}', [FtpFileController::class, 'showWithDate'])->middleware('can:isAdminOrUser')->name('files.showWithDate');
+    Route::get('files/export/{id}', [FtpFileController::class, 'export'])->middleware('can:isAdminOrUser')->name('files.export');
+    Route::post('files/exportToDatasheet', [FtpFileController::class, 'exportToDatasheet'])->middleware('can:isAdminOrUser')->name('files.exportToDatasheet');
 
 });
