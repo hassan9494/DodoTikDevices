@@ -21,7 +21,11 @@
   <component name="ChangeListManager">
     <list default="true" id="4b9c3d3c-a351-4ab6-90ca-e38cb16d2c4d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/ftp_files/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/ftp_files/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Exports/ParametersDataExport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exports/ParametersDataExport.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/FtpFileController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/FtpFileController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/component/map.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/component/map.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/ftp_files/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/ftp_files/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,16 +188,16 @@
     <property name="DefaultHtmlFileTemplate" value="XHTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/admin/component/files" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/admin/ftp_files" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="php.override.implement.member.chooser.php.doc" value="NONE" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\projects\DodotikDevice\resources\views\admin\component\files" />
       <recent name="E:\projects\DodotikDevice\resources\views\admin\ftp_files" />
-      <recent name="E:\projects\DodotikDevice\resources\views\admin" />
+      <recent name="E:\projects\DodotikDevice\resources\views\admin\component\files" />
       <recent name="E:\projects\DodotikDevice\public\ftpfiles" />
+      <recent name="E:\projects\DodotikDevice\resources\views\admin" />
       <recent name="D:\projects\DodotikDevice\resources\views\admin\component" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -357,7 +361,9 @@
       <workItem from="1703329921883" duration="14492000" />
       <workItem from="1704264997148" duration="601000" />
       <workItem from="1704274127797" duration="2000" />
-      <workItem from="1704274583938" duration="23837000" />
+      <workItem from="1704274583938" duration="29671000" />
+      <workItem from="1704540914278" duration="688000" />
+      <workItem from="1704541697591" duration="953000" />
     </task>
     <servers />
   </component>
@@ -388,9 +394,13 @@
       <screen x="0" y="0" width="1536" height="816" />
     </state>
     <state x="450" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1536.816@0.0.1536.816" timestamp="1704188602454" />
-    <state x="499" y="163" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1704357405170">
+    <state x="499" y="163" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1704542220233">
       <screen x="0" y="0" width="1536" height="816" />
     </state>
-    <state x="499" y="163" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1536.816@0.0.1536.816" timestamp="1704357405170" />
+    <state x="499" y="163" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1536.816@0.0.1536.816" timestamp="1704542220233" />
+    <state x="349" y="143" key="IDE.errors.dialog" timestamp="1704485104165">
+      <screen x="0" y="0" width="1536" height="816" />
+    </state>
+    <state x="349" y="143" key="IDE.errors.dialog/0.0.1536.816@0.0.1536.816" timestamp="1704485104165" />
   </component>
 </project>

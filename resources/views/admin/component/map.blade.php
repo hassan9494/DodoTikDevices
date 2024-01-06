@@ -188,8 +188,8 @@
                                                     <div><p style=""></p>
                                                         {{--                                                    {{dd($dangerColor)}}--}}
                                                         <span
-                                                            style="color: {{$dangerColor[$key]}}">{{$parameter->name}}</span>
-                                                        :<span style="color: {{$dangerColor[$key]}}">{{json_decode($device->deviceParameters()->orderBy('id','desc')->first()->parameters,true)[$parameter->code]}}  ({{$parameter->unit}})</span>
+                                                            style="color: {{@$dangerColor[$key]}}">{{$parameter->name}}</span>
+                                                        :<span style="color: {{@$dangerColor[$key]}}">{{json_decode($device->deviceParameters()->orderBy('id','desc')->first()->parameters,true)[$parameter->code]}}  ({{$parameter->unit}})</span>
                                                     </div>
                                                 @endforeach
                                                 <span

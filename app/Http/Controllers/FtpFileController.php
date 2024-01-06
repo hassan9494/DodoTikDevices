@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\FileParametersExport;
+use App\Exports\ParametersDataExport;
+use App\Models\Device;
 use App\Models\FtpFile;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class FtpFileController extends Controller
 {
@@ -108,6 +112,25 @@ class FtpFileController extends Controller
 
         $label = 1;
         return array($paraValues, $xValues, $label);
+    }
+
+    public function export($id)
+    {
+        $ftpFile = FtpFile::findOrFail($id);
+        return view('admin.ftp_files.export', compact('ftpFile'));
+    }
+
+    public function exportToDatasheet(Request $request)
+    {
+        $validate = [
+            'from' => 'required',
+            'to' => 'required'
+        ];
+        \Validator::make($request->all(), $validate)->validate();
+        $from = $request->from;
+        $to = $request->to;
+        $file = $request->id;
+        return Excel::download(new FileParametersExport($from, $to, $file), 'parameter.xlsx');
     }
 
     /**
