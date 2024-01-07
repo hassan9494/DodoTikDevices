@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Exports\FileParametersExport;
 use App\Exports\ParametersDataExport;
 use App\Models\Device;
+use App\Models\FilesParametersValues;
 use App\Models\FtpFile;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
 
 class FtpFileController extends Controller
@@ -19,9 +22,8 @@ class FtpFileController extends Controller
      */
     public function index()
     {
-
         $files = FtpFile::all();
-        return view('admin.ftp_files.index',compact('files'));
+        return view('admin.ftp_files.index', compact('files'));
     }
 
     /**
@@ -37,7 +39,7 @@ class FtpFileController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -48,24 +50,24 @@ class FtpFileController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         $ftpFile = FtpFile::findOrFail($id);
-        $parametersvalues = $ftpFile->fileParameters()->whereDate('time_of_read','>=', Carbon::yesterday())->get();
+        $parametersvalues = $ftpFile->fileParameters()->whereDate('time_of_read', '>=', Carbon::yesterday())->get();
         $paraValues = [];
         $yValues = [];
         $xValues = [];
         $now = Carbon::now();
         $thisMidnight = Carbon::now()->endOfDay();
-        $parameters = ['Flow','TOT1','TOT2','TOT3'];
-        foreach ($parameters as $key => $value){
+        $parameters = ['Flow', 'TOT1', 'TOT2', 'TOT3'];
+        foreach ($parameters as $key => $value) {
             $xValues = [];
-            foreach ($parametersvalues as $parametersvalue){
-                if (($now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parametersvalue->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->y == 0) || $now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->y == 0){
-                    array_push($yValues,json_decode($parametersvalue->parameters,true)[$value]);
+            foreach ($parametersvalues as $parametersvalue) {
+                if (($now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parametersvalue->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->y == 0) || $now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->y == 0) {
+                    array_push($yValues, json_decode($parametersvalue->parameters, true)[$value]);
                     array_push($xValues, date(DATE_ISO8601, strtotime($parametersvalue->time_of_read)));
                 }
 
@@ -75,7 +77,7 @@ class FtpFileController extends Controller
         }
 
         $label = 1;
-        return view('admin.ftp_files.show', compact('ftpFile','label','parameters','paraValues','xValues'));
+        return view('admin.ftp_files.show', compact('ftpFile', 'label', 'parameters', 'paraValues', 'xValues'));
     }
 
     public function showWithDate($id, $from, $to)
@@ -87,21 +89,21 @@ class FtpFileController extends Controller
         $xValues = [];
         $now = Carbon::now();
         $thisMidnight = Carbon::now()->endOfDay();
-        $parameters = ['Flow','TOT1','TOT2','TOT3'];
-        foreach ($parameters as $key => $value){
+        $parameters = ['Flow', 'TOT1', 'TOT2', 'TOT3'];
+        foreach ($parameters as $key => $value) {
             $xValues = [];
 
-            if (($from == 1 && $to == 0) || ($from == -1 && $to == -1) ) {
+            if (($from == 1 && $to == 0) || ($from == -1 && $to == -1)) {
                 foreach ($parametersvalues as $parametersvalue) {
-                    if (($now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parametersvalue->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->y == 0) || $now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->y == 0){
-                        array_push($yValues,json_decode($parametersvalue->parameters,true)[$value]);
+                    if (($now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->d == 1 && $thisMidnight->diff(date("m/d/Y H:I", strtotime($parametersvalue->time_of_read)))->h <= 2 && $now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->y == 0) || $now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->d == 0 && $now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->y == 0) {
+                        array_push($yValues, json_decode($parametersvalue->parameters, true)[$value]);
                         array_push($xValues, date(DATE_ISO8601, strtotime($parametersvalue->time_of_read)));
                     }
                 }
-            }else{
-                foreach ($parametersvalues as $parametersvalue){
+            } else {
+                foreach ($parametersvalues as $parametersvalue) {
                     if ($now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->d <= $from && $now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->d >= $to && $now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->m == 0 && $now->diff(date("m/d/Y", strtotime($parametersvalue->time_of_read)))->y == 0) {
-                        array_push($yValues,json_decode($parametersvalue->parameters,true)[$value]);
+                        array_push($yValues, json_decode($parametersvalue->parameters, true)[$value]);
                         array_push($xValues, date(DATE_ISO8601, strtotime($parametersvalue->time_of_read)));
                     }
                 }
@@ -136,7 +138,7 @@ class FtpFileController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -147,8 +149,8 @@ class FtpFileController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -159,7 +161,7 @@ class FtpFileController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
