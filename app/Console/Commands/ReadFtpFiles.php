@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\FilesParametersValues;
 use App\Models\FtpFile;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use \Illuminate\Support\Facades\File;
 
@@ -43,9 +44,9 @@ class ReadFtpFiles extends Command
         $files = File::files(public_path('ftpfiles'));
 
         $allFiles = [];
-        foreach ($files as $file){
-            $newFile = FtpFile::where('name',$file->getFilenameWithoutExtension())->first();
-            if ($newFile == null){
+        foreach ($files as $file) {
+            $newFile = FtpFile::where('name', $file->getFilenameWithoutExtension())->first();
+            if ($newFile == null) {
                 $newFile = new FtpFile();
                 $newFile->name = $file->getFilenameWithoutExtension();
                 $newFile->extension = $file->getExtension();
@@ -53,35 +54,67 @@ class ReadFtpFiles extends Command
             }
             $fileContents = File::get($file);
             $lines = explode("\n", $fileContents);
+
+
             $filecontent = [];
-            foreach ($lines as $line) {
-                $replacedString = str_replace("\r", "|", $line);
-                $array = explode("|", $replacedString);
-                $firstline = explode(",", trim($array[0]," "));
+            if (count($lines) == 1) {
+                foreach ($lines as $line) {
+                    $replacedString = str_replace("\r", "|", $line);
+                    $array = explode("|", $replacedString);
+                    $firstline = explode(",", trim($array[0], " "));
+                    $firstline = array_map('trim', $firstline);
+                    $replacedFirstline = str_replace("YYYY-MM-DD hh:mm:ss", "date", $firstline);
+                    $isFirstLine = true;
+                    foreach ($array as $key => $data) {
+                        if ($isFirstLine) {
+                            $isFirstLine = false;
+                            continue; // Skip the first line
+                        }
+                        $line = explode(",", $data);
+                        if (count($line) == count($replacedFirstline)) {
+                            $replacedArray = array_combine($replacedFirstline, array_values($line));
+                            $newParameters = new FilesParametersValues();
+                            $newParameters->file_id = $newFile->id;
+                            $newParameters->parameters = $replacedArray;
+                            $newParameters->time_of_read = $replacedArray['date'];
+                            $newParameters->save();
+                            array_push($filecontent, $replacedArray);
+                        }
+                    }
+                }
+                $oldFilePath = public_path('oldFtpFiles') . '/' . $file->getFilename();
+                File::move($file, $oldFilePath);
+                array_push($allFiles, $filecontent);
+            } else {
+                $firstline = explode(",", trim($lines[0], " "));
                 $firstline = array_map('trim', $firstline);
                 $replacedFirstline = str_replace("YYYY-MM-DD hh:mm:ss", "date", $firstline);
                 $isFirstLine = true;
-                foreach ($array as $key=>$data) {
+                foreach ($lines as $key => $data) {
                     if ($isFirstLine) {
                         $isFirstLine = false;
                         continue; // Skip the first line
                     }
                     $line = explode(",", $data);
-                    if (count($line) == count($replacedFirstline)){
+                    if (count($line) == count($replacedFirstline)) {
                         $replacedArray = array_combine($replacedFirstline, array_values($line));
-                        $newParameters = new FilesParametersValues();
-                        $newParameters->file_id = $newFile->id;
-                        $newParameters->parameters = $replacedArray;
-                        $newParameters->time_of_read = $replacedArray['date'];
-                        $newParameters->save();
-                        array_push($filecontent,$replacedArray);
+
+                        if ($replacedArray['Flow'] != ""){
+                            $newParameters = new FilesParametersValues();
+                            $newParameters->file_id = $newFile->id;
+                            $newParameters->parameters = $replacedArray;
+                            $newParameters->time_of_read = Carbon::parse($replacedArray['date'])->toDateTimeString();
+                            $newParameters->save();
+                            array_push($filecontent, $replacedArray);
+                        }
+
                     }
                 }
+                $oldFilePath = public_path('oldFtpFiles') . '/' . $file->getFilename();
+                File::move($file, $oldFilePath);
+                array_push($allFiles, $filecontent);
             }
 
-            $oldFilePath = public_path('oldFtpFiles') . '/' . $file->getFilename();
-            File::move($file, $oldFilePath);
-            array_push($allFiles,$filecontent);
         }
     }
 }
