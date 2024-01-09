@@ -25,6 +25,99 @@ class FtpFileController extends Controller
         $files = FtpFile::all();
         return view('admin.ftp_files.index', compact('files'));
     }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function import()
+    {
+        $files = File::files(public_path('ftpfiles'));
+
+        $allFiles = [];
+        foreach ($files as $file) {
+            $newFile = FtpFile::where('name', $file->getFilenameWithoutExtension())->first();
+            if ($newFile == null) {
+                $newFile = new FtpFile();
+                $newFile->name = $file->getFilenameWithoutExtension();
+                $newFile->extension = $file->getExtension();
+                $newFile->save();
+            }
+            $fileContents = File::get($file);
+            $lines = explode("\n", $fileContents);
+
+
+            $filecontent = [];
+            if (count($lines) == 1) {
+                foreach ($lines as $line) {
+                    $replacedString = str_replace("\r", "|", $line);
+                    $array = explode("|", $replacedString);
+                    $firstline = explode(",", trim($array[0], " "));
+                    $firstline = array_map('trim', $firstline);
+
+                    $replacedFirstline = str_replace("YYYY-MM-DD hh:mm:ss", "date", $firstline);
+                    $isFirstLine = true;
+                    foreach ($array as $key => $data) {
+                        if ($isFirstLine) {
+                            $isFirstLine = false;
+                            continue; // Skip the first line
+                        }
+                        $line = explode(",", $data);
+                        if (count($line) == count($replacedFirstline)) {
+                            $replacedArray = array_combine($replacedFirstline, array_values($line));
+                            $newParameters = new FilesParametersValues();
+                            $newParameters->file_id = $newFile->id;
+                            $newParameters->parameters = $replacedArray;
+                            $newParameters->time_of_read = $replacedArray['date'];
+                            $newParameters->save();
+                            array_push($filecontent, $replacedArray);
+                        }
+                    }
+                }
+                $oldFilePath = public_path('oldFtpFiles') . '/' . $file->getFilename();
+                File::move($file, $oldFilePath);
+                array_push($allFiles, $filecontent);
+            } else {
+                $firstline = explode(",", trim($lines[0], " "));
+                $firstline = array_map('trim', $firstline);
+                $format = 'j/n/Y H:i';
+                $replacedFirstline = str_replace("YYYY-MM-DD hh:mm:ss", "date", $firstline);
+                $isFirstLine = true;
+                foreach ($lines as $key => $data) {
+                    if ($isFirstLine) {
+                        $isFirstLine = false;
+                        continue; // Skip the first line
+                    }
+                    $line = explode(",", $data);
+                    if (count($line) == count($replacedFirstline)) {
+                        $replacedArray = array_combine($replacedFirstline, array_values($line));
+
+                        if ($replacedArray['Flow'] != ""){
+                            $newParameters = new FilesParametersValues();
+                            $newParameters->file_id = $newFile->id;
+                            $newParameters->parameters = $replacedArray;
+                            $dateTime = DateTime::createFromFormat($format, $replacedArray['date']);
+                            if ($dateTime != false){
+                                $formattedDateTime = $dateTime->format('Y-m-d H:i:s');
+                            }else{
+                                $formattedDateTime =$replacedArray['date'];
+                            }
+                            $newParameters->time_of_read = $formattedDateTime;
+                            $newParameters->save();
+                            array_push($filecontent, $replacedArray);
+                        }
+
+                    }
+                }
+                $oldFilePath = public_path('oldFtpFiles') . '/' . $file->getFilename();
+                File::move($file, $oldFilePath);
+                array_push($allFiles, $filecontent);
+            }
+
+        }
+        $files = FtpFile::all();
+        return view('admin.ftp_files.index', compact('files'));
+    }
 
     /**
      * Show the form for creating a new resource.
