@@ -63,6 +63,7 @@ class ReadFtpFiles extends Command
                     $array = explode("|", $replacedString);
                     $firstline = explode(",", trim($array[0], " "));
                     $firstline = array_map('trim', $firstline);
+
                     $replacedFirstline = str_replace("YYYY-MM-DD hh:mm:ss", "date", $firstline);
                     $isFirstLine = true;
                     foreach ($array as $key => $data) {
@@ -88,6 +89,7 @@ class ReadFtpFiles extends Command
             } else {
                 $firstline = explode(",", trim($lines[0], " "));
                 $firstline = array_map('trim', $firstline);
+                $format = 'j/n/Y H:i';
                 $replacedFirstline = str_replace("YYYY-MM-DD hh:mm:ss", "date", $firstline);
                 $isFirstLine = true;
                 foreach ($lines as $key => $data) {
@@ -103,7 +105,13 @@ class ReadFtpFiles extends Command
                             $newParameters = new FilesParametersValues();
                             $newParameters->file_id = $newFile->id;
                             $newParameters->parameters = $replacedArray;
-                            $newParameters->time_of_read = Carbon::parse($replacedArray['date'])->toDateTimeString();
+                            $dateTime = DateTime::createFromFormat($format, $replacedArray['date']);
+                            if ($dateTime != false){
+                                $formattedDateTime = $dateTime->format('Y-m-d H:i:s');
+                            }else{
+                                $formattedDateTime =$replacedArray['date'];
+                            }
+                            $newParameters->time_of_read = $formattedDateTime;
                             $newParameters->save();
                             array_push($filecontent, $replacedArray);
                         }

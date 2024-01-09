@@ -35,7 +35,7 @@
                                             @php
                                                 $no=0;
                                             @endphp
-                                            @foreach($ftpFile->fileParameters()->orderBy('id','desc')->paginate(100) as $fileParameter)
+                                            @foreach($ftpFile->fileParameters()->orderBy('id','desc')->paginate(500) as $fileParameter)
                                                 <tr>
                                                     <td>{{ ++$no }}</td>
                                                     @if(count($parameters) > 0)

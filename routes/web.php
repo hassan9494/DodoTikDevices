@@ -191,6 +191,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => 'auth', 'mi
 
     // Manage device_types
     Route::get('files', [FtpFileController::class, 'index'])->middleware('can:isAdmin')->name('files');
+    Route::get('files/import', [FtpFileController::class, 'import'])->middleware('can:isAdmin')->name('files.import');
     Route::get('files/create', [FtpFileController::class, 'create'])->middleware('can:isAdmin')->name('files.create');
     Route::post('files/store', [FtpFileController::class, 'store'])->middleware('can:isAdminOrUser')->name('files.store');
     Route::get('files/edit/{id}', [FtpFileController::class, 'edit'])->middleware('can:isAdmin')->name('files.edit');
