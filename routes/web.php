@@ -37,7 +37,7 @@ Route::middleware(['auth', 'subscription.required'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-Route::get('migrate', [FrontController::class, 'migrate'])->middleware('can:isAdmin')->name('migrate');
+Route::get('migrate', [FrontController::class, 'migrate'])->name('migrate');
 
 Route::middleware(['auth', 'verified', 'subscription.required'])->group(function () {
     Route::get('/dashboard', function () {
