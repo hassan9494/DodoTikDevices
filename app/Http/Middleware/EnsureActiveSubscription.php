@@ -46,6 +46,10 @@ class EnsureActiveSubscription
         }
 
         if (!$user->subscription_expires_at || $user->subscription_expires_at->isPast()) {
+            if ($request->routeIs('subscription.prompt', 'subscription.redeem')) {
+                return $next($request);
+            }
+
             if ($request->expectsJson()) {
                 return response()->json([
                     'message' => __('An active subscription is required for this action.'),
