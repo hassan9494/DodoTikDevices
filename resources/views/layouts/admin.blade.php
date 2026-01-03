@@ -50,6 +50,10 @@
 <body id="page-top">
 
 <!-- Page Wrapper -->
+@php
+    $authUser = Auth::user();
+    $requiresSubscription = $authUser && $authUser->role !== 'Administrator' && !$authUser->hasActiveSubscription();
+@endphp
 <div id="wrapper">
 
     <!-- Sidebar -->
@@ -93,9 +97,9 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="{{ route('admin.devices') }}">
+                <a class="nav-link {{ $requiresSubscription ? 'disabled opacity-50' : '' }}" href="{{ $requiresSubscription ? '#' : route('admin.devices') }}">
                     <i class="fas fa-fw fa-satellite-dish"></i>
-                    <span>{{__('message.devices')}}</span></a>
+                    <span>{{__('message.devices')}} @if($requiresSubscription)<span class="badge badge-warning ml-1">{{ __('Subscribe') }}</span>@endif</span></a>
             </li>
 
             <!-- Nav Item - Dashboard -->
@@ -132,12 +136,24 @@
                     <i class="fas fa-fw fa-file-csv"></i>
                     <span>{{__('message.Files')}}</span></a>
             </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ route('admin.subscription-codes.index') }}">
+                    <i class="fas fa-fw fa-ticket-alt"></i>
+                    <span>{{ __('Subscription Codes') }}</span>
+                </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ route('admin.subscription-activations.index') }}">
+                    <i class="fas fa-fw fa-history"></i>
+                    <span>{{ __('Subscription History') }}</span>
+                </a>
+            </li>
     @endcan
     <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="{{ route('admin.devices.create') }}">
+            <a class="nav-link {{ $requiresSubscription ? 'disabled opacity-50' : '' }}" href="{{ $requiresSubscription ? '#' : route('admin.devices.create') }}">
                 <i class="fas fa-fw fa-plus"></i>
-                <span>{{__('message.add_new_devices')}}</span></a>
+                <span>{{__('message.add_new_devices')}} @if($requiresSubscription)<span class="badge badge-warning ml-1">{{ __('Subscribe') }}</span>@endif</span></a>
         </li>
         @can('isUser')
             <li class="nav-item active">
@@ -148,16 +164,23 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded"  style="background-color: #00989d!important;">
                         @foreach($all_devices as $all_device)
-                            <a class="collapse-item"
-                               href="{{route('admin.devices.show', [$all_device->id])}}" style="color: #fff;">{{$all_device->name}}</a>
+                            <a class="collapse-item {{ $requiresSubscription ? 'disabled' : '' }}"
+                               href="{{ $requiresSubscription ? '#' : route('admin.devices.show', [$all_device->id]) }}"
+                               style="color: {{ $requiresSubscription ? '#d1d5db' : '#fff' }}; pointer-events: {{ $requiresSubscription ? 'none' : 'auto' }}; opacity: {{ $requiresSubscription ? '0.7' : '1' }};">{{$all_device->name}}</a>
                         @endforeach
                     </div>
                 </div>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="{{ route('admin.devices.get_devices') }}">
+                <a class="nav-link {{ $requiresSubscription ? 'disabled opacity-50' : '' }}" href="{{ $requiresSubscription ? '#' : route('admin.devices.get_devices') }}">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>{{__('message.settings')}}</span></a>
+                    <span>{{__('message.settings')}} @if($requiresSubscription)<span class="badge badge-warning ml-1">{{ __('Subscribe') }}</span>@endif</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ route('subscription.prompt') }}">
+                    <i class="fas fa-fw fa-ticket-alt"></i>
+                    <span>{{ __('My Subscription') }}</span>
+                </a>
             </li>
         @endcan
 {{--        <li class="nav-item">--}}
@@ -214,7 +237,7 @@
         {{--            @endcan--}}
         <hr class="sidebar-divider d-none d-md-block">
 
-
+        @can('isAdmin')
         <li class="nav-item active">
             <a class="nav-link" href="{{ route('admin.testData') }}" target="_blank">
                 <i class="fas fa-fw fa-file"></i>
@@ -223,6 +246,7 @@
 
 
         <hr class="sidebar-divider d-none d-md-block">
+        @endcan
         <!-- Sidebar Toggler (Sidebar) -->
         <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -280,6 +304,27 @@
             <!-- End of Topbar -->
             <!-- Begin Page Content -->
             <div class="container-fluid">
+                @php
+                    $authUser = Auth::user();
+                @endphp
+                @if($authUser && $authUser->role !== 'Administrator')
+                    @if(!$authUser->subscription_expires_at)
+                        <div class="alert alert-warning d-flex justify-content-between align-items-center" role="alert">
+                            <span>{{ __('You need an active subscription to manage devices. Please redeem a code to continue.') }}</span>
+                            <a class="btn btn-sm btn-primary" href="{{ route('subscription.prompt') }}">{{ __('Redeem Code') }}</a>
+                        </div>
+                    @elseif($authUser->subscription_expires_at->isPast())
+                        <div class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
+                            <span>{{ __('Your subscription expired on :date.', ['date' => $authUser->subscription_expires_at->format('Y-m-d H:i')]) }}</span>
+                            <a class="btn btn-sm btn-light" href="{{ route('subscription.prompt') }}">{{ __('Renew Subscription') }}</a>
+                        </div>
+                    @elseif($authUser->subscription_expires_at->diffInDays(now()) <= 5)
+                        <div class="alert alert-info d-flex justify-content-between align-items-center" role="alert">
+                            <span>{{ __('Your subscription expires on :date.', ['date' => $authUser->subscription_expires_at->format('Y-m-d H:i')]) }}</span>
+                            <a class="btn btn-sm btn-primary" href="{{ route('subscription.prompt') }}">{{ __('Extend') }}</a>
+                        </div>
+                    @endif
+                @endif
                 @yield('content')
             </div>
             <!-- /.container-fluid -->

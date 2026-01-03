@@ -43,7 +43,11 @@
 
                         <th>{{__('message.Email')}}</th>
 
+                        <th>{{__('message.Phone')}}</th>
+
                         <th>{{__('message.Role')}}</th>
+
+                        <th>{{ __('message.Status') }}</th>
 
                         <th>{{__('message.Option')}}</th>
 
@@ -63,9 +67,17 @@
                         @if(auth()->user()->role=='Administrator')
                             <tr>
                                 <td>{{ ++$no }}</td>
-                                <td>{{ $user->username }}</td>
+                                <td style="width: 20%;">{{ Str::limit($user->username, 25, '.....') }}</td>
                                 <td>{{ $user->email }}</td>
+                                <td>{{ $user->phone ?? '—' }}</td>
                                 <td>{{ $user->role }}</td>
+                                <td>
+                                    @if($user->is_active)
+                                        <span class="badge badge-success">{{ __('message.Active') }}</span>
+                                    @else
+                                        <span class="badge badge-secondary">{{ __('message.Inactive') }}</span>
+                                    @endif
+                                </td>
                                 <td>
                                     {{--                            @if(auth()->user()->id==$user->id || (auth()->user()->role=='Administrator' ))--}}
                                     @if(auth()->user()->id==$user->id )
@@ -77,6 +89,17 @@
                                            class="btn btn-edit btn-sm"> <i class="fas fa-edit"></i> </a>
                                     @endif
                                     @if(auth()->user()->role=='Administrator')
+                                        <a href="{{ route('admin.users.show', [$user->id]) }}" class="btn btn-info btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        @if(auth()->user()->id !== $user->id && $user->role !== 'Administrator')
+                                            <form method="POST" action="{{ route('admin.users.toggle-status', $user->id) }}" class="d-inline">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm {{ $user->is_active ? 'btn-warning' : 'btn-success' }}" onclick="return confirm('{{ $user->is_active ? __('message.confirm_deactivate') : __('message.confirm_activate') }}');">
+                                                    <i class="fas {{ $user->is_active ? 'fa-user-slash' : 'fa-user-check' }}"></i>
+                                                </button>
+                                            </form>
+                                        @endif
                                         <form method="POST" action="{{route('admin.users.destroy', [$user->id])}}"
                                               class="d-inline"
                                               onsubmit="return confirm('{{__("message.Delete this user permanently?")}}')">

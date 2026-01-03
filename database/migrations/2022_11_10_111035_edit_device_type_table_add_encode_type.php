@@ -14,7 +14,9 @@ class EditDeviceTypeTableAddEncodeType extends Migration
     public function up()
     {
         Schema::table('device_types', function (Blueprint $table) {
-            $table->integer('encode_type')->default(1);
+            if (!Schema::hasColumn('device_types', 'encode_type')) {
+                $table->integer('encode_type')->default(1);
+            }
         });
     }
 
@@ -25,6 +27,10 @@ class EditDeviceTypeTableAddEncodeType extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('device_types', function (Blueprint $table) {
+            if (Schema::hasColumn('device_types', 'encode_type')) {
+                $table->dropColumn('encode_type');
+            }
+        });
     }
 }

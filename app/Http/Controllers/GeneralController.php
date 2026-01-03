@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use App\Models\{About, Device, DeviceParametersValues, DeviceType, General, TestApi, User};
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use PhpMqtt\Client\Facades\MQTT;
 
@@ -16,78 +18,99 @@ class GeneralController extends Controller
 
         try {
             $user = auth()->user();
-            $now = Carbon::now();
-            if ($user->role == 'Administrator') {
-                $admin = User::orderBy('id', 'desc')->count();
-                $devices = Device::all();
-            } else {
-                $admin = User::orderBy('id', 'desc')->count();
-                $devices = Device::where('user_id', $user->id)->get();
+            $referenceTime = Carbon::now();
+
+            $adminCount = User::count();
+
+            $deviceLimit = (int) config('dashboard.device_limit', 200);
+
+            $baseQuery = Device::query()
+                ->select([
+                    'devices.id',
+                    'devices.name',
+                    'devices.type_id',
+                    'devices.user_id',
+                    'devices.latitude',
+                    'devices.longitude',
+                    'devices.time_between_two_read',
+                    'devices.tolerance',
+                ])
+                ->visibleTo($user);
+
+            $totalDevices = (clone $baseQuery)->toBase()->count();
+
+            $deviceRows = $baseQuery
+                ->orderByDesc('devices.id')
+                ->limit($deviceLimit + 1)
+                ->get();
+
+            $hasMoreDevices = $deviceRows->count() > $deviceLimit;
+            if ($hasMoreDevices) {
+                $deviceRows = $deviceRows->take($deviceLimit);
             }
-            $types = DeviceType::all();
-            $state = [];
-            $status = "Offline";
-            $warning = [];
-            $lastMinDanger = [];
-            $lastdangerRead = [];
-            $long = 0;
-            $lat = 0;
-            foreach ($devices as $key => $device) {
-                $long += $device->longitude;
-                $lat += $device->latitude;
-                $warning[$key] = 0;
-                $lastMinDanger[$key] = null;
-                $lastdangerRead[$key] = ["#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000",];
-                $parameters = $device->deviceParameters;
-                $lastPara = DeviceParametersValues::where('device_id', $device->id)->orderBy('id', 'desc')->first();
-                if (count($parameters) > 0) {
-                    if ($now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->m == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->d == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->h == 0 && $now->diff(date("m/d/Y H:i", strtotime($lastPara->time_of_read)))->i < ($device->time_between_two_read + $device->tolerance)) {
-                        $status = "Online";
-                    } else {
-                        $status = "Offline";
-                    }
-                } else {
-                    $status = "Offline";
-                }
-                array_push($state, $status);
-                if ($device->deviceType != null) {
-                    foreach ($device->deviceType->deviceParameters as $key2 => $tPara) {
-                        if (isset($device->limitValues)) {
-                            if ($device->limitValues->min_warning == 1) {
-                                if ($device->deviceParameters->last() != null)
-                                    if (isset(json_decode($device->deviceParameters->last()->parameters, true)[$tPara->code]) && isset(json_decode($device->limitValues->min_value, true)[$tPara->code])){
-                                        if (json_decode($device->deviceParameters->last()->parameters, true)[$tPara->code] < json_decode($device->limitValues->min_value, true)[$tPara->code]) {
 
-                                            $warning[$key] += 1;
-                                            $lastMinDanger[$key] = $device->deviceParameters->last();
-                                            $lastdangerRead[$key][$key2] = "red";
-                                        }
-                                    }
+            $deviceIds = $deviceRows->pluck('id')->all();
+            $typeIds = $deviceRows->pluck('type_id')->filter()->unique()->all();
 
-                            }
-                            if ($device->limitValues->max_warning == 1) {
-                                if ($device->deviceParameters->last() != null)
-                                    if (isset(json_decode($device->deviceParameters->last()->parameters, true)[$tPara->code]) && isset(json_decode($device->limitValues->max_value, true)[$tPara->code])){
-                                        if (json_decode($device->deviceParameters->last()->parameters, true)[$tPara->code] > json_decode($device->limitValues->max_value, true)[$tPara->code]) {
-                                            $warning[$key] += 1;
-                                            $lastMinDanger[$key] = $device->deviceParameters->last();
-                                            $lastdangerRead[$key][$key2] = "red";
-                                        }
-                                    }
+            $types = empty($typeIds)
+                ? collect()
+                : DeviceType::query()
+                    ->select(['id', 'name'])
+                    ->whereIn('id', $typeIds)
+                    ->get();
 
-                            }
-                        }
-                    }
-                }
+            $parametersByType = empty($typeIds)
+                ? collect()
+                : DB::table('device_parameters as dp')
+                    ->join('device_parameters_device_type as pivot', 'dp.id', '=', 'pivot.device_parameters_id')
+                    ->select(['pivot.device_type_id as type_id', 'dp.code', 'dp.name', 'dp.unit'])
+                    ->whereIn('pivot.device_type_id', $typeIds)
+                    ->get()
+                    ->groupBy('type_id');
 
-            }
-            if (count($devices) > 0) {
-                $long = $long / count($devices);
-                $lat = $lat / count($devices);
-            }
-            return view('admin.dashboard', compact('types', 'admin', 'long', 'lat', 'lastdangerRead', 'devices', 'state', 'warning', 'lastMinDanger'));
+            $limitsByDevice = empty($deviceIds)
+                ? collect()
+                : DB::table('limit_values')
+                    ->select(['device_id', 'min_warning', 'max_warning', 'min_value', 'max_value'])
+                    ->whereIn('device_id', $deviceIds)
+                    ->get()
+                    ->keyBy('device_id');
 
-        }catch (Exception $exception){
+            $lastReadings = empty($deviceIds)
+                ? collect()
+                : DB::table('device_parameters_values as dpv')
+                    ->select(['dpv.id', 'dpv.device_id', 'dpv.parameters', 'dpv.time_of_read'])
+                    ->join(DB::raw('(SELECT MAX(id) as max_id, device_id FROM device_parameters_values WHERE device_id IN (' . implode(',', $deviceIds) . ') GROUP BY device_id) as latest'), function ($join) {
+                        $join->on('dpv.id', '=', 'latest.max_id');
+                    })
+                    ->get()
+                    ->keyBy('device_id');
+
+            $referenceTime = Carbon::now();
+
+            $payloadSummary = $this->buildDashboardPayload(
+                $deviceRows,
+                $types,
+                $parametersByType,
+                $limitsByDevice,
+                $lastReadings,
+                $referenceTime
+            );
+
+            return view('admin.dashboard', [
+                'types' => $payloadSummary['types'],
+                'adminCount' => $adminCount,
+                'centroid' => $payloadSummary['centroid'],
+                'devicesPayload' => $payloadSummary['devicesPayload'],
+                'devicesByType' => $payloadSummary['devicesByType'],
+                'untypedDevices' => $payloadSummary['untypedDevices'],
+                'totalDevices' => $totalDevices,
+                'displayedDevices' => $payloadSummary['displayedCount'],
+                'deviceLimit' => $deviceLimit,
+                'hasMoreDevices' => $hasMoreDevices,
+            ]);
+
+        } catch (Exception $exception) {
             $error = $exception;
             return view('admin.error',compact('error'));
         }
@@ -176,57 +199,62 @@ class GeneralController extends Controller
 
     public function generalUpdate(Request $request)
     {
-        \Validator::make($request->all(), [
-
-            "title" => "required",
-            "address1" => "required",
-            "phone" => "required",
-            "email" => "required",
-            "footer" => "required",
-            "gmaps" => "required"
-        ])->validate();
+        $validated = $request->validate([
+            'title' => ['required', 'string'],
+            'address1' => ['required', 'string'],
+            'address2' => ['nullable', 'string'],
+            'phone' => ['required', 'string'],
+            'email' => ['required', 'email'],
+            'twitter' => ['nullable', 'string'],
+            'facebook' => ['nullable', 'string'],
+            'instagram' => ['nullable', 'string'],
+            'linkedin' => ['nullable', 'string'],
+            'footer' => ['required', 'string'],
+            'gmaps' => ['required', 'string'],
+            'tawkto' => ['nullable', 'string'],
+            'disqus' => ['nullable', 'string'],
+            'sharethis' => ['nullable', 'string'],
+            'gverification' => ['nullable', 'string'],
+            'keyword' => ['nullable', 'string'],
+            'meta_desc' => ['nullable', 'string'],
+            'logo' => ['nullable', 'image'],
+            'favicon' => ['nullable', 'image'],
+        ]);
 
         $general = General::find(1);
-        $general->title = $request->title;
-        $general->address1 = $request->address1;
-        $general->address2 = $request->address2;
-        $general->phone = $request->phone;
-        $general->email = $request->email;
-        $general->twitter = $request->twitter;
-        $general->facebook = $request->facebook;
-        $general->instagram = $request->instagram;
-        $general->linkedin = $request->linkedin;
-        $general->footer = $request->footer;
-        $general->gmaps = $request->gmaps;
-        $general->tawkto = $request->tawkto;
-        $general->disqus = $request->disqus;
-        $general->sharethis = $request->sharethis;
-        $general->gverification = $request->gverification;
-        $general->keyword = $request->keyword;
-        $general->meta_desc = $request->meta_desc;
 
-        $new_logo = $request->file('logo');
+        $general->title = $validated['title'];
+        $general->address1 = $validated['address1'];
+        $general->address2 = $validated['address2'] ?? null;
+        $general->phone = $validated['phone'];
+        $general->email = $validated['email'];
+        $general->twitter = $validated['twitter'] ?? null;
+        $general->facebook = $validated['facebook'] ?? null;
+        $general->instagram = $validated['instagram'] ?? null;
+        $general->linkedin = $validated['linkedin'] ?? null;
+        $general->footer = $validated['footer'];
+        $general->gmaps = $validated['gmaps'];
+        $general->tawkto = $validated['tawkto'] ?? null;
+        $general->disqus = $validated['disqus'] ?? null;
+        $general->sharethis = $validated['sharethis'] ?? null;
+        $general->gverification = $validated['gverification'] ?? null;
+        $general->keyword = $validated['keyword'] ?? null;
+        $general->meta_desc = $validated['meta_desc'] ?? null;
 
-        if ($new_logo) {
-            if ($general->logo && file_exists(storage_path('app/public/' . $general->logo))) {
-                \Storage::delete('public/' . $general->logo);
+        if ($request->hasFile('logo')) {
+            if ($general->logo && Storage::disk('public')->exists($general->logo)) {
+                Storage::disk('public')->delete($general->logo);
             }
 
-            $new_cover_path = $new_logo->store('images/general', 'public');
-
-            $general->logo = $new_cover_path;
+            $general->logo = $request->file('logo')->store('images/general', 'public');
         }
 
-        $new_favicon = $request->file('favicon');
-
-        if ($new_favicon) {
-            if ($general->favicon && file_exists(storage_path('app/public/' . $general->favicon))) {
-                \Storage::delete('public/' . $general->favicon);
+        if ($request->hasFile('favicon')) {
+            if ($general->favicon && Storage::disk('public')->exists($general->favicon)) {
+                Storage::disk('public')->delete($general->favicon);
             }
 
-            $new_cover_path = $new_favicon->store('images/general', 'public');
-
-            $general->favicon = $new_cover_path;
+            $general->favicon = $request->file('favicon')->store('images/general', 'public');
         }
         if ($general->save()) {
 
@@ -360,4 +388,149 @@ class GeneralController extends Controller
 //            return view('admin.error', compact('error'));
 //        }
 //    }
+
+    private function buildDashboardPayload($deviceRows, $types, $parametersByType, $limitsByDevice, $lastReadings, Carbon $referenceTime): array
+    {
+        $devicesPayload = [];
+        $devicesByType = [];
+        $untypedDevices = [];
+        $centroid = ['lat' => 0.0, 'lng' => 0.0, 'count' => 0];
+
+        foreach ($deviceRows as $device) {
+            $type = $types->firstWhere('id', $device->type_id);
+            $parameterDefs = $parametersByType->get($device->type_id, collect())->all();
+            $limitRow = $limitsByDevice->get($device->id);
+            $lastReading = $lastReadings->get($device->id);
+
+            $payload = $this->buildDevicePayload(
+                $device,
+                $type,
+                $parameterDefs,
+                $limitRow,
+                $lastReading,
+                $referenceTime
+            );
+
+            $devicesPayload[] = $payload;
+
+            if ($payload['type']) {
+                $devicesByType[$payload['type']['id']][] = $payload;
+            } else {
+                $untypedDevices[] = $payload;
+            }
+
+            if ($payload['coordinates']['lat'] !== null && $payload['coordinates']['lng'] !== null) {
+                $centroid['lat'] += (float) $payload['coordinates']['lat'];
+                $centroid['lng'] += (float) $payload['coordinates']['lng'];
+                $centroid['count']++;
+            }
+        }
+
+        $avgLat = $centroid['count'] > 0 ? $centroid['lat'] / $centroid['count'] : null;
+        $avgLng = $centroid['count'] > 0 ? $centroid['lng'] / $centroid['count'] : null;
+
+        return [
+            'types' => $types,
+            'devicesPayload' => $devicesPayload,
+            'devicesByType' => $devicesByType,
+            'untypedDevices' => $untypedDevices,
+            'displayedCount' => count($devicesPayload),
+            'centroid' => ['lat' => $avgLat, 'lng' => $avgLng],
+        ];
+    }
+
+    private function buildDevicePayload($device, $type, array $parameterDefs, $limitRow, $lastReading, Carbon $referenceTime): array
+    {
+        $typePayload = $type ? [
+            'id' => $type->id,
+            'name' => $type->name,
+            'slug' => Str::slug($type->name),
+        ] : null;
+
+        $coordinates = [
+            'lat' => $device->latitude,
+            'lng' => $device->longitude,
+        ];
+
+        $status = 'Offline';
+        $threshold = (int) ($device->time_between_two_read ?? 0) + (int) ($device->tolerance ?? 0);
+
+        if ($lastReading && $lastReading->time_of_read && $threshold > 0) {
+            $readAt = Carbon::parse($lastReading->time_of_read);
+            if ($readAt->diffInMinutes($referenceTime) < $threshold) {
+                $status = 'Online';
+            }
+        }
+
+        $readingParameters = [];
+        if ($lastReading && $lastReading->parameters) {
+            $decoded = json_decode($lastReading->parameters, true);
+            if (is_array($decoded)) {
+                $readingParameters = $decoded;
+            }
+        }
+
+        $minValues = [];
+        $maxValues = [];
+        $minWarning = false;
+        $maxWarning = false;
+
+        if ($limitRow) {
+            $minValues = json_decode($limitRow->min_value ?? '', true) ?? [];
+            $maxValues = json_decode($limitRow->max_value ?? '', true) ?? [];
+            $minWarning = (bool) ($limitRow->min_warning ?? false);
+            $maxWarning = (bool) ($limitRow->max_warning ?? false);
+        }
+
+        $parametersPayload = [];
+        $warningCount = 0;
+
+        foreach ($parameterDefs as $definition) {
+            $code = $definition->code;
+            $value = $readingParameters[$code] ?? null;
+            $minLimit = $minWarning ? ($minValues[$code] ?? null) : null;
+            $maxLimit = $maxWarning ? ($maxValues[$code] ?? null) : null;
+
+            $isWarning = false;
+            if ($value !== null) {
+                if ($minLimit !== null && $value < $minLimit) {
+                    $isWarning = true;
+                }
+                if ($maxLimit !== null && $value > $maxLimit) {
+                    $isWarning = true;
+                }
+            }
+
+            if ($isWarning) {
+                $warningCount++;
+            }
+
+            $parametersPayload[] = [
+                'code' => $code,
+                'name' => $definition->name,
+                'unit' => $definition->unit,
+                'value' => $value,
+                'color' => $isWarning ? 'red' : '#000000',
+            ];
+        }
+
+        $readingTime = $lastReading && $lastReading->time_of_read
+            ? Carbon::parse($lastReading->time_of_read)
+            : null;
+
+        return [
+            'id' => $device->id,
+            'name' => $device->name,
+            'type' => $typePayload,
+            'coordinates' => $coordinates,
+            'status' => $status,
+            'warning_count' => $warningCount,
+            'parameters' => $parametersPayload,
+            'last_reading' => $readingTime ? [
+                'time' => $readingTime->toIso8601String(),
+                'formatted_time' => $readingTime->copy()->setTimezone(config('app.dashboard_timezone', 'Europe/Istanbul'))->format('Y-d-m h:i a'),
+                'diff_minutes' => $readingTime->diffInMinutes($referenceTime),
+            ] : null,
+        ];
+    }
 }

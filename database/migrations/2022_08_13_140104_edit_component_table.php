@@ -14,8 +14,17 @@ class EditComponentTable extends Migration
     public function up()
     {
         Schema::table('components', function (Blueprint $table) {
-            $table->string('slug');
-            $table->json('settings')->nullable();
+            if (!Schema::hasColumn('components', 'slug')) {
+                $table->string('slug')->after('name');
+            }
+
+            if (!Schema::hasColumn('components', 'settings')) {
+                if (DB::getDriverName() === 'sqlite') {
+                    $table->longText('settings')->nullable();
+                } else {
+                    $table->json('settings')->nullable();
+                }
+            }
         });
     }
 
@@ -26,6 +35,14 @@ class EditComponentTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('components', function (Blueprint $table) {
+            if (Schema::hasColumn('components', 'slug')) {
+                $table->dropColumn('slug');
+            }
+
+            if (Schema::hasColumn('components', 'settings')) {
+                $table->dropColumn('settings');
+            }
+        });
     }
 }

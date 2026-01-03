@@ -23,111 +23,97 @@
     </div>
 </section>
 
+@php
+    $multiAxisParameters = $device->deviceType
+        ? $device->deviceType->deviceParameters()->orderBy('order')->get()
+        : collect();
+
+    $multiAxisMeta = $multiAxisParameters
+        ->map(fn($parameter) => [
+            'name' => $parameter->name ?? $parameter->code ?? 'Parameter',
+            'unit' => $parameter->unit ?? null,
+            'code' => $parameter->code ?? null,
+        ])
+        ->values();
+@endphp
 
 @push('scripts')
     <script>
-        // $(document).ready(function (){
-        jQuery.ajax({
-            url: '/admin/devices/getMultiAxisChartData/{{$device->id}}/',
-            type: 'GET',
-            success: function (data) {
-                var options = {
-                    chart: {
-                        height: 350,
-                        type: "line",
-                        stacked: false
-                    },
-                    dataLabels: {
-                        enabled: false
-                    },
-                    colors: ['#008ffb', '#00e396', '#feb019', '#ff4560'],
-                    series: [
-                            @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
-                        {
-                            name: '{{$parameter->name}} ({{$parameter->unit}})',
-                            type: 'column',
-                            data: data[0][{{$key}}]
-                        },
-                        @endforeach
-                        // {
-                        //     name: "Line C",
-                        //     type: 'line',
-                        //     data: [1.4, 2, 2.5, 10.5, 2.5, 2.8, 3.8, 40.6]
-                        // },
-                    ],
-                    stroke: {
-                        width: [4, 4, 4, 4]
-                    },
-                    // theme: {
-                    //     monochrome: {
-                    //         enabled: true,
-                    //         color: '#00989d',
-                    //         shadeTo: 'light',
-                    //         shadeIntensity: 0.65
-                    //     }
-                    // },
-                    // fill: {
-                    //     type: 'gradient',
-                    //     gradient: {
-                    //         shade: 'dark',
-                    //         type: "horizontal",
-                    //         shadeIntensity: 0.5,
-                    //         gradientToColors: undefined, // optional, if not defined - uses the shades of same color in series
-                    //         inverseColors: true,
-                    //         opacityFrom: 1,
-                    //         opacityTo: 1,
-                    //         stops: [0, 50, 100],
-                    //         colorStops: []
-                    //     }
-                    // },
-                    plotOptions: {
-                        bar: {
-                            columnWidth: "40%"
-                        }
-                    },
-                    xaxis: {
-                        // type : 'categ',
-                        categories: data[1]
-                    },
-                    // yaxis: [
-                    //
-                    //     {
-                    //         opposite: true,
-                    //         seriesName: 'Line C',
-                    //         axisTicks: {
-                    //             show: true
-                    //         },
-                    //         axisBorder: {
-                    //             show: true,
-                    //         },
-                    //         title: {
-                    //             text: "Line"
-                    //         }
-                    //     }
-                    // ],
-                    tooltip: {
-                        shared: false,
-                        intersect: true,
-                        x: {
-                            show: true
-                        }
-                    },
-                    legend: {
-                        horizontalAlign: "left",
-                        offsetX: 40
-                    }
-                };
+        (function () {
+            const parameterMeta = {!! $multiAxisMeta->toJson(JSON_HEX_TAG) !!};
+            const spinner = jQuery('#spinner2');
+            spinner.hide();
 
-                var chart = new ApexCharts(document.querySelector("#multiAxisChart"), options);
+            function buildSeries(seriesData) {
+                return parameterMeta.map(function (meta, index) {
+                    const name = meta.name || meta.code || 'Parameter';
+                    const unit = meta.unit ? ' (' + meta.unit + ')' : '';
 
-                chart.render();
-
-            },
-            error: function (xhr, b, c) {
-                console.log("xhr=" + xhr + " b=" + b + " c=" + c);
+                    return {
+                        name: name + unit,
+                        type: 'column',
+                        data: (seriesData[index] || []).map(function (value) {
+                            return value === null ? 0 : Number(value);
+                        }),
+                    };
+                });
             }
-        });
-        // })
+
+            spinner.show();
+
+            jQuery.ajax({
+                url: '/admin/devices/getMultiAxisChartData/{{ $device->id }}/',
+                type: 'GET',
+                dataType: 'json',
+                success: function (payload) {
+                    const seriesData = payload[0] || [];
+                    const categories = payload[1] || [];
+
+                    const options = {
+                        chart: {
+                            height: 350,
+                            type: 'line',
+                            stacked: false,
+                        },
+                        dataLabels: {
+                            enabled: false,
+                        },
+                        series: buildSeries(seriesData),
+                        stroke: {
+                            width: Array(parameterMeta.length).fill(4),
+                        },
+                        plotOptions: {
+                            bar: {
+                                columnWidth: '40%',
+                            },
+                        },
+                        xaxis: {
+                            categories: categories,
+                        },
+                        tooltip: {
+                            shared: false,
+                            intersect: true,
+                            x: {
+                                show: true,
+                            },
+                        },
+                        legend: {
+                            horizontalAlign: 'left',
+                            offsetX: 40,
+                        },
+                    };
+
+                    const chart = new ApexCharts(document.querySelector('#multiAxisChart'), options);
+                    chart.render();
+                },
+                error: function (xhr, b, c) {
+                    console.log('xhr=' + xhr + ' b=' + b + ' c=' + c);
+                },
+                complete: function () {
+                    spinner.hide();
+                }
+            });
+        })();
 
     </script>
 @endpush

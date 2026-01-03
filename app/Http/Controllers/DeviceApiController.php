@@ -7,7 +7,6 @@ use App\Models\DeviceFactoryValue;
 use App\Models\DeviceParametersValues;
 use App\Models\TestApi;
 use Carbon\Carbon;
-use http\Env\Response;
 use Illuminate\Http\Request;
 
 class DeviceApiController extends Controller
@@ -15,6 +14,7 @@ class DeviceApiController extends Controller
     public function store(Request $request)
     {
         $para = $request->getContent();
+
         $testsApi = new TestApi();
         $testsApi->settings = json_encode($para);
 //        $testsApi->save();
@@ -32,8 +32,6 @@ class DeviceApiController extends Controller
                 } else {
                     $parameters->time_of_read = Carbon::now();
                 }
-
-
             }
             if (count($device->deviceFactories()->where('is_attached', 1)->get()) > 0) {
                 $factory = $device->deviceFactories()->where('is_attached', 1)->first()->factory;
@@ -120,7 +118,8 @@ class DeviceApiController extends Controller
                         $devFactoryValue->save();
                     }
                     $parameters->save();
-                } else {
+                }
+                else {
                     $index = 0;
                     foreach ($device->deviceType->deviceParameters()->orderBy('order')->get() as $key => $para) {
                         $paraRead[$key] = substr($finaldata, $index, $para->pivot->length);
@@ -382,4 +381,5 @@ class DeviceApiController extends Controller
 
         return response()->json(null, 204);
     }
+
 }

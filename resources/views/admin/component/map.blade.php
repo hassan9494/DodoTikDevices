@@ -139,66 +139,33 @@
                             <div class="col-md-12" style="margin-top: 15px;margin-bottom: 15px">
                                 <div id="map"></div>
                                 <pre id="coordinates" class="coordinates"></pre>
-                                @if(count($xValues) > 0)
-                                    <div id="state-legend" class="legend" style="display: none">
-                                        <h4 style="color: #00989d ">{{__('message.Last Read')}}</h4>
-                                        @if($paraValues[0] != null)
-                                            @if(count($testPara) > 0)
-                                                @foreach($testPara as $key=>$parameter)
-                                                    <div><p style=""></p>
-                                                        <span
-                                                            style="color: {{$dangerColor[$key]}}">{{$parameter->name}}</span>
-                                                        :<span style="color: {{$dangerColor[$key]}}">{{$paraValues[$key][count($paraValues[$key]) - 1]}}  ({{$parameter->unit}})</span>
-                                                    </div>
-                                                @endforeach
-                                                <span
-                                                    style="color: #000000">{{\Carbon\Carbon::parse($xValues[count($xValues) - 1])->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a')}}  </span>
-                                            @else
-                                                @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
-                                                    <div><p style=""></p>
-                                                        <span
-                                                            style="color: {{$dangerColor[$key]}}">{{$parameter->name}}</span>
-                                                        :<span style="color: {{$dangerColor[$key]}}">{{$paraValues[$key][count($paraValues[$key]) - 1]}}  ({{$parameter->unit}})</span>
-                                                    </div>
-                                                @endforeach
-                                                <span
-                                                    style="color: #000000">{{\Carbon\Carbon::parse($xValues[count($xValues) - 1])->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a')}}  </span>
-                                            @endif
-                                        @endif
-                                    </div>
-                                @else
-                                    <div id="state-legend" class="legend" style="display: none">
-                                        <h4 style="color: #00989d ">{{__('message.Last Read')}}</h4>
-                                        @if($device->deviceParameters()->orderBy('id','desc')->first() != null)
-                                            @if(count($testPara) == count($device->deviceType->deviceParameters))
-                                                @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
-                                                    {{--                                                <h4>{{$key}}</h4>--}}
-                                                    <div><p style=""></p>
-                                                        {{--                                                    {{dd($dangerColor)}}--}}
-                                                        <span
-                                                            style="color: {{@$dangerColor[@$key]}}">{{$parameter->name}}</span>
-                                                        :<span style="color: {{@$dangerColor[$key]}}">{{json_decode($device->deviceParameters()->orderBy('id','desc')->first()->parameters,true)[$parameter->code]}}  ({{$parameter->unit}})</span>
-                                                    </div>
-                                                @endforeach
-                                                <span
-                                                    style="color: #000000">{{\Carbon\Carbon::parse($device->deviceParameters()->orderBy('id','desc')->first()->time_of_read)->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a')}}  </span>
-                                            @else
-                                                @foreach($testPara as $key=>$parameter)
-                                                    {{--                                                <h4>{{$key}}</h4>--}}
-                                                    <div><p style=""></p>
-                                                        {{--                                                    {{dd($dangerColor)}}--}}
-                                                        <span
-                                                            style="color: {{@$dangerColor[$key]}}">{{$parameter->name}}</span>
-                                                        :<span style="color: {{@$dangerColor[$key]}}">{{json_decode($device->deviceParameters()->orderBy('id','desc')->first()->parameters,true)[$parameter->code]}}  ({{$parameter->unit}})</span>
-                                                    </div>
-                                                @endforeach
-                                                <span
-                                                    style="color: #000000">{{\Carbon\Carbon::parse($device->deviceParameters()->orderBy('id','desc')->first()->time_of_read)->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a')}}  </span>
+                                @php
+                                    $latestReadAt = $latestReadAt ?? null;
+                                    $legendValues = collect($testPara)->map(function ($parameter, $key) use ($latestValues, $dangerColor) {
+                                        $code = $parameter->code ?? $parameter->name;
+                                        $value = $latestValues[$code] ?? null;
 
-                                            @endif
-                                        @endif
-                                    </div>
-                                @endif
+                                        return [
+                                            'name' => $parameter->name ?? $code,
+                                            'unit' => $parameter->unit ?? null,
+                                            'color' => $dangerColor[$key] ?? '#00989d',
+                                            'value' => $value,
+                                        ];
+                                    })->filter(fn ($entry) => $entry['value'] !== null);
+                                @endphp
+
+                                <div id="state-legend" class="legend" style="display: none">
+                                    <h4 style="color: #00989d ">{{__('message.Last Read')}}</h4>
+                                    @foreach($legendValues as $entry)
+                                        <div>
+                                            <span style="color: {{ $entry['color'] }}">{{ $entry['name'] }}</span>
+                                            : <span style="color: {{ $entry['color'] }}">{{ $entry['value'] }}{{ $entry['unit'] ? ' ('.$entry['unit'].')' : '' }}</span>
+                                        </div>
+                                    @endforeach
+                                    @if($latestReadAt)
+                                        <span style="color: #000000">{{ $latestReadAt->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a') }}</span>
+                                    @endif
+                                </div>
                             </div>
                         </div>
 

@@ -1,538 +1,311 @@
+<section class="box-fancy section-fullwidth text-light p-b-0">
+    <div class="row" style="text-align: -webkit-center;">
+        <div class="col-lg-12 col-xxl-12 order-1 order-xxl-1 mb-4">
+            <div class="card card-custom mb-4">
+                <div class="card-header border-0 pt-5">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label font-weight-bolder text-dark" style="font-size: 1rem;">{{__('message.Flow Chart')}}  </span>
+{{--                        <span id="status"--}}
+{{--                              class="card-label font-weight-bolder text-dark"--}}
+{{--                              style="margin-top: 15px;font-size: 1rem;">{{__('message.status')}} : {{$status}}  <i--}}
+{{--                                class="fas {{$status == "Offline" ? 'fa-times' : 'fa-check'  }}"--}}
+{{--                                style="color:{{$status == "Offline" ? 'red' : 'green'  }} "></i> </span>--}}
+                    </h3>
 
+                    <div class="card-toolbar">
+                        <ul class="nav nav-pills nav-pills-sm nav-dark-75 nav nav-test flowchart-nav" role="tablist">
+                            <li class="nav-item nav-item">
+                                <a href="#" role="tab" data-rb-event-key="Custom"
+                                   tabindex="3" aria-selected="false"
+                                   class="nav-link py-2 px-4 nav-link {{$label == 2 ? "active" : ""}}"
+                                   id="custom">{{__('message.Custom')}}</a></li>
+                            <li class="nav-item nav-item">
+                                <a href="#" role="tab"
+                                   data-rb-event-key="ThisMonth"
+                                   tabindex="2" aria-selected="false"
+                                   class="nav-link py-2 px-4 nav-link {{$label == 30 ? "active" : ""}}">This
+                                    {{__('message.Month')}} </a>
+                            </li>
+                            <li class="nav-item nav-item">
+                                <a href="#" role="tab"
+                                   data-rb-event-key="ThisWeek"
+                                   tabindex="1" aria-selected="false"
+                                   class="nav-link py-2 px-4 nav-link {{$label == 7 ? "active" : ""}}">This
+                                    {{__('message.Week')}} </a>
+                            </li>
+                            <li class="nav-item nav-item">
+                                <a href="#" role="tab"
+                                   data-rb-event-key="ThisDay"
+                                   aria-selected="true"
+                                   tabindex="0" id="thisDay"
+                                   class="nav-link py-2 px-4 nav-link {{$label == 1 ? "active" : ""}} ">{{__('message.This Day')}}</a></li>
+                        </ul>
+                    </div>
 
-    <section class="box-fancy section-fullwidth text-light p-b-0">
-            <div class="row" style="text-align: -webkit-center;">
-                <div class="col-lg-12 col-xxl-12 order-1 order-xxl-1 mb-4">
-                    <div class="card card-custom mb-4">
-                        <div class="card-header border-0 pt-5">
-                            <h3 class="card-title align-items-start flex-column">
-                                <span
-                                    class="card-label font-weight-bolder text-dark" style="font-size: 1rem;">{{__('message.Flow Chart')}}  </span>
-{{--                                <span id="status"--}}
-{{--                                      class="card-label font-weight-bolder text-dark"--}}
-{{--                                      style="margin-top: 15px;font-size: 1rem;">{{__('message.status')}} : {{$status}}  <i--}}
-{{--                                        class="fas {{$status == "Offline" ? 'fa-times' : 'fa-check'  }}"--}}
-{{--                                        style="color:{{$status == "Offline" ? 'red' : 'green'  }} "></i> </span>--}}
-                            </h3>
+                </div>
+                <div class="custom-date row" id="custom-date" style="display: {{$label == 2 ? "block" : "none"}}">
 
-                            <div class="card-toolbar">
-                                <ul class="nav nav-pills nav-pills-sm nav-dark-75 nav nav-test flowchart-nav" role="tablist">
-                                    <li class="nav-item nav-item">
-                                        <a href="#" role="tab" data-rb-event-key="Custom"
-                                           tabindex="3" aria-selected="false"
-                                           class="nav-link py-2 px-4   nav-link {{$label == 2 ? "active" : ""}}"
-                                           id="custom">{{__('message.Custom')}}</a></li>
-                                    <li class="nav-item nav-item">
-                                        <a href="#" role="tab"
-                                           data-rb-event-key="ThisMonth"
-                                           tabindex="2" aria-selected="false"
-                                           class="nav-link py-2 px-4   nav-link {{$label == 30 ? "active" : ""}}">This
-                                            {{__('message.Month')}} </a>
-                                    </li>
-                                    <li class="nav-item nav-item">
-                                        <a href="#" role="tab"
-                                           data-rb-event-key="ThisWeek"
-                                           tabindex="1" aria-selected="false"
-                                           class="nav-link py-2 px-4   nav-link {{$label == 7 ? "active" : ""}}">This
-                                            {{__('message.Week')}} </a>
-                                    </li>
-                                    <li class="nav-item nav-item">
-                                        <a href="#" role="tab"
-                                           data-rb-event-key="ThisDay"
-                                           aria-selected="true"
-                                           tabindex="0" id="thisDay"
-                                           class="nav-link py-2 px-4  nav-link {{$label == 1 ? "active" : ""}} ">{{__('message.This Day')}}</a></li>
-                                </ul>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <label for="from" class="form-label" style="color: #00989d">{{__('message.From')}}</label>
+                                <input id="from" min="{{\Carbon\Carbon::now()->subMonth()->format("Y-m-d")}}"
+                                       max="{{\Carbon\Carbon::now()->format("Y-m-d")}}" type="date" name="from"
+                                       class="form-control"
+                                       value="{{\Carbon\Carbon::now()->format("Y-m-01")}}">
                             </div>
-
-                        </div>
-                        <div class="custom-date row" id="custom-date" style="display: {{$label == 2 ? "block" : "none"}}">
-
-                            <div class="col-md-2"></div>
-                            <div class="col-md-8">
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        <label for="from" class="form-label" style="color: #00989d">{{__('message.From')}}</label>
-                                        <input id="from" min="{{\Carbon\Carbon::now()->subMonth()->format("Y-m-d")}}"
-                                               max="{{\Carbon\Carbon::now()->format("Y-m-d")}}" type="date" name="from"
-                                               class="form-control"
-                                               value="{{\Carbon\Carbon::now()->format("Y-m-01")}}">
-                                    </div>
-                                    <div class="col-md-5">
-                                        <label for="to" class="form-label" style="color: #00989d">{{__('message.To')}}</label>
-                                        <input id="to" min="{{\Carbon\Carbon::now()->subMonth()->format("Y-m-d")}}"
-                                               max="{{\Carbon\Carbon::now()->format("Y-m-d")}}" type="date" name="to"
-                                               class="form-control"
-                                               value="{{\Carbon\Carbon::now()->format("Y-m-d")}}">
-                                    </div>
-                                    <div class="col-md-2">
-                                        <label for="to" class="form-label" style="color: #ffffff">get data</label>
-                                        <button class="btn btn-primary" onclick="getData()" style="color: #b5b5c3;background: #00989d;border-color: #00989d;">get data</button>
-                                    </div>
-                                </div>
-
-
+                            <div class="col-md-5">
+                                <label for="to" class="form-label" style="color: #00989d">{{__('message.To')}}</label>
+                                <input id="to" min="{{\Carbon\Carbon::now()->subMonth()->format("Y-m-d")}}"
+                                       max="{{\Carbon\Carbon::now()->format("Y-m-d")}}" type="date" name="to"
+                                       class="form-control"
+                                       value="{{\Carbon\Carbon::now()->format("Y-m-d")}}">
                             </div>
                             <div class="col-md-2">
+                                <label for="to" class="form-label" style="color: #ffffff">get data</label>
+                                <button class="btn btn-primary" onclick="getData()" style="color: #b5b5c3;background: #00989d;border-color: #00989d;">get data</button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="col-md-2">
 {{--                                <button class="btn btn-primary" onclick="test()">get data</button>--}}
-                            </div>
+                    </div>
 
-                        </div>
+                </div>
 
-                        <div class="card-body pt-2" style="position: relative;">
-                            <div id="chart">
-
-                            </div>
-                            <div class="spinner-border  text-success" role="status" id="spinner">
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                            <div class="resize-triggers">
-                                <div class="expand-trigger">
-                                    <div style="width: 1291px; height: 399px;"></div>
-                                </div>
-                                <div class="contract-trigger"></div>
-                            </div>
-                        </div>
+                <div class="card-body pt-2" style="position: relative;">
+                    <div id="chart"></div>
+                    <div class="spinner-border text-success" role="status" id="spinner">
+                        <span class="sr-only">Loading...</span>
                     </div>
                 </div>
             </div>
-    </section>
+        </div>
+    </div>
+</section>
+
+@php
+    $lineParameterSource = ($testPara ?? collect());
+    if (blank($lineParameterSource) || $lineParameterSource->count() === 0) {
+        $lineParameterSource = $device->deviceType
+            ? $device->deviceType->deviceParameters()->orderBy('order')->get()
+            : collect();
+    }
+
+    $lineParameterMeta = $lineParameterSource
+        ->map(fn($parameter) => [
+            'name' => $parameter->name ?? $parameter->code ?? 'Parameter',
+            'unit' => $parameter->unit ?? null,
+            'code' => $parameter->code ?? null,
+        ])
+        ->values();
+@endphp
 
 @push('scripts')
     <script>
+        (function () {
+            const parameterMeta = {!! $lineParameterMeta->toJson(JSON_HEX_TAG) !!};
+            const initialSeries = {!! json_encode(array_values($paraValues), JSON_HEX_TAG) !!};
+            const initialLabels = {!! json_encode(array_values($xValues), JSON_HEX_TAG) !!};
+            const seriesColors = {!! json_encode(array_values($color), JSON_HEX_TAG) !!};
+            const refreshIntervalMs = (Number({{ (int) ($device->time_between_two_read ?? 0) }}) || 0) * 60 * 1000;
 
-        var timer = {!! json_encode($device, JSON_HEX_TAG) !!};
-         interval = setInterval(function() {
-            jQuery.ajax({
-                url: '/admin/devices/showWithDate/{{$device->id}}/' + 1 + '/' + 0,
-                type: 'GET',
-                success: function (data) {
-                    timer = 3000
-                    chart.updateOptions({
+            let chartInstance = null;
+            let refreshTimer = null;
+            let activeFrom = 1;
+            let activeTo = 0;
 
-                        series: [
-                                @if(count($testPara) > 0 )
-                                @foreach($testPara as $key=>$parameter)
+            const spinner = jQuery('#spinner');
+            spinner.hide();
+            const customDateContainer = jQuery('#custom-date');
 
-                            {
-                                name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
-                                data: data[0][{{$key}}]
-                            },
-                                @endforeach
-                                @else
-                                @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
+            function buildSeries(seriesData) {
+                return parameterMeta.map(function (meta, index) {
+                    const name = meta.name || meta.code || 'Parameter';
+                    const unit = meta.unit ? ' (' + meta.unit + ')' : '';
 
-                            {
-                                name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
-                                data: data[0][{{$key}}]
-                            },
-                            @endforeach
-                            @endif
-                        ],
-                        chart: {
-                            height: 500,
-                            width: "100%",
-                            type: 'area',
-                            animations: {
-                                enabled: data[1].length < 500 ? true : false,
-                            }
-                        },
-                        labels: data[1]
-
-
-                    })
-                },
-                error: function (xhr, b, c) {
-                    console.log("xhr=" + xhr + " b=" + b + " c=" + c);
-                }
-            });
-            // your code goes here...
-             jQuery.ajax({
-                 url: '/admin/devices/getDeviceStatus/{{$device->id}}',
-                 type: 'GET',
-                 success: function (data) {
-                    if (data == 'Online'){
-                        document.getElementById('status').innerHTML = 'Status : Online  <i class="fas fa-check" style="color:green "></i> ';
-                    }else {
-                        document.getElementById('status').innerHTML ='Status : Offline  <i class="fas fa-times" style="color:red "></i> '
-                    }
-                 },
-                 error: function (xhr, b, c) {
-                     console.log("xhr=" + xhr + " b=" + b + " c=" + c);
-                 }
-             });
-        }, timer['time_between_two_read'] *1000 *60);
-
-    </script>
-    <script>
-        var el = document.querySelectorAll('.nav-test li a');
-        var fromm = -1;
-        var too = -1;
-        for (let i = 0; i < el.length; i++) {
-            el[i].onclick = function () {
-                var c = 0;
-                while (c < el.length) {
-                    el[c++].className = 'nav-link py-2 px-4 nav-link';
-                }
-                el[i].className = 'nav-link py-2 px-4  active nav-link active';
-
-                if (el[i].getAttribute('tabindex') == 0) {
-                    fromm = 1;
-                    too = 0;
-                    if (interval){
-
-                    }else {
-                        interval = setInterval(function() {
-                            jQuery.ajax({
-                                url: '/admin/devices/showWithDate/{{$device->id}}/' + 1 + '/' + 0,
-                                type: 'GET',
-                                success: function (data) {
-
-
-                                    chart.updateOptions({
-
-                                        series: [
-                                                @if(count($testPara) > 0 )
-                                                @foreach($testPara as $key=>$parameter)
-
-                                            {
-                                                name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
-                                                data: data[0][{{$key}}]
-                                            },
-                                                @endforeach
-                                                @else
-                                                @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
-
-                                            {
-                                                name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
-                                                data: data[0][{{$key}}]
-                                            },
-                                            @endforeach
-                                            @endif
-                                        ],
-                                        chart: {
-                                            height: 500,
-                                            width: "100%",
-                                            type: 'area',
-                                            animations: {
-                                                enabled: data[1].length < 500 ? true : false,
-                                            }
-                                        },
-                                        labels: data[1]
-
-
-                                    })
-                                },
-                                error: function (xhr, b, c) {
-                                    console.log("xhr=" + xhr + " b=" + b + " c=" + c);
-                                }
-                            });
-                            // your code goes here...
-                        }, timer['time_between_two_read'] *1000 * 60);
-                    }
-
-                } else if (el[i].getAttribute('tabindex') == 1) {
-                    fromm = 7;
-                    too = 0;
-                    clearInterval(interval);
-                    interval = false;
-                } else if (el[i].getAttribute('tabindex') == 2) {
-                    fromm = 30;
-                    too = 0;
-                    clearInterval(interval);
-                    interval = false;
-                }else {
-                    clearInterval(interval);
-                    interval = false;
-                }
-
-            };
-        }
-        document.addEventListener('DOMContentLoaded', function () {
-            $('.nav-link').click(function (e) {
-
-                $('#custom-date').attr('style', 'display :none')
-
-                jQuery.ajax({
-                    url: '/admin/devices/showWithDate/{{$device->id}}/' + fromm + '/' + too,
-                    type: 'GET',
-                    success: function (data) {
-                        chart.updateOptions({
-
-                            series: [
-                                @if(count($testPara) > 0 )
-                                    @foreach($testPara as $key=>$parameter)
-
-                                {
-                                    name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
-                                    data: data[0][{{$key}}]
-                                },
-                                @endforeach
-                                @else
-                                    @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
-
-                                {
-                                    name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
-                                    data: data[0][{{$key}}]
-                                },
-                                @endforeach
-                                @endif
-                            ],
-                            chart: {
-                                height: 500,
-                                width: "100%",
-                                type: 'area',
-                                animations: {
-                                    enabled: data[1].length < 500 ? true : false,
-                                }
-                            },
-                            labels: data[1]
-
-
+                    return {
+                        name: name + unit,
+                        data: (seriesData[index] || []).map(function (value) {
+                            return value === null ? 0 : Number(value);
                         })
-                    },
-                    error: function (xhr, b, c) {
-                        console.log("xhr=" + xhr + " b=" + b + " c=" + c);
-                    }
+                    };
                 });
-                var $loading = $('#spinner').show();
-                $(document)
-                    .ajaxStart(function () {
-                        $loading.show();
-                    })
-                    .ajaxStop(function () {
-                        $loading.hide();
-                    });
+            }
 
-            })
-        });
-        document.addEventListener('DOMContentLoaded', function () {
-            $('#custom').click(function (e) {
+            function renderChart(labels, seriesData, animate) {
+                const preparedSeries = buildSeries(seriesData);
+                const enableAnimations = animate ?? (labels.length < 500);
 
-                $('#custom-date').attr('style', 'display :block')
-            })
-        });
-        document.addEventListener('DOMContentLoaded', function () {
-            $('#to').change(function (e) {
-
-
-                var from = document.getElementById('from')
-                var today = new Date();
-                var dd = String(today.getDate()).padStart(2, '0');
-                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-                var yyyy = today.getFullYear();
-
-                today = yyyy + '-' + mm + '-' + dd;
-                const diffTime = Math.abs(Date.parse(today) - Date.parse($(this).val()));
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                const diffTime1 = Math.abs(Date.parse(today) - Date.parse(from.value));
-                const diffDays1 = Math.ceil(diffTime1 / (1000 * 60 * 60 * 24));
-                jQuery.ajax({
-                    url: '/admin/devices/showWithDate/{{$device->id}}/' + diffDays1 + '/' + diffDays,
-                    type: 'GET',
-                    success: function (data) {
-
-
-                        chart.updateOptions({
-                            series: [
-                                @if(count($testPara) > 0)
-                                    @foreach($testPara as $key=>$parameter)
-
-                                {
-                                    name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
-                                    data: data[0][{{$key}}]
-                                },
-                                @endforeach
-                                @else
-                                    @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
-
-                                {
-                                    name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
-                                    data: data[0][{{$key}}]
-                                },
-                                @endforeach
-                                @endif
-                            ],
-                            chart: {
-                                height: 500,
-                                width: "100%",
-                                type: 'area',
-                                animations: {
-                                    enabled: data[1].length < 500 ? true : false,
-                                }
-                            },
-                            labels: data[1]
-
-
-                        })
-
-                    },
-                    error: function (xhr, b, c) {
-                        console.log("xhr=" + xhr + " b=" + b + " c=" + c);
-                    }
-                });
-            })
-        });
-
-        function getData(){
-            var from = document.getElementById('from')
-            var today = new Date();
-            var dd = String(today.getDate()).padStart(2, '0');
-            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-            var yyyy = today.getFullYear();
-
-            today = yyyy + '-' + mm + '-' + dd;
-            const diffTime = Math.abs(Date.parse(today) - Date.parse($('#to').val()));
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            const diffTime1 = Math.abs(Date.parse(today) - Date.parse(from.value));
-            const diffDays1 = Math.ceil(diffTime1 / (1000 * 60 * 60 * 24));
-
-            jQuery.ajax({
-                url: '/admin/devices/showWithDate/{{$device->id}}/' + diffDays1 + '/' + diffDays,
-                type: 'GET',
-                success: function (data) {
-
-
-                    chart.updateOptions({
-                        series: [
-                                @if(count($testPara) > 0)
-                                @foreach($testPara as $key=>$parameter)
-
-                            {
-                                name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
-                                data: data[0][{{$key}}]
-                            },
-                                @endforeach
-                                @else
-                                @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
-
-                            {
-                                name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
-                                data: data[0][{{$key}}]
-                            },
-                            @endforeach
-                            @endif
-                        ],
-                        chart: {
-                            height: 500,
-                            width: "100%",
-                            type: 'area',
-                            animations: {
-                                enabled: data[1].length < 500 ? true : false,
-                            }
-                        },
-                        labels: data[1]
-
-
-                    })
-
-                },
-                error: function (xhr, b, c) {
-                    console.log("xhr=" + xhr + " b=" + b + " c=" + c);
-                }
-            });
-        }
-    </script>
-    <script>
-
-
-        var xValues = {!! json_encode($xValues, JSON_HEX_TAG) !!};
-        var yValues = {!! json_encode($paraValues, JSON_HEX_TAG) !!};
-        var colors = {!! json_encode($color, JSON_HEX_TAG) !!}
-        var xVals = [];
-        xValues.forEach(myFunction)
-        var units = [];
-
-        function myFunction(item) {
-            xVals.push(new Date(item).toLocaleString())
-        }
-
-
-        @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
-        units.push("{{$parameter->unit}}")
-
-        @endforeach
-        var labels = {{$label}}
-        var options = {
-            series: [
-                @if(count($testPara) > 0)
-                    @foreach($testPara as $key=>$parameter)
-
-                {
-                    name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
-                    data: yValues[{{$key}}]
-                },
-                @endforeach
-                @else
-                    @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
-
-                {
-                    name: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
-                    data: yValues[{{$key}}]
-                },
-                @endforeach
-                @endif
-
-            ],
-            colors:colors,
-            chart: {
-                height: 500,
-                width: "100%",
-                type: 'area',
-                animations: {
-                    enabled: false,
-                }
-            },
-            markers: {
-                size: 0
-            },
-            dataLabels: {
-                enabled: false
-            },
-            stroke: {
-                width: 4,
-                curve: 'smooth'
-            },
-            plotOptions: {
-                bar: {
-                    columnWidth: '90%'
-                }
-            },
-            xaxis: {
-                type: 'datetime',
-                labels: {
-                    datetimeUTC: false
-                },
-                categories: xValues,
-            },
-            tooltip: {
-                shared: true,
-                intersect: false,
-                y: {
-                    formatter: function (y, {series, seriesIndex, dataPointIndex, w}) {
-                        if (typeof y !== "undefined") {
-                            return y + " " + units[seriesIndex];
+                const options = {
+                    series: preparedSeries,
+                    colors: seriesColors,
+                    chart: {
+                        height: 500,
+                        width: '100%',
+                        type: 'area',
+                        animations: {
+                            enabled: enableAnimations,
                         }
-                        return y;
+                    },
+                    markers: {
+                        size: 0,
+                    },
+                    dataLabels: {
+                        enabled: false,
+                    },
+                    stroke: {
+                        width: 4,
+                        curve: 'smooth',
+                    },
+                    xaxis: {
+                        type: 'datetime',
+                        labels: {
+                            datetimeUTC: false,
+                        },
+                        categories: labels,
+                    },
+                    tooltip: {
+                        shared: true,
+                        intersect: false,
+                    },
+                    legend: {
+                        position: 'top',
+                        horizontalAlign: 'left',
+                        fontSize: '12px',
+                        itemMargin: {
+                            horizontal: 10,
+                            vertical: 12,
+                        },
+                    },
+                };
 
-                    }
-                },
-                x: {
-                    format: 'd/M/y hh : mm TT',
+                if (!chartInstance) {
+                    chartInstance = new ApexCharts(document.querySelector('#chart'), options);
+                    chartInstance.render();
+                } else {
+                    chartInstance.updateOptions({
+                        series: preparedSeries,
+                        chart: options.chart,
+                        xaxis: options.xaxis,
+                    });
                 }
-            },
-            legend: {
-                position: 'top',
-                horizontalAlign: 'left',
-                fontSize: "12px",
-                itemMargin: {
-                    horizontal: 10,
-                    vertical: 25
-                },
-            },
-        };
+            }
 
-        var chart = new ApexCharts(document.querySelector("#chart"), options);
-        chart.render();
+            function scheduleRefresh() {
+                if (refreshTimer) {
+                    clearInterval(refreshTimer);
+                    refreshTimer = null;
+                }
+
+                if (activeFrom === 1 && activeTo === 0 && refreshIntervalMs > 0) {
+                    refreshTimer = setInterval(function () {
+                        fetchAndUpdate(activeFrom, activeTo, false);
+                    }, refreshIntervalMs);
+                }
+            }
+
+            function fetchAndUpdate(from, to, showSpinner = true) {
+                if (showSpinner) {
+                    spinner.show();
+                }
+
+                jQuery.ajax({
+                    url: '/admin/devices/showWithDate/{{ $device->id }}/' + from + '/' + to,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (payload) {
+                        const seriesData = payload[0] || [];
+                        const labels = payload[1] || [];
+
+                        renderChart(labels, seriesData);
+                    },
+                    error: function (xhr, b, c) {
+                        console.log('xhr=' + xhr + ' b=' + b + ' c=' + c);
+                    },
+                    complete: function () {
+                        spinner.hide();
+                    }
+                });
+            }
+
+            function handleNavClick(element) {
+                const tabIndex = Number(element.getAttribute('tabindex'));
+                document.querySelectorAll('.nav-test li a').forEach(function (anchor) {
+                    anchor.className = 'nav-link py-2 px-4 nav-link';
+                });
+                element.className = 'nav-link py-2 px-4 active nav-link active';
+
+                switch (tabIndex) {
+                    case 0:
+                        activeFrom = 1;
+                        activeTo = 0;
+                        customDateContainer.hide();
+                        break;
+                    case 1:
+                        activeFrom = 7;
+                        activeTo = 0;
+                        customDateContainer.hide();
+                        break;
+                    case 2:
+                        activeFrom = 30;
+                        activeTo = 0;
+                        customDateContainer.hide();
+                        break;
+                    default:
+                        customDateContainer.show();
+                        return;
+                }
+
+                fetchAndUpdate(activeFrom, activeTo);
+                scheduleRefresh();
+            }
+
+            function initNavigation() {
+                document.querySelectorAll('.nav-test li a').forEach(function (anchor) {
+                    anchor.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        handleNavClick(anchor);
+                    });
+                });
+            }
+
+            function initCustomDateHandlers() {
+                const toInput = document.getElementById('to');
+                const fromInput = document.getElementById('from');
+
+                function computeDiffDays(dateValue) {
+                    const today = new Date();
+                    const target = new Date(dateValue);
+                    const diffTime = Math.abs(today.setHours(0, 0, 0, 0) - target.setHours(0, 0, 0, 0));
+                    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                }
+
+                document.getElementById('custom').addEventListener('click', function (event) {
+                    event.preventDefault();
+                    customDateContainer.show();
+                });
+
+                toInput.addEventListener('change', function () {
+                    const toDiff = computeDiffDays(toInput.value);
+                    const fromDiff = computeDiffDays(fromInput.value);
+                    fetchAndUpdate(fromDiff, toDiff);
+                });
+
+                window.getData = function () {
+                    const toDiff = computeDiffDays(toInput.value);
+                    const fromDiff = computeDiffDays(fromInput.value);
+                    fetchAndUpdate(fromDiff, toDiff);
+                };
+            }
+
+            renderChart(initialLabels, initialSeries, false);
+            initNavigation();
+            initCustomDateHandlers();
+            scheduleRefresh();
+        })();
     </script>
 @endpush

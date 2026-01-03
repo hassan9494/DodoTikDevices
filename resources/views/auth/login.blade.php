@@ -38,8 +38,8 @@
                     @csrf
                     <div class="login__field">
                         <i class="login__icon fas fa-user"></i>
-                        <input id="login" type="text" class="login__input{{ $errors->has('username') || $errors->has('email') ? ' is-invalid' : '' }}"
-                               name="login" value="{{ old('username') ?: old('email') }}" required  autofocus placeholder="enter username or password" >
+                        <input id="email" type="text" class="login__input{{ $errors->has('username') || $errors->has('email') ? ' is-invalid' : '' }}"
+                               name="email" value="{{ old('username') ?: old('email') }}" required  autofocus placeholder="enter username or password" >
                         @if ($errors->has('username') || $errors->has('email'))
                             <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('username') ?: $errors->first('email')  }}</strong>

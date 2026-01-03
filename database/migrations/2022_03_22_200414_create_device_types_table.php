@@ -16,6 +16,9 @@ class CreateDeviceTypesTable extends Migration
         Schema::create('device_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->boolean('is_gateway')->default(false);
+            $table->boolean('is_need_response')->default(false);
+            $table->integer('encode_type')->default(1);
             $table->softDeletes();
             $table->timestamps();
         });

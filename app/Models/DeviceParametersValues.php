@@ -24,6 +24,11 @@ class DeviceParametersValues extends Model
     protected $guarded=[];
     protected $table = 'device_parameters_values';
 
+    protected $casts = [
+        'parameters' => 'array',
+        'time_of_read' => 'datetime',
+    ];
+
 
     public function device()
     {

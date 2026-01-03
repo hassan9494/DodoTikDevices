@@ -30,16 +30,25 @@
             jQuery.ajax({
                 url: '/admin/devices/getColumnChartData/{{$device->id}}/',
                 type: 'GET',
-                success: function (data) {
+                dataType: 'json',
+                success: function (payload) {
+                    var data = payload[0] || {};
+                    var parameters = data.para || [];
+                    var values = data.paravalues || [];
+
+                    var seriesData = parameters.map(function (parameter, index) {
+                        return {
+                            x: (parameter.name || parameter.code || 'Parameter') +
+                                (parameter.unit ? ' (' + parameter.unit + ')' : ''),
+                            y: values[index] ?? 0
+                        };
+                    });
+
                     var options = {
                         chart: {
                             type: 'bar',
                             stacked: true,
-                            // stackType: "100%"
                         },
-                        // yaxis: {
-                        //     reversed: true
-                        // },
                         plotOptions: {
                             bar: {
                                 borderRadius: 10,
@@ -48,27 +57,9 @@
                         },
                         series: [{
                             name: "AVG",
-                            data: [
-                                @if(count($testParaColumn) > 0)
-                                    @foreach($testParaColumn as $key=>$parameter)
-
-                                {
-                                    x: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
-                                    y: data[0]['paravalues'][{{$key}}]
-                                },
-                                @endforeach
-                                @else
-                                    @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $key=>$parameter)
-
-                                {
-                                    x: "{{$parameter->name}} (" + "{{$parameter->unit}}" + ")",
-                                    y: data[0]['paravalues'][{{$key}}]
-                                },
-                                @endforeach
-                                @endif
-                                ],
-                        }],
-                    }
+                            data: seriesData
+                        }]
+                    };
 
                     var chart1 = new ApexCharts(document.querySelector("#columnChart"), options);
                     chart1.render();

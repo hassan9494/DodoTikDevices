@@ -1,5 +1,5 @@
 <section class="box-fancy section-fullwidth text-light p-b-0">
-    @if(count($device->deviceType->deviceParameters) != 0)
+    @if($device_type && $device_type->deviceParameters->isNotEmpty())
         <div class="row" style="text-align: -webkit-center;">
             <div class="col-lg-12 col-xxl-12 order-1 order-xxl-1 mb-4">
                 <div class="card shadow mb-4">
@@ -22,15 +22,14 @@
                                             <thead>
                                             <tr>
                                                 <th>{{__('message.No.')}}</th>
-                                                @if(count($parameterTableColumn) > 0)
-                                                    @foreach($parameterTableColumn as $parameter)
-                                                        <th>{{$parameter->name}}</th>
-                                                    @endforeach
-                                                @else
-                                                    @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $parameter)
-                                                        <th>{{$parameter->name}}</th>
-                                                    @endforeach
-                                                @endif
+                                                @php
+                                                    $tableColumns = ($parameterTableColumn && $parameterTableColumn->count() > 0)
+                                                        ? $parameterTableColumn
+                                                        : $device_type->deviceParameters;
+                                                @endphp
+                                                @foreach($tableColumns as $parameter)
+                                                    <th>{{$parameter->name}}</th>
+                                                @endforeach
                                                 <th>{{__('message.time of read')}}</th>
                                             </tr>
                                             </thead>
@@ -38,26 +37,20 @@
                                             @php
                                                 $no=0;
                                             @endphp
-                                            @foreach($device->deviceParameters()->orderBy('id','desc')->paginate($numberOfRow != 0 ? $numberOfRow : 500) as $deviceParameter)
+                                            @foreach($parameterTableData as $deviceParameter)
                                                 <tr>
                                                     <td>{{ ++$no }}</td>
-                                                    @if(count($parameterTableColumn) > 0)
-                                                        @foreach($parameterTableColumn as $parameter)
-                                                            <td>{{json_decode($deviceParameter->parameters,true)[$parameter->code]}}</td>
-                                                        @endforeach
-                                                    @else
-                                                        @foreach($device->deviceType->deviceParameters()->orderBy('order')->get() as $parameter)
-                                                            @if(isset(json_decode($deviceParameter->parameters,true)[$parameter->code]))
-                                                                <td>{{json_decode($deviceParameter->parameters,true)[$parameter->code]}}</td>
-                                                            @elseif(isset(json_decode($deviceParameter->parameters,true)[$parameter->name]))
-                                                                <td>{{json_decode($deviceParameter->parameters,true)[$parameter->name]}}</td>
-                                                            @else
-                                                                <td>0</td>
-                                                            @endif
-                                                        @endforeach
-                                                    @endif
+                                                    @foreach($tableColumns as $parameter)
+                                                        @php
+                                                            $values = $deviceParameter->decoded_parameters ?? [];
+                                                            $code = $parameter->code ?? $parameter->name;
+                                                            $fallback = $parameter->name ?? $code;
+                                                            $value = $values[$code] ?? ($values[$fallback] ?? 0);
+                                                        @endphp
+                                                        <td>{{$value}}</td>
+                                                    @endforeach
                                                     <td>
-                                                        {{\Carbon\Carbon::parse($deviceParameter->time_of_read)->setTimezone('GMT+03:00')->format('Y-m-d H:i')}}
+                                                        {{ optional($deviceParameter->time_of_read)->setTimezone('GMT+03:00')->format('Y-m-d H:i') }}
                                                     </td>
                                                 </tr>
                                             @endforeach

@@ -14,14 +14,6 @@
             height: 400px;
         }
 
-        .legend-2 div span {
-            border-radius: 50%;
-            display: inline-block;
-            height: 10px;
-            margin-right: 5px;
-            width: 10px;
-        }
-
         .device-types-name .nav-item span {
             color: #00989d;
         }
@@ -67,7 +59,11 @@
     <div class="container-fluid">
         <div class="row" style="text-align: -webkit-center;">
             @include('admin.dashboard.locations')
-            @include('admin.dashboard.device_status')
+            @include('admin.dashboard.device_status', [
+                'types' => $types,
+                'devicesByType' => $devicesByType,
+                'untypedDevices' => $untypedDevices ?? [],
+            ])
         </div>
     </div>
 @endsection
@@ -77,131 +73,110 @@
 
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
     <script>
-        var countOfDevice = {{count($devices)}}
+        const devices = @json($devicesPayload);
+        const centroid = @json($centroid);
 
         mapboxgl.accessToken = 'pk.eyJ1Ijoic2FoYWIyMiIsImEiOiJja3Zud2NjeG03cGk1MnBxd3NrMm5kaDd4In0.vsQXgdGOH8KQ91g4rHkvUA';
+        const initialCenter = [
+            centroid && centroid.lng !== null ? centroid.lng : 0,
+            centroid && centroid.lat !== null ? centroid.lat : 0,
+        ];
+
+        const zoomLevel = devices.length > 0 ? (devices.length > 50 ? 3 : 4.5) : 2;
+
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
-            center: [{{$long != null ? $long : 0}},{{$lat != null ? $lat : 0}}],
-            zoom: 3
+            center: initialCenter,
+            zoom: zoomLevel
         });
 
         map.on('load', () => {
-            @foreach($devices as $key=>$device)
-                @if(isset($warning[$key]))
-                    var warning = {{$warning[$key]}};
-                @else
-                    var warning = 0;
-                @endif
-            map.addSource('places_{{$device->id}}', {
-                'type': 'geojson',
-                'data': {
-                    'type': 'FeatureCollection',
-                    'features': [
+            const features = devices
+                .filter(device => device.coordinates && device.coordinates.lng !== null && device.coordinates.lat !== null)
+                .map(device => ({
+                    type: 'Feature',
+                    properties: {
+                        id: device.id,
+                        name: device.name,
+                        status: device.status,
+                        warning_count: device.warning_count || 0,
+                        last_reading_formatted: device.last_reading ? device.last_reading.formatted_time : '',
+                        parameters: JSON.stringify(device.parameters || [])
+                    },
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [device.coordinates.lng, device.coordinates.lat]
+                    }
+                }));
 
-                        {
-                            'type': 'Feature',
-                            'properties': {
-                                'description': warning == 0 ?
-                                    '<div id="state-legend" class="legend">' +
-                                    '<h4 style="color : #000000">{{__('message.Last Read')}}</h4>' +
-                                    '<h5>{{$device->name}}</h5>' +
-                                    @if($device->deviceType != null)
-                                        @foreach($device->deviceType->deviceParameters as $key1=>$parameter)
-                                            '<div><span ></span>{{$parameter->name}}' +
-                                            @if(count($device->deviceParameters) > 0)
-                                                @if(isset(json_decode($device->deviceParameters->last()->parameters, true)[$parameter->code]))
-                                                    ':{{count($device->deviceParameters) > 0 ? json_decode($device->deviceParameters->last()->parameters, true)[$parameter->code]. " (". $parameter->unit .") " : "No Data"}}' +
-                                                @else
-                                                    ':{{count($device->deviceParameters) > 0 ?  0 . " (". $parameter->unit .") " : "No Data"}}' +
-                                                @endif
-                                            @endif
-                                            '</div>' +
-                                        @endforeach
-                                    @endif
-
-                                    '<span>{{count($device->deviceParameters) > 0 ? \Carbon\Carbon::parse($device->deviceParameters->last()->time_of_read)->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a') : ""}}</span>' +
-                                    '</div>' :
-                                    '<div>' +
-                                    '<h4 style="color : #000000">{{__('message.Last Read')}}</h4>' +
-                                    '<h5>{{$device->name}}</h5>' +
-                                    @if($device->deviceType != null)
-                                        @foreach($device->deviceType->deviceParameters as $key2=>$parameter)
-                                            @if(isset($lastdangerRead[$key][$key2]))
-                                                '<div><span style ="color:{{$lastdangerRead[$key][$key2]}}!important">{{$parameter->name}}</span>' +
-                                            @else
-                                                '<div><span style ="color:#000000!important">{{$parameter->name}}</span>' +
-                                            @endif
-                                            @if(isset($lastMinDanger[$key]))
-                                                @if($lastMinDanger[$key] != null)
-                                                    @if(isset(json_decode($lastMinDanger[$key]->parameters, true)[$parameter->code]))
-                                                        ':<span style ="color:{{$lastdangerRead[$key][$key2]}}!important">{{$lastMinDanger[$key] != null ? json_decode($lastMinDanger[$key]->parameters, true)[$parameter->code]. " (". $parameter->unit .") " : "No Data"}}</span>' +
-                                                    @else
-                                                        ':<span style ="color:{{$lastdangerRead[$key][$key2]}}!important">{{$lastMinDanger[$key] != null ? 0 . " (". $parameter->unit .") " : "No Data"}}</span>' +
-                                                    @endif
-                                                @endif
-                                            @endif
-                                            '</div>' +
-                                        @endforeach
-                                    @endif
-
-                                        '<span>{{count($device->deviceParameters) > 0 ? \Carbon\Carbon::parse($device->deviceParameters->last()->time_of_read)->setTimezone('Europe/Istanbul')->format('Y-d-m h:i a') : ""}}</span>' +
-                                    '</div>'
-                            },
-                            'geometry': {
-                                'type': 'Point',
-                                'coordinates': [{{$device->longitude}}, {{$device->latitude}}]
-                            }
-                        },
-
-                    ]
+            map.addSource('dashboard-devices', {
+                type: 'geojson',
+                data: {
+                    type: 'FeatureCollection',
+                    features: features
                 }
             });
-// Add a layer showing the places.
+
             map.addLayer({
-                'id': 'places_{{$device->id}}',
-                'type': 'circle',
-                'source': 'places_{{$device->id}}',
-                'paint': {
-                    'circle-color': warning == 0 ? '#00989d' : 'rgba(255, 100, 100, 1)',
+                id: 'dashboard-devices-layer',
+                type: 'circle',
+                source: 'dashboard-devices',
+                paint: {
+                    'circle-color': [
+                        'case',
+                        ['>', ['get', 'warning_count'], 0],
+                        'rgba(255, 100, 100, 1)',
+                        '#00989d'
+                    ],
                     'circle-radius': 10,
                     'circle-stroke-width': 2,
                     'circle-stroke-color': '#ffffff'
                 }
             });
 
-// Create a popup, but don't add it to the map yet.
-            const popup_{{$device->id}} = new mapboxgl.Popup({
+            const popup = new mapboxgl.Popup({
                 closeButton: false,
                 closeOnClick: false
             });
 
-            map.on('mouseenter', 'places_{{$device->id}}', (e) => {
-// Change the cursor style as a UI indicator.
+            map.on('mouseenter', 'dashboard-devices-layer', (event) => {
                 map.getCanvas().style.cursor = 'pointer';
+                const feature = event.features[0];
+                const coordinates = feature.geometry.coordinates.slice();
+                const properties = feature.properties;
+                const parameters = JSON.parse(properties.parameters || '[]');
 
-// Copy coordinates array.
-                const coordinates = e.features[0].geometry.coordinates.slice();
-                const description = e.features[0].properties.description;
+                const parametersMarkup = parameters.map(parameter => {
+                    const value = parameter.value !== null && parameter.value !== undefined
+                        ? `${parameter.value} ${parameter.unit ? `(${parameter.unit})` : ''}`
+                        : '{{ __('message.No Data') }}';
 
-// Ensure that if the map is zoomed out such that multiple
-// copies of the feature are visible, the popup appears
-// over the copy being pointed to.
-                while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                    return `<div>
+                        <span style="color:${parameter.color}">${parameter.name}</span>: ${value}
+                    </div>`;
+                }).join('');
+
+                const html = `
+                    <div class="legend">
+                        <h4 style="color:#000000">{{ __('message.Last Read') }}</h4>
+                        <h5>${properties.name}</h5>
+                        ${parametersMarkup}
+                        <span>${properties.last_reading_formatted || ''}</span>
+                    </div>
+                `;
+
+                while (Math.abs(event.lngLat.lng - coordinates[0]) > 180) {
+                    coordinates[0] += event.lngLat.lng > coordinates[0] ? 360 : -360;
                 }
 
-// Populate the popup and set its coordinates
-// based on the feature found.
-                popup_{{$device->id}}.setLngLat(coordinates).setHTML(description).addTo(map);
+                popup.setLngLat(coordinates).setHTML(html).addTo(map);
             });
 
-            map.on('mouseleave', 'places_{{$device->id}}', () => {
+            map.on('mouseleave', 'dashboard-devices-layer', () => {
                 map.getCanvas().style.cursor = '';
-                popup_{{$device->id}}.remove();
+                popup.remove();
             });
-            @endforeach
         });
 
     </script>

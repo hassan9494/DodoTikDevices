@@ -24,6 +24,13 @@ class LimitValues extends Model
     protected $guarded=[];
     protected $table = 'limit_values';
 
+    protected $casts = [
+        'min_value' => 'array',
+        'max_value' => 'array',
+        'min_warning' => 'bool',
+        'max_warning' => 'bool',
+    ];
+
     public function device()
     {
         return $this->belongsTo(Device::class,'device_id');

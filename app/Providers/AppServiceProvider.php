@@ -2,27 +2,25 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->app->register(ViewServiceProvider::class);
+        if (class_exists($viewProvider = 'App\\Providers\\ViewServiceProvider')) {
+            $this->app->register($viewProvider);
+        }
     }
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Paginator::useBootstrap();
     }
