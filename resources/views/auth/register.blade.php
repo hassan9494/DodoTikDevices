@@ -21,6 +21,25 @@
         #login::-webkit-input-placeholder{
             font-size: 11px;
         }
+
+        .screen__content {
+            min-height: 560px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .auth-action-links {
+            margin-top: 1.5rem;
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .auth-action-links .button {
+            width: 100%;
+            text-align: center;
+        }
     </style>
 
 </head>
@@ -34,7 +53,7 @@
         <div class="screen">
             <div class="screen__content">
                 <img width="207" height="97" src="{{ asset('admin/img/logo.png')}}" class="attachment-medium size-medium" alt="" loading="lazy" srcset="{{ asset('admin/img/logo.png')}}" sizes="(max-width: 207px) 100vw, 207px">
-                <form class="register" method="POST" action="{{ route('register') }}" style="padding: 30px;padding-top: 45px;">
+                <form class="register" method="POST" action="{{ route('register') }}" style="padding: 30px;padding-top: 45px;width: 100%;">
                     @csrf
 
                     <div class="form-group row">
@@ -120,7 +139,9 @@
 
 
             </div>
-            <h5 style="color: #0b2e13"><a  href="{{ route('login') }}" class="button login__submit">login to your account</a></h5>
+            <div class="auth-action-links">
+                <a href="{{ route('login') }}" class="button login__submit" style="display: inline-block;">login to your account</a>
+            </div>
 
             <div class="screen__background">
                 <span class="screen__background__shape screen__background__shape4"></span>
