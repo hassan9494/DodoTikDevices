@@ -217,14 +217,15 @@ class FtpFileController extends Controller
 
     public function exportToDatasheet(Request $request)
     {
-        $validate = [
-            'from' => 'required',
-            'to' => 'required'
-        ];
-        \Validator::make($request->all(), $validate)->validate();
-        $from = $request->from;
-        $to = $request->to;
-        $file = $request->id;
+        $validated = $request->validate([
+            'from' => ['required'],
+            'to' => ['required'],
+            'id' => ['required', 'integer', 'exists:ftp_files,id'],
+        ]);
+
+        $from = $validated['from'];
+        $to = $validated['to'];
+        $file = $validated['id'];
         return Excel::download(new FileParametersExport($from, $to, $file), 'parameter.xlsx');
     }
 

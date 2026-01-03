@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\SubscriptionActivation;
 
 /**
  * @method static orderBy(string $string, string $string1)
@@ -26,6 +27,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'username',
         'role',
+        'phone',
+        'is_active',
 
     ];
 
@@ -49,10 +52,26 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'subscription_expires_at' => 'datetime',
+        'is_active' => 'boolean',
     ];
 
     public function devices()
     {
         return $this->hasMany(Device::class,'user_id');
+    }
+
+    public function subscriptionActivations()
+    {
+        return $this->hasMany(SubscriptionActivation::class);
+    }
+
+    public function hasActiveSubscription(): bool
+    {
+        if ($this->role === 'Administrator') {
+            return true;
+        }
+
+        return $this->subscription_expires_at !== null && $this->subscription_expires_at->isFuture();
     }
 }

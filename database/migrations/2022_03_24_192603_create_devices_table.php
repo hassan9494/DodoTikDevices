@@ -17,7 +17,12 @@ class CreateDevicesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('device_id')->unique();
-            $table->integer('user_id')->default(0)->unsigned();
+            $table->unsignedInteger('user_id')->default(0);
+            $table->unsignedInteger('type_id');
+            $table->string('longitude')->nullable();
+            $table->string('latitude')->nullable();
+            $table->integer('time_between_two_read')->default(0);
+            $table->integer('tolerance')->default(2);
             $table->softDeletes();
             $table->timestamps();
         });

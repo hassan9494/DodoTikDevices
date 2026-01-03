@@ -14,7 +14,9 @@ class EditDeviceTableAddTolerance extends Migration
     public function up()
     {
         Schema::table('devices', function (Blueprint $table) {
-            $table->integer('tolerance')->default(2);
+            if (!Schema::hasColumn('devices', 'tolerance')) {
+                $table->integer('tolerance')->default(2);
+            }
         });
     }
 
@@ -25,6 +27,10 @@ class EditDeviceTableAddTolerance extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('devices', function (Blueprint $table) {
+            if (Schema::hasColumn('devices', 'tolerance')) {
+                $table->dropColumn('tolerance');
+            }
+        });
     }
 }

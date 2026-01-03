@@ -1,26 +1,33 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="container">
+<div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Verify Your Email Address') }}</div>
-
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">{{ __('Verify Your Email Address') }}</h5>
+                </div>
                 <div class="card-body">
-                    @if (session('resent'))
+                    <p class="mb-3">
+                        {{ __('Before proceeding, please check your email for a verification link to activate your account.') }}
+                    </p>
+
+                    @if (session('status') === 'verification-link-sent' || session('resent'))
                         <div class="alert alert-success" role="alert">
-                            {{ __('A fresh verification link has been sent to your email address.') }}
+                            {{ __('A new verification link has been sent to your email address.') }}
                         </div>
                     @endif
-                    <div style="margin-bottom: 10px">
-                        {{ __('Before proceeding, please check your email for a verification link.') }}
-                        {{ __('If you did not receive the email') }},
-                    </div>
 
-                    <form class="d-inline form-row" method="POST" action="{{ route('verification.resend') }}">
+                    <p class="text-muted mb-4">
+                        {{ __('Didn\'t receive the message? You can request another verification email below.') }}
+                    </p>
+
+                    <form class="d-inline" method="POST" action="{{ route('verification.send') }}">
                         @csrf
-                        <button type="submit" class="btn btn-info">{{ __('click here to request another') }}</button>.
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane me-1"></i> {{ __('Resend Verification Email') }}
+                        </button>
                     </form>
                 </div>
             </div>

@@ -13,9 +13,11 @@ class UpdateDevicesTable extends Migration
      */
     public function up()
     {
-        Schema::table('devices', function (Blueprint $table) {
-            $table->integer('type_id')->unsigned();
-        });
+        if (!Schema::hasColumn('devices', 'type_id')) {
+            Schema::table('devices', function (Blueprint $table) {
+                $table->unsignedInteger('type_id')->default(0);
+            });
+        }
     }
 
     /**
@@ -25,6 +27,10 @@ class UpdateDevicesTable extends Migration
      */
     public function down()
     {
-        //
+        if (Schema::hasColumn('devices', 'type_id')) {
+            Schema::table('devices', function (Blueprint $table) {
+                $table->dropColumn('type_id');
+            });
+        }
     }
 }

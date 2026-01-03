@@ -103,6 +103,18 @@
                 </div>
             </div>
 
+            <div class="form-group col-md-6">
+                <label for="phone" class="col-sm-2 col-form-label">{{ __('message.Phone') }}</label>
+                <div class="col-sm-9">
+                    <input type="text" name="phone" placeholder="{{ __('message.Phone') }}" id="phone"
+                           class="form-control {{$errors->first('phone') ? "is-invalid" : "" }} "
+                           value="{{ old('phone') }}">
+                    <div class="invalid-feedback">
+                        {{ $errors->first('phone') }}
+                    </div>
+                </div>
+            </div>
+
 
             @can('isAdmin')
                 <div class="form-group col-md-6 ">

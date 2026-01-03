@@ -25,10 +25,9 @@ class DeviceRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'device_id' => 'required',
-            'device_id' => Rule::unique('devices')->ignore($this->id),
-            'type' => 'required',
+            'name' => ['required'],
+            'device_id' => ['required', Rule::unique('devices', 'device_id')->ignore($this->route('id'))],
+            'type' => ['required'],
         ];
     }
 }

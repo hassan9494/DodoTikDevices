@@ -10,6 +10,9 @@ class FrontController extends Controller
 {
     public function home()
     {
+        if (auth()->check()) {
+            return redirect()->route('admin.dashboard');
+        }
 
         return view('auth.login');
     }

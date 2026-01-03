@@ -14,7 +14,9 @@ class EditDevParDevTypTabAddCol extends Migration
     public function up()
     {
         Schema::table('device_parameters_device_type', function (Blueprint $table) {
-            $table->string('color')->default('#000000');
+            if (!Schema::hasColumn('device_parameters_device_type', 'color')) {
+                $table->string('color')->default('#000000');
+            }
         });
     }
 
@@ -25,6 +27,10 @@ class EditDevParDevTypTabAddCol extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('device_parameters_device_type', function (Blueprint $table) {
+            if (Schema::hasColumn('device_parameters_device_type', 'color')) {
+                $table->dropColumn('color');
+            }
+        });
     }
 }

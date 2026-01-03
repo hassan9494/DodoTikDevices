@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -39,20 +43,24 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        \Validator::make($request->all(), [
-            "username" => "required|unique:users",
-            "role" => "required",
-            "email" => "required|email|unique:users",
-            "password" => "required|min:6",
-        ])->validate();
+        $validated = $request->validate([
+            'username' => ['required', 'string', Rule::unique('users', 'username')],
+            'role' => ['required', 'string'],
+            'email' => ['required', 'email', Rule::unique('users', 'email')],
+            'name' => ['required', 'string'],
+            'phone' => ['required', 'string', 'max:20'],
+            'password' => ['required', 'string', 'min:6'],
+        ]);
 
         $user = new User();
-        $user->username = $request->username;
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->role=$request->role;
+        $user->username = $validated['username'];
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->phone = $validated['phone'];
+        $user->password = Hash::make($validated['password']);
+        $user->role = $validated['role'];
         $user->remember_token = $request->_token;
+        $user->is_active = true;
 
         if ($user->save()) {
             return redirect()->route('admin.users.index')->with('success', 'Data added successfully');
@@ -71,7 +79,15 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::with(['devices.deviceType', 'subscriptionActivations' => function ($query) {
+            $query->with('subscriptionCode')->orderByDesc('activated_at');
+        }])->findOrFail($id);
+
+        return view('admin.user.show', [
+            'user' => $user,
+            'devices' => $user->devices,
+            'activations' => $user->subscriptionActivations,
+        ]);
     }
 
     /**
@@ -95,19 +111,26 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        \Validator::make($request->all(), [
-            "name" => "required",
-            "email" => "required|email",
-            "username" => "required",
-        ])->validate();
+        $validated = $request->validate([
+            'name' => ['required', 'string'],
+            'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($id)],
+            'username' => ['required', 'string', Rule::unique('users', 'username')->ignore($id)],
+            'phone' => ['required', 'string', 'max:20'],
+            'role' => ['nullable', 'string'],
+        ]);
+
         $user = User::findOrFail($id);
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->role=$request->role;
-        $user->username = $request->username;
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->role = $validated['role'] ?? $user->role;
+        $user->username = $validated['username'];
+        $user->phone = $validated['phone'];
 
         if ( $user->save()) {
+            if(auth()->user()->role == 'user'){
+                return redirect()->route('admin.users.edit',$id)->with('success', 'Data updated successfully');
 
+            }
             return redirect()->route('admin.users.index')->with('success', 'Data updated successfully');
 
            } else {
@@ -115,6 +138,38 @@ class UserController extends Controller
             return redirect()->route('admin.user.edit')->with('error', 'Data failed to update');
 
            }
+    }
+
+    public function toggleStatus(Request $request, $id)
+    {
+        $admin = $request->user();
+        $user = User::findOrFail($id);
+
+        if ($user->id === $admin->id) {
+            return redirect()->route('admin.users.index')->with('error', __('message.cannot_deactivate_self'));
+        }
+
+        if ($user->role === 'Administrator') {
+            return redirect()->route('admin.users.index')->with('error', __('message.cannot_deactivate_admin'));
+        }
+
+        $user->is_active = ! $user->is_active;
+        $user->remember_token = Str::random(60);
+        $user->save();
+
+        if (method_exists($user, 'tokens')) {
+            $user->tokens()->delete();
+        }
+
+        if (config('session.driver') === 'database' && Schema::hasTable($table = config('session.table', 'sessions'))) {
+            DB::table($table)->where('user_id', $user->id)->delete();
+        }
+
+        $message = $user->is_active
+            ? __('message.user_activated')
+            : __('message.user_deactivated');
+
+        return redirect()->route('admin.users.index')->with('success', $message);
     }
 
     public function changepassword(Request $request, $id)

@@ -14,8 +14,13 @@ class EditDeviceTypeTable extends Migration
     public function up()
     {
         Schema::table('device_types', function (Blueprint $table) {
-            $table->boolean('is_gateway')->default(0);
-            $table->boolean('is_need_response')->default(0);
+            if (!Schema::hasColumn('device_types', 'is_gateway')) {
+                $table->boolean('is_gateway')->default(false);
+            }
+
+            if (!Schema::hasColumn('device_types', 'is_need_response')) {
+                $table->boolean('is_need_response')->default(false);
+            }
         });
     }
 
@@ -26,6 +31,14 @@ class EditDeviceTypeTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('device_types', function (Blueprint $table) {
+            if (Schema::hasColumn('device_types', 'is_gateway')) {
+                $table->dropColumn('is_gateway');
+            }
+
+            if (Schema::hasColumn('device_types', 'is_need_response')) {
+                $table->dropColumn('is_need_response');
+            }
+        });
     }
 }

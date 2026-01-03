@@ -17,6 +17,7 @@ class CreateDeviceParametersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('code');
+            $table->string('unit')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

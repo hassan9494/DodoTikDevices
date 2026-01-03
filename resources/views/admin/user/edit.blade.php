@@ -7,6 +7,15 @@
     {{ session('error') }}
 </div>
 @endif
+@if (session('success'))
+
+        <div class="alert alert-success">
+
+            {{ session('success') }}
+
+        </div>
+
+    @endif
 
 <form action="{{ route('admin.users.update',$user->id) }}" method="POST">
     @csrf
@@ -43,6 +52,18 @@
                 <input type="text" name="name" placeholder="name" id="name"  class="form-control {{$errors->first('name') ? "is-invalid" : "" }} " value="{{old('name') ? old('name') : $user->name}}" >
                 <div class="invalid-feedback">
                     {{ $errors->first('name') }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            <label for="phone" class="col-sm-2 col-form-label">{{ __('message.Phone') }}</label>
+            <div class="col-sm-9">
+                <input type="text" name="phone" placeholder="{{ __('message.Phone') }}" id="phone"
+                       class="form-control {{$errors->first('phone') ? "is-invalid" : "" }} "
+                       value="{{ old('phone') ? old('phone') : $user->phone }}">
+                <div class="invalid-feedback">
+                    {{ $errors->first('phone') }}
                 </div>
             </div>
         </div>
