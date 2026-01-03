@@ -21,6 +21,25 @@
         #login::-webkit-input-placeholder{
             font-size: 11px;
         }
+
+        .screen__content {
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .auth-action-links {
+            margin-top: 1.5rem;
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .auth-action-links .button {
+            width: 100%;
+            text-align: center;
+        }
     </style>
 
 </head>
@@ -34,7 +53,7 @@
         <div class="screen">
             <div class="screen__content">
                 <img width="207" height="97" src="{{ asset('admin/img/logo.png')}}" class="attachment-medium size-medium" alt="" loading="lazy" srcset="{{ asset('admin/img/logo.png')}}" sizes="(max-width: 207px) 100vw, 207px">
-                <form class="login" method="POST" action="{{ route('login') }}">
+                <form class="login" method="POST" action="{{ route('login') }}" style="width: 100%;">
                     @csrf
                     <div class="login__field">
                         <i class="login__icon fas fa-user"></i>
@@ -72,22 +91,17 @@
 {{--                        <div class="col-md-6 offset-md-4">--}}
 {{--                            <div class="checkbox">--}}
 {{--                                <label>--}}
-{{--                                    <a href="{{ route('forget.password.get') }}">Reset Password</a>--}}
+{{--                                    <a href="{{ route('password.request') }}">Reset Password</a>--}}
 {{--                                </label>--}}
 {{--                            </div>--}}
 {{--                        </div>--}}
 {{--                    </div>--}}
                 </form>
-{{--                <div class="">--}}
-                  <h5 style="color: #0b2e13"><a  href="{{ route('register') }}" class="button login__submit">create new account</a></h5>
-                <h5 style="color: #0b2e13"><a  href="{{ route('forget.password.get') }}" class="button login__submit">Reset Password</a></h5>
-{{--                  <div class="social-icons">--}}
-{{--                    <a href="#" class="social-login__icon fab fa-instagram"></a>--}}
-{{--                    <a href="#" class="social-login__icon fab fa-facebook"></a>--}}
-{{--                    <a href="#" class="social-login__icon fab fa-twitter"></a>--}}
-{{--                  </div>--}}
-{{--                </div>--}}
 
+                <div class="auth-action-links">
+                    <a href="{{ route('register') }}" class="button login__submit" style="display: inline-block;">create new account</a>
+                    <a href="{{ route('password.request') }}" class="button login__submit" style="display: inline-block;">Reset Password</a>
+                </div>
 
             </div>
             <div class="screen__background">
